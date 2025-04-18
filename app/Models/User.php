@@ -46,7 +46,7 @@ class User extends Authenticatable
 
         static::creating(function ($model) {
             if (empty($model->uuid)) {
-                $model->uuid = Str::uuid();
+                $model->uuid = Str::uuid()->toString();
             }
         });
     }
