@@ -18,5 +18,11 @@
                 <div data-i18n="Dashboard">Dashboard</div>
             </a>
         </li>
+        <li class="menu-item {{ Request::is('dashboard/work-locations*') ? 'active' : '' }}">
+            <a href="/dashboard/work-locations" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-map-pin"></i>
+                <div data-i18n="Work Locations">Work Locations</div>
+            </a>
+        </li>
     </ul>
 </aside>

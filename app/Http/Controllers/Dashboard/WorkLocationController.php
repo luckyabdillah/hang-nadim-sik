@@ -13,7 +13,9 @@ class WorkLocationController extends Controller
      */
     public function index()
     {
-        //
+        $workLocations = WorkLocation::orderBy('location')->get();
+
+        return view('dashboard.work-locations.index', compact('workLocations'));
     }
 
     /**
@@ -21,7 +23,7 @@ class WorkLocationController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.work-locations.create');
     }
 
     /**
@@ -29,13 +31,19 @@ class WorkLocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'location' => 'required|max:150',
+        ]);
+
+        WorkLocation::create($validatedData);
+
+        return redirect('/dashboard/work-locations')->with('success', 'Work location created successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(WorkLocation $workLocation)
+    public function show(WorkLocation $location)
     {
         //
     }
@@ -43,24 +51,32 @@ class WorkLocationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(WorkLocation $workLocation)
+    public function edit(WorkLocation $location)
     {
-        //
+        return view('dashboard.work-locations.edit', compact('location'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, WorkLocation $workLocation)
+    public function update(Request $request, WorkLocation $location)
     {
-        //
+        $validatedData = $request->validate([
+            'location' => 'required|max:150',
+        ]);
+
+        $location->update($validatedData);
+
+        return redirect('/dashboard/work-locations')->with('success', 'Work location updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(WorkLocation $workLocation)
+    public function destroy(WorkLocation $location)
     {
-        //
+        WorkLocation::destroy($location->id);
+
+        return redirect('/dashboard/work-locations')->with('success', 'Work location deleted successfully');
     }
 }
