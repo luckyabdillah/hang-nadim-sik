@@ -5,7 +5,7 @@
         </a>
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
             <i class="bx bx-chevron-left bx-sm align-middle"></i>
-        </a>
+        </a> 
     </div>
 
     <div class="menu-inner-shadow"></div>
@@ -18,11 +18,15 @@
                 <div data-i18n="Dashboard">Dashboard</div>
             </a>
         </li>
+        <li class="menu-item {{ Request::is('dashboard/vendors*') ? 'active' : '' }}">
+            <a href="/dashboard/vendors" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-store"></i>
+                <div data-i18n="Vendors">Vendors</div>
+            </a>
+        </li>
         <li class="menu-item {{ Request::is('dashboard/work-types*') ? 'active' : '' }}">
             <a href="/dashboard/work-types" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-briefcase
-                
-                "></i>
+                <i class="menu-icon tf-icons bx bx-briefcase"></i>
                 <div data-i18n="Work Types">Work Types</div>
             </a>
         </li>
