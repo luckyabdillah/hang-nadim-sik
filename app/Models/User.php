@@ -39,6 +39,11 @@ class User extends Authenticatable
         'id',
         'uuid',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
     
     protected static function boot()
     {
@@ -46,7 +51,7 @@ class User extends Authenticatable
 
         static::creating(function ($model) {
             if (empty($model->uuid)) {
-                $model->uuid = Str::uuid();
+                $model->uuid = Str::uuid()->toString();
             }
         });
     }
