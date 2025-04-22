@@ -3,15 +3,23 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Vendor extends Model
 {
+    use SoftDeletes;
+    
     protected $fillable = [
         'name',
         'email',
-        'addres',
+        'address',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
     
     protected static function boot()
     {

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\VendorController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
@@ -10,6 +11,13 @@ Route::get('/', function () {
 });
 
 Route::get('dashboard', [DashboardController::class, 'index']);
+
+Route::get('dashboard/vendors', [VendorController::class, 'index']);
+Route::get('dashboard/vendors/create', [VendorController::class, 'create']);
+Route::post('dashboard/vendors', [VendorController::class, 'store']);
+Route::get('dashboard/vendors/{vendor}/edit', [VendorController::class, 'edit']);
+Route::put('dashboard/vendors/{vendor}', [VendorController::class, 'update']);
+Route::delete('dashboard/vendors/{vendor}', [VendorController::class, 'destroy']);
 
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('login', [LoginController::class, 'authenticate']);
