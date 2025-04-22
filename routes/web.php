@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\VendorController;
 use App\Http\Controllers\Dashboard\WorkTypeController;
 use App\Http\Controllers\Auth\LoginController;
@@ -12,6 +13,13 @@ Route::get('/', function () {
 });
 
 Route::get('dashboard', [DashboardController::class, 'index']);
+
+Route::get('dashboard/users', [UserController::class, 'index']);
+Route::get('dashboard/users/create', [UserController::class, 'create']);
+Route::post('dashboard/users', [UserController::class, 'store']);
+Route::get('dashboard/users/{user}/edit', [UserController::class, 'edit']);
+Route::put('dashboard/users/{user}', [UserController::class, 'update']);
+Route::delete('dashboard/users/{user}', [UserController::class, 'destroy']);
 
 Route::get('dashboard/vendors', [VendorController::class, 'index']);
 Route::get('dashboard/vendors/create', [VendorController::class, 'create']);
