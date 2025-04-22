@@ -18,6 +18,12 @@
                 <div data-i18n="Dashboard">Dashboard</div>
             </a>
         </li>
+        <li class="menu-item {{ Request::is('dashboard/copies*') ? 'active' : '' }}">
+            <a href="/dashboard/copies" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-list-ul"></i>
+                <div data-i18n="Copies">Copies</div>
+            </a>
+        </li>       
         <li class="menu-item {{ Request::is('dashboard/users*') ? 'active' : '' }}">
             <a href="/dashboard/users" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
