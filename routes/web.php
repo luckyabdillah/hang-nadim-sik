@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\WorkLocationController;
 use App\Http\Controllers\Dashboard\CopyController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\VendorController;
@@ -14,6 +15,13 @@ Route::get('/', function () {
 });
 
 Route::get('dashboard', [DashboardController::class, 'index']);
+
+Route::get('dashboard/work-locations', [WorkLocationController::class, 'index']);
+Route::get('dashboard/work-locations/create', [WorkLocationController::class, 'create']);
+Route::post('dashboard/work-locations', [WorkLocationController::class, 'store']);
+Route::get('dashboard/work-locations/{location}/edit', [WorkLocationController::class, 'edit']);
+Route::put('dashboard/work-locations/{location}', [WorkLocationController::class, 'update']);
+Route::delete('dashboard/work-locations/{location}', [WorkLocationController::class, 'destroy']);
 
 Route::get('dashboard/copies', [CopyController::class, 'index']);
 Route::get('dashboard/copies/create', [CopyController::class, 'create']);
