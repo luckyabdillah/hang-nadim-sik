@@ -13,7 +13,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::orderBy('name')->get();
+
+        return view('dashboard.users.index', compact('users'));
     }
 
     /**
@@ -21,7 +23,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.users.create');
     }
 
     /**
@@ -29,7 +31,16 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|max:255|email:dns|unique:users,email',
+            'password' => 'required|min:8|max:255|confirmed',
+            'role' => 'required|in:admin,applicant,verificator,approver,avsec,superuser',
+        ]);
+
+        User::create($validatedData);
+
+        return redirect('/dashboard/users')->with('success', 'User created successfully');
     }
 
     /**
@@ -45,7 +56,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return view('dashboard.users.edit', compact('user'));
     }
 
     /**
@@ -53,7 +64,20 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $rules = [
+            'name' => 'required|max:255',
+            'role' => 'required|in:admin,applicant,verificator,approver,avsec,superuser',
+        ];
+
+        if ($request->email != $user->email) {
+            $rules['email'] = 'nullable|email:dns|max:255|unique:users,email';
+        }
+
+        $validatedData = $request->validate($rules);
+
+        $user->update($validatedData);
+
+        return redirect('/dashboard/users')->with('success', 'User Updated Successfully');
     }
 
     /**
@@ -61,6 +85,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        User::destroy($user->id);
+
+        return redirect('/dashboard/users')->with('success', 'User deleted successfully');
     }
 }

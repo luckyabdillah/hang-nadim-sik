@@ -18,5 +18,12 @@
                 <div data-i18n="Dashboard">Dashboard</div>
             </a>
         </li>
+        <li class="menu-item {{ Request::is('dashboard/users*') ? 'active' : '' }}">
+            <a href="/dashboard/users" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Users">Users</div>
+            </a>
+        </li>
+        
     </ul>
 </aside>

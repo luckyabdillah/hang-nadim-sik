@@ -39,6 +39,11 @@ class User extends Authenticatable
         'id',
         'uuid',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
     
     protected static function boot()
     {
