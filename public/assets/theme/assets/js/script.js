@@ -39,3 +39,28 @@ $(document).on('click', '.btn-delete', function (event) {
         }
     })
 })
+
+document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+        e.preventDefault()
+        const container = e.target
+        const submitBtn = container.querySelector('.btn-submit')
+        const cancelBtn = container.querySelector('.btn-cancel')
+        if (submitBtn) {
+            const submitBtnWidth = submitBtn.offsetWidth;
+            submitBtn.style.width = `${submitBtnWidth}px`;
+
+            submitBtn.setAttribute('disabled', true)
+            submitBtn.innerHTML = `
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            `
+        }
+        if (cancelBtn) {
+            cancelBtn.classList.add('disabled')
+            cancelBtn.setAttribute('disabled', true)
+        }
+        return this.submit()
+    })
+})
