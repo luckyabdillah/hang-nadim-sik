@@ -50,13 +50,13 @@
                         <li>
                             <a class="dropdown-item" href="/dashboard/profile">
                                 <i class="bx bx-user me-2"></i>
-                                <span class="align-middle">Profile</span>
+                                <span class="align-middle">Profil</span>
                             </a>
                         </li>
                         <li>
                             <a class="dropdown-item" href="/">
                                 <i class="bx bx-door-open me-2"></i>
-                                <span class="align-middle">Homepage</span>
+                                <span class="align-middle">Beranda</span>
                             </a>
                         </li>
                         <li>
@@ -67,7 +67,7 @@
                                 @csrf
                                 <button class="dropdown-item text-danger" type="submit">
                                     <i class="bx bx-power-off me-2"></i>
-                                    <span class="align-middle">Log Out</span>
+                                    <span class="align-middle">Keluar</span>
                                 </button>
                             </form>
                         </li>

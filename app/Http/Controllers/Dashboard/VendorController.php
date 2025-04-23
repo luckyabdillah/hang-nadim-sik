@@ -38,7 +38,7 @@ class VendorController extends Controller
 
         Vendor::create($validatedData);
 
-        return redirect('/dashboard/vendors')->with('success', 'Vendor created successfully');
+        return redirect('/dashboard/vendors')->with('success', 'Data berhasil dibuat');
     }
 
     /**
@@ -75,7 +75,7 @@ class VendorController extends Controller
 
         $vendor->update($validatedData);
 
-        return redirect('/dashboard/vendors')->with('success', 'Vendor updated successfully');
+        return redirect('/dashboard/vendors')->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -85,6 +85,6 @@ class VendorController extends Controller
     {
         Vendor::destroy($vendor->id);
 
-        return redirect('/dashboard/vendors')->with('success', 'Vendor deleted successfully');
+        return redirect('/dashboard/vendors')->with('success', 'Data berhasil dihapus');
     }
 }

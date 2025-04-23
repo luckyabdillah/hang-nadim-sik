@@ -2,14 +2,14 @@
 
 @section('content')
   <div class="card">
-      <h5 class="card-header">Copy List</h5>
+      <h5 class="card-header">Daftar Tembusan</h5>
       <div class="card-body">
-          <a href="/dashboard/copies/create" class="btn btn-primary mb-4">Create New Copy</a>
+          <a href="/dashboard/copies/create" class="btn btn-primary mb-4">Tambah Data</a>
           <table class="table table-bordered text-center">
               <thead>
                   <tr>
                       <th style="width: 1px;">No</th>
-                      <th>Name</th>
+                      <th>Nama</th>
                       <th>#</th>
                   </tr>
               </thead>
@@ -33,7 +33,7 @@
                   </tr>
                   @endforeach @else
                   <tr>
-                      <td colspan="3">No data found</td>
+                      <td colspan="3">Tidak ada data</td>
                   </tr>
                   @endif
               </tbody>

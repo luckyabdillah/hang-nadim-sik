@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="alert alert-secondary mb-3">
-        Welcome Back, John Doe.
+        Selamat Datang kembali, John Doe.
     </div>
     {{-- <div style="padding-bottom: 1000px">
     </div> --}}

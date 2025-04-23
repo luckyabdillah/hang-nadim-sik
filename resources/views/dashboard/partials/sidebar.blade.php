@@ -21,31 +21,31 @@
         <li class="menu-item {{ Request::is('dashboard/work-locations*') ? 'active' : '' }}">
             <a href="/dashboard/work-locations" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-map-pin"></i>
-                <div data-i18n="Work Locations">Work Locations</div>
+                <div data-i18n="Lokasi Pekerjaan">Lokasi Pekerjaan</div>
             </a>
         </li>
         <li class="menu-item {{ Request::is('dashboard/copies*') ? 'active' : '' }}">
             <a href="/dashboard/copies" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-list-ul"></i>
-                <div data-i18n="Copies">Copies</div>
+                <div data-i18n="Tembusan">Tembusan</div>
             </a>
         </li>       
         <li class="menu-item {{ Request::is('dashboard/users*') ? 'active' : '' }}">
             <a href="/dashboard/users" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Users">Users</div>
+                <div data-i18n="Pengguna">Pengguna</div>
             </a>
         </li>
         <li class="menu-item {{ Request::is('dashboard/vendors*') ? 'active' : '' }}">
             <a href="/dashboard/vendors" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-store"></i>
-                <div data-i18n="Vendors">Vendors</div>
+                <div data-i18n="Vendor">Vendor</div>
             </a>
         </li>
         <li class="menu-item {{ Request::is('dashboard/work-types*') ? 'active' : '' }}">
             <a href="/dashboard/work-types" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-briefcase"></i>
-                <div data-i18n="Work Types">Work Types</div>
+                <div data-i18n="Tipe Pekerjaan">Tipe Pekerjaan</div>
             </a>
         </li>
     </ul>

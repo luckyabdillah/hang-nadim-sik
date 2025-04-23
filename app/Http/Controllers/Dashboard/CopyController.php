@@ -37,7 +37,7 @@ class CopyController extends Controller
 
         Copy::create($validatedData);
 
-        return redirect('/dashboard/copies')->with('success', 'Copy created successfully');
+        return redirect('/dashboard/copies')->with('success', 'Data berhasil dibuat');
     }
 
     /**
@@ -67,7 +67,7 @@ class CopyController extends Controller
 
         $copy->update($validatedData);
 
-        return redirect('/dashboard/copies')->with('success', 'Copy updated successfully');
+        return redirect('/dashboard/copies')->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -77,6 +77,6 @@ class CopyController extends Controller
     {
         Copy::destroy($copy->id);
 
-        return redirect('/dashboard/copies')->with('success', 'Copy deleted successfully');
+        return redirect('/dashboard/copies')->with('success', 'Data berhasil dihapus');
     }
 }

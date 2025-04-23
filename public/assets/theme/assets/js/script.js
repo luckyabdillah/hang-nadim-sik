@@ -25,14 +25,14 @@ $(document).on('click', '.btn-delete', function (event) {
     event.preventDefault()
     let form = $(this).closest("form")
     Swal({
-        title: "Delete Data",
-        text: "You sure want to delete this data?",
+        title: "Hapus Data",
+        text: "Yakin ingin menghapus data ini?",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: '#ff3e1d',
         cancelButtonColor: '#8592a3',
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel'
+        confirmButtonText: 'Hapus',
+        cancelButtonText: 'Batal'
     }).then((result) => {
         if (result.value) {
             form.submit()

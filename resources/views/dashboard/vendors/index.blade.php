@@ -2,16 +2,16 @@
 
 @section('content')
     <div class="card">
-        <h5 class="card-header">Vendor List</h5>
+        <h5 class="card-header">Daftar Vendor</h5>
         <div class="card-body">
-            <a href="/dashboard/vendors/create" class="btn btn-primary mb-4">Create New Vendor</a>
+            <a href="/dashboard/vendors/create" class="btn btn-primary mb-4">Tambah Data</a>
             <table class="table table-bordered text-center">
                 <thead>
                     <tr>
                         <th style="width: 1px;">No</th>
-                        <th>Name</th>
+                        <th>Nama</th>
                         <th>Email</th>
-                        <th>Address</th>
+                        <th>Alamat</th>
                         <th>#</th>
                     </tr>
                 </thead>
@@ -39,7 +39,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="5">No data found</td>
+                            <td colspan="5">Tidak ada data</td>
                         </tr>
                     @endif
                 </tbody>

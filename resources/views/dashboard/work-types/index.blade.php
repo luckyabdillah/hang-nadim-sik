@@ -2,14 +2,14 @@
 
 @section('content')
   <div class="card">
-      <h5 class="card-header">Work Type List</h5>
+      <h5 class="card-header">Daftar Tipe Pekerjaan</h5>
       <div class="card-body">
-          <a href="/dashboard/work-types/create" class="btn btn-primary mb-4">Create New Work Type</a>
+          <a href="/dashboard/work-types/create" class="btn btn-primary mb-4">Tambah Data</a>
           <table class="table table-bordered text-center">
               <thead>
                   <tr>
                       <th style="width: 1px;">No</th>
-                      <th>Type</th>
+                      <th>Tipe Pekerjaan</th>
                       <th>#</th>
                   </tr>
               </thead>
@@ -35,7 +35,7 @@
                     @endforeach
                   @else
                   <tr>
-                      <td colspan="3">No data found</td>
+                      <td colspan="3">Tidak ada data</td>
                   </tr>
                   @endif
               </tbody>

@@ -2,15 +2,15 @@
 
 @section('content')
     <div class="card">
-        <h5 class="card-header">Edit Location</h5>
+        <h5 class="card-header">Edit Lokasi Pekerjaan</h5>
         <div class="card-body">
-            <a href="/dashboard/work-locations" class="btn btn-secondary mb-3">Back</a>
+            <a href="/dashboard/work-locations" class="btn btn-secondary mb-3">Kembali</a>
             <form action="/dashboard/work-locations/{{ $location->id }}" method="post">
                 @csrf
                 @method('put')
-                <div class="mb-3">
-                    <label for="location" class="form-label">Location Name</label>
-                    <input type="text" class="form-control @error('location') is-invalid @enderror " id="location" name="location" value="{{ old('location', $location->location) }}" placeholder="Location Name" required autofocus>
+                <div class="mb-4">
+                    <label for="location" class="form-label">Nama Lokasi</label>
+                    <input type="text" class="form-control @error('location') is-invalid @enderror " id="location" name="location" value="{{ old('location', $location->location) }}" placeholder="Nama Lokasi" required autofocus>
                     @error('location')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
