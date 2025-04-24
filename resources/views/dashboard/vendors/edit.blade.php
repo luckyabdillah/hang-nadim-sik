@@ -11,21 +11,21 @@
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
                         <label for="name" class="form-label">Nama Vendor</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror " id="name" name="name" value="{{ old('name', $vendor->name) }}" placeholder="Nama Vendor" required autofocus>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror " id="name" name="name" value="{{ old('name', $vendor->name) }}" placeholder="Nama Vendor" required autofocus autocomplete="off">
                         @error('name')
                             <div class="invalid-feedback text-start">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email</label>
-                        <input type="text" class="form-control @error('email') is-invalid @enderror " id="email" name="email" value="{{ old('email', $vendor->email) }}" placeholder="Email">
+                        <input type="text" class="form-control @error('email') is-invalid @enderror " id="email" name="email" value="{{ old('email', $vendor->email) }}" placeholder="Email" autocomplete="off">
                         @error('email')
                             <div class="invalid-feedback text-start">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col">
                         <label for="address" class="form-label">Alamat</label>
-                        <textarea class="form-control @error('address') is-invalid @enderror " id="address" name="address" placeholder="Alamat">{{ old('address', $vendor->address) }}</textarea>
+                        <textarea class="form-control @error('address') is-invalid @enderror " id="address" name="address" placeholder="Alamat" autocomplete="off">{{ old('address', $vendor->address) }}</textarea>
                         @error('address')
                             <div class="invalid-feedback text-start">{{ $message }}</div>
                         @enderror

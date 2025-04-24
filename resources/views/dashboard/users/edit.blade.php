@@ -11,7 +11,7 @@
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
                         <label for="name" class="form-label">Nama</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Nama" value="{{ old('name', $user->name) }}" required autofocus>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Nama" value="{{ old('name', $user->name) }}" required autofocus autocomplete="off">
                         @error('name')
                             <div class="invalid-feedback text-start">
                                 {{ $message }}
@@ -20,7 +20,7 @@
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email</label>
-                        <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" id="email" placeholder="Email" value="{{ old('email', $user->email) }}" required>
+                        <input type="text" class="form-control @error('email') is-invalid @enderror" name="email" id="email" placeholder="Email" value="{{ old('email', $user->email) }}" required autocomplete="off">
                         @error('email')
                             <div class="invalid-feedback text-start">
                                 {{ $message }}

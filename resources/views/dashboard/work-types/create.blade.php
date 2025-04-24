@@ -9,7 +9,7 @@
                 @csrf
                 <div class="mb-3">
                     <label for="type" class="form-label">Tipe Pekerjaan</label>
-                    <input type="text" class="form-control @error('type') is-invalid @enderror" name="type" id="type" placeholder="Tipe Pekerjaan" value="{{ old('type') }}" required autofocus>
+                    <input type="text" class="form-control @error('type') is-invalid @enderror" name="type" id="type" placeholder="Tipe Pekerjaan" value="{{ old('type') }}" required autofocus autocomplete="off">
                     @error('type')
                         <div class="invalid-feedback text-start">
                             {{ $message }}
@@ -18,7 +18,7 @@
                 </div> 
                 <div class="mb-3">
                     <label for="provision_text_before" class="form-label">Ketentuan (Sebelum)</label>
-                    <textarea class="form-control @error('provision_text_before') is-invalid @enderror" rows="3" name="provision_text_before" id="provision_text_before" placeholder="Ketentuan (Sebelum)" required>{{ old('provision_text_before') }}</textarea>
+                    <textarea class="form-control @error('provision_text_before') is-invalid @enderror" rows="3" name="provision_text_before" id="provision_text_before" placeholder="Ketentuan (Sebelum)" required autocomplete="off">{{ old('provision_text_before') }}</textarea>
                     @error('provision_text_before')
                         <div class="invalid-feedback text-start">
                             {{ $message }}
@@ -27,7 +27,7 @@
                 </div> 
                 <div class="mb-4">
                     <label for="provision_text_after" class="form-label">Ketentuan (Setelah)</label>
-                    <textarea class="form-control @error('provision_text_after') is-invalid @enderror" rows="3" name="provision_text_after" id="provision_text_after" placeholder="Ketentuan (Setelah)" required>{{ old('provision_text_after') }}</textarea>
+                    <textarea class="form-control @error('provision_text_after') is-invalid @enderror" rows="3" name="provision_text_after" id="provision_text_after" placeholder="Ketentuan (Setelah)" required autocomplete="off">{{ old('provision_text_after') }}</textarea>
                     @error('provision_text_after')
                         <div class="invalid-feedback text-start">
                             {{ $message }}

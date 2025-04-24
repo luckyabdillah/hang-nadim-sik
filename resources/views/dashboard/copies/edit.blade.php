@@ -10,7 +10,7 @@
                 @method('put')
                 <div class="mb-4">
                     <label for="name" class="form-label">Nama</label>
-                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Nama" value="{{ old('name', $copy->name) }}" required autofocus>
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Nama" value="{{ old('name', $copy->name) }}" required autofocus autocomplete="off">
                     @error('name')
                         <div class="invalid-feedback text-start">
                             {{ $message }}
