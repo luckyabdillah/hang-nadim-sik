@@ -18,22 +18,42 @@
                 <div data-i18n="Dashboard">Dashboard</div>
             </a>
         </li>
-        <li class="menu-item {{ Request::is('dashboard/work-locations*') ? 'active' : '' }}">
-            <a href="/dashboard/work-locations" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-map-pin"></i>
-                <div data-i18n="Lokasi Pekerjaan">Lokasi Pekerjaan</div>
+        <li class="menu-item {{ Request::is('dashboard/master-data*') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-hive"></i>
+                <div data-i18n="Master Data">Master Data</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ Request::is('dashboard/master-data/copies*') ? 'active' : '' }}">
+                    <a href="/dashboard/master-data/copies" class="menu-link">
+                        <div data-i18n="Tembusan">Tembusan</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ Request::is('dashboard/master-data/work-types*') ? 'active' : '' }}">
+                    <a href="/dashboard/master-data/work-types" class="menu-link">
+                        <div data-i18n="Tipe Pekerjaan">Tipe Pekerjaan</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ Request::is('dashboard/master-data/work-locations*') ? 'active' : '' }}">
+                    <a href="/dashboard/master-data/work-locations" class="menu-link">
+                        <div data-i18n="Lokasi Pekerjaan">Lokasi Pekerjaan</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Permohonan</span>
+        </li>
+        <li class="menu-item {{ Request::is('dashboard/work-permit-letters*') ? 'active' : '' }}">
+            <a href="/dashboard/work-permit-letters" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-collection"></i>
+                <div data-i18n="SIK">SIK</div>
             </a>
         </li>
-        <li class="menu-item {{ Request::is('dashboard/copies*') ? 'active' : '' }}">
-            <a href="/dashboard/copies" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-list-ul"></i>
-                <div data-i18n="Tembusan">Tembusan</div>
-            </a>
-        </li>       
-        <li class="menu-item {{ Request::is('dashboard/users*') ? 'active' : '' }}">
-            <a href="/dashboard/users" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-user"></i>
-                <div data-i18n="Pengguna">Pengguna</div>
+        <li class="menu-item {{ Request::is('dashboard/approvals*') ? 'active' : '' }}">
+            <a href="/dashboard/approvals" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-comment-check"></i>
+                <div data-i18n="Persetujuan">Persetujuan</div>
             </a>
         </li>
         <li class="menu-item {{ Request::is('dashboard/vendors*') ? 'active' : '' }}">
@@ -42,11 +62,37 @@
                 <div data-i18n="Vendor">Vendor</div>
             </a>
         </li>
-        <li class="menu-item {{ Request::is('dashboard/work-types*') ? 'active' : '' }}">
-            <a href="/dashboard/work-types" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-briefcase"></i>
-                <div data-i18n="Tipe Pekerjaan">Tipe Pekerjaan</div>
+        <li class="menu-item {{ Request::is('dashboard/registration*') ? 'active' : '' }}">
+            <a href="/dashboard/registration" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user-plus"></i>
+                <div data-i18n="Registrasi">Registrasi</div>
             </a>
+        </li>
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Manajemen</span>
+        </li>
+        <li class="menu-item {{ Request::is('dashboard/users*') || Request::is('dashboard/approvers*') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-group"></i>
+                <div data-i18n="Pengguna">Pengguna</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ Request::is('dashboard/approvers*') ? 'active' : '' }}">
+                    <a href="/dashboard/approvers" class="menu-link">
+                        <div data-i18n="Approver">Approver</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ Request::is('dashboard/applicants*') ? 'active' : '' }}">
+                    <a href="/dashboard/applicants" class="menu-link">
+                        <div data-i18n="Pemohon / Applicant">Pemohon / Applicant</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ Request::is('dashboard/users*') ? 'active' : '' }}">
+                    <a href="/dashboard/users" class="menu-link">
+                        <div data-i18n="Lainnya">Lainnya</div>
+                    </a>
+                </li>
+            </ul>
         </li>
     </ul>
 </aside>
