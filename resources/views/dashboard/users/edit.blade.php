@@ -4,8 +4,8 @@
     <div class="card">
         <h5 class="card-header">Ubah Pengguna</h5>
         <div class="card-body">
-            <a href="/dashboard/users" class="btn btn-secondary mb-3">Kembali</a>
-            <form action="/dashboard/users/{{ $user->uuid }}" method="POST">
+            <a href="{{ route('dashboard.users.index') }}" class="btn btn-secondary mb-3">Kembali</a>
+            <form action="{{ route('dashboard.users.index') }}/{{ $user->uuid }}" method="POST">
                 @csrf
                 @method('put')
                 <div class="row g-3 mb-4">

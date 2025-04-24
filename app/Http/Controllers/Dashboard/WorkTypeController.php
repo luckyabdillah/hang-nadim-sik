@@ -39,7 +39,7 @@ class WorkTypeController extends Controller
 
         WorkType::create($validatedData);
 
-        return redirect('/dashboard/work-types')->with('success', 'Data berhasil dibuat');
+        return redirect()->route('dashboard.work-types.index')->with('success', 'Data berhasil dibuat');
     }
 
     /**
@@ -72,7 +72,7 @@ class WorkTypeController extends Controller
         $type->update($validatedData);
 
 
-        return redirect('/dashboard/work-types')->with('success', 'Data berhasil diubah');
+        return redirect()->route('dashboard.work-types.index')->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -82,6 +82,6 @@ class WorkTypeController extends Controller
     {
         WorkType::destroy($type->id);
 
-        return redirect('/dashboard/work-types')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('dashboard.work-types.index')->with('success', 'Data berhasil dihapus');
     }
 }

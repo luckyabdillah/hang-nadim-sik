@@ -4,8 +4,8 @@
     <div class="card">
         <h5 class="card-header">Ubah Vendor</h5>
         <div class="card-body">
-            <a href="/dashboard/vendors" class="btn btn-secondary mb-3">Kembali</a>
-            <form action="/dashboard/vendors/{{ $vendor->uuid }}" method="post">
+            <a href="{{ route('dashboard.vendors.index') }}" class="btn btn-secondary mb-3">Kembali</a>
+            <form action="{{ route('dashboard.vendors.index') }}/{{ $vendor->uuid }}" method="post">
                 @csrf
                 @method('put')
                 <div class="row g-3 mb-4">

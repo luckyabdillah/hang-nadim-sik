@@ -4,8 +4,8 @@
     <div class="card">
         <h5 class="card-header">Ubah Tipe Pekerjaan</h5>
         <div class="card-body">
-            <a href="/dashboard/work-types" class="btn btn-secondary mb-3">Kembali</a>
-            <form action="/dashboard/work-types/{{ $type->id }}" method="POST">
+            <a href="{{ route('dashboard.work-types.index') }}" class="btn btn-secondary mb-3">Kembali</a>
+            <form action="{{ route('dashboard.work-types.index') }}/{{ $type->id }}" method="POST">
                 @csrf
                 @method('put')
                 <div class="mb-3">

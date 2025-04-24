@@ -37,7 +37,7 @@ class WorkLocationController extends Controller
 
         WorkLocation::create($validatedData);
 
-        return redirect('/dashboard/work-locations')->with('success', 'Data berhasil dibuat');
+        return redirect()->route('dashboard.work-locations.index')->with('success', 'Data berhasil dibuat');
     }
 
     /**
@@ -67,7 +67,7 @@ class WorkLocationController extends Controller
 
         $location->update($validatedData);
 
-        return redirect('/dashboard/work-locations')->with('success', 'Data berhasil diubah');
+        return redirect()->route('dashboard.work-locations.index')->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -77,6 +77,6 @@ class WorkLocationController extends Controller
     {
         WorkLocation::destroy($location->id);
 
-        return redirect('/dashboard/work-locations')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('dashboard.work-locations.index')->with('success', 'Data berhasil dihapus');
     }
 }

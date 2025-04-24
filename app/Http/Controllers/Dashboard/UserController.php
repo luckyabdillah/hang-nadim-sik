@@ -40,7 +40,7 @@ class UserController extends Controller
 
         User::create($validatedData);
 
-        return redirect('/dashboard/users')->with('success', 'Data berhasil dibuat');
+        return redirect()->route('dashboard.users.index')->with('success', 'Data berhasil dibuat');
     }
 
     /**
@@ -77,7 +77,7 @@ class UserController extends Controller
 
         $user->update($validatedData);
 
-        return redirect('/dashboard/users')->with('success', 'Data berhasil diubah');
+        return redirect()->route('dashboard.users.index')->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -87,6 +87,6 @@ class UserController extends Controller
     {
         User::destroy($user->id);
 
-        return redirect('/dashboard/users')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('dashboard.users.index')->with('success', 'Data berhasil dihapus');
     }
 }

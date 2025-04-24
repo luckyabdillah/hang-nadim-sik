@@ -4,7 +4,7 @@
   <div class="card">
       <h5 class="card-header">Daftar Tipe Pekerjaan</h5>
       <div class="card-body">
-          <a href="/dashboard/work-types/create" class="btn btn-primary mb-4">Tambah Data</a>
+          <a href="{{ route('dashboard.work-types.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
           <table class="table table-bordered text-center">
               <thead>
                   <tr>
@@ -20,10 +20,10 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $type->type }}</td>
                             <td>
-                                <a href="/dashboard/work-types/{{ $type->id }}/edit" class="btn btn-warning rounded-pill">
+                                <a href="{{ route('dashboard.work-types.index') }}/{{ $type->id }}/edit" class="btn btn-warning rounded-pill">
                                     <i class="bx bx-edit-alt"></i>
                                 </a>
-                                <form action="/dashboard/work-types/{{ $type->id }}" method="post" class="d-inline">
+                                <form action="{{ route('dashboard.work-types.index') }}/{{ $type->id }}" method="post" class="d-inline">
                                     @csrf
                                     @method('delete')
                                     <button type="submit" class="btn btn-danger btn-delete rounded-pill">

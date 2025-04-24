@@ -4,8 +4,8 @@
     <div class="card">
         <h5 class="card-header">Tambah Lokasi Pekerjaan</h5>
         <div class="card-body">
-            <a href="/dashboard/work-locations" class="btn btn-secondary mb-3">Kembali</a>
-            <form action="/dashboard/work-locations" method="post">
+            <a href="{{ route('dashboard.work-locations.index') }}" class="btn btn-secondary mb-3">Kembali</a>
+            <form action="{{ route('dashboard.work-locations.index') }}" method="post">
                 @csrf
                 <div class="mb-4">
                     <label for="location" class="form-label">Nama Lokasi</label>

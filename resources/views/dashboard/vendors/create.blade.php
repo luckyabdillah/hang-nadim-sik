@@ -4,8 +4,8 @@
     <div class="card">
         <h5 class="card-header">Tambah Vendor</h5>
         <div class="card-body">
-            <a href="/dashboard/vendors" class="btn btn-secondary mb-3">Kembali</a>
-            <form action="/dashboard/vendors" method="post">
+            <a href="{{ route('dashboard.vendors.index') }}" class="btn btn-secondary mb-3">Kembali</a>
+            <form action="{{ route('dashboard.vendors.index') }}" method="post">
                 @csrf
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">

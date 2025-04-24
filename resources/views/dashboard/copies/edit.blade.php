@@ -4,8 +4,8 @@
     <div class="card">
         <h5 class="card-header">Ubah Tembusan</h5>
         <div class="card-body">
-            <a href="/dashboard/copies" class="btn btn-secondary mb-3">Kembali</a>
-            <form action="/dashboard/copies/{{ $copy->id }}" method="POST">
+            <a href="{{ route('dashboard.copies.index') }}" class="btn btn-secondary mb-3">Kembali</a>
+            <form action="{{ route('dashboard.copies.index') }}/{{ $copy->id }}" method="POST">
                 @csrf
                 @method('put')
                 <div class="mb-4">

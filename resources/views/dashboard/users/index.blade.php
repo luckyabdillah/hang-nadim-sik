@@ -4,7 +4,7 @@
 <div class="card">
     <h5 class="card-header">Daftar Pengguna</h5>
     <div class="card-body">
-        <a href="/dashboard/users/create" class="btn btn-primary mb-4">Tambah Data</a>
+        <a href="{{ route('dashboard.users.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
         <table class="table table-bordered text-center">
             <thead>
                 <tr>
@@ -23,10 +23,10 @@
                     <td>{{ $user->email }}</td>
                     <td>{{ ucfirst($user->role) }}</td>
                     <td>
-                        <a href="/dashboard/users/{{ $user->uuid }}/edit" class="btn btn-warning rounded-pill">
+                        <a href="{{ route('dashboard.users.index') }}/{{ $user->uuid }}/edit" class="btn btn-warning rounded-pill">
                             <i class="bx bx-edit-alt"></i>
                         </a>
-                        <form action="/dashboard/users/{{ $user->uuid }}" method="post" class="d-inline">
+                        <form action="{{ route('dashboard.users.index') }}/{{ $user->uuid }}" method="post" class="d-inline">
                             @csrf
                             @method('delete')
                             <button type="submit" class="btn btn-danger btn-delete rounded-pill">

@@ -4,7 +4,7 @@
     <div class="card">
         <h5 class="card-header">Daftar Vendor</h5>
         <div class="card-body">
-            <a href="/dashboard/vendors/create" class="btn btn-primary mb-4">Tambah Data</a>
+            <a href="{{ route('dashboard.vendors.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
             <table class="table table-bordered text-center">
                 <thead>
                     <tr>
@@ -24,10 +24,10 @@
                                 <td>{{ $vendor->email ?? '-' }}</td>
                                 <td>{{ $vendor->address ?? '-' }}</td>
                                 <td>
-                                    <a href="/dashboard/vendors/{{ $vendor->uuid }}/edit" class="btn btn-warning rounded-pill">
+                                    <a href="{{ route('dashboard.vendors.index') }}/{{ $vendor->uuid }}/edit" class="btn btn-warning rounded-pill">
                                         <i class="bx bx-edit-alt"></i>
                                     </a>
-                                    <form action="/dashboard/vendors/{{ $vendor->uuid }}" method="post" class="d-inline">
+                                    <form action="{{ route('dashboard.vendors.index') }}/{{ $vendor->uuid }}" method="post" class="d-inline">
                                         @csrf
                                         @method('delete')
                                         <button type="submit" class="btn btn-danger rounded-pill btn-delete">

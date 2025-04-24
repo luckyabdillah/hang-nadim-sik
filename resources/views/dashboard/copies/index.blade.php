@@ -4,7 +4,7 @@
   <div class="card">
       <h5 class="card-header">Daftar Tembusan</h5>
       <div class="card-body">
-          <a href="/dashboard/copies/create" class="btn btn-primary mb-4">Tambah Data</a>
+          <a href="{{ route('dashboard.copies.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
           <table class="table table-bordered text-center">
               <thead>
                   <tr>
@@ -19,10 +19,10 @@
                       <td>{{ $loop->iteration }}</td>
                       <td>{{ $copy->name }}</td>
                       <td>
-                          <a href="/dashboard/copies/{{ $copy->id }}/edit" class="btn btn-warning rounded-pill">
+                          <a href="{{ route('dashboard.copies.index') }}/{{ $copy->id }}/edit" class="btn btn-warning rounded-pill">
                               <i class="bx bx-edit-alt"></i>
                           </a>
-                          <form action="/dashboard/copies/{{ $copy->id }}" method="post" class="d-inline">
+                          <form action="{{ route('dashboard.copies.index') }}/{{ $copy->id }}" method="post" class="d-inline">
                               @csrf
                               @method('delete')
                               <button type="submit" class="btn btn-danger btn-delete rounded-pill">

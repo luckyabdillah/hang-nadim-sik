@@ -18,24 +18,24 @@
                 <div data-i18n="Dashboard">Dashboard</div>
             </a>
         </li>
-        <li class="menu-item {{ Request::is('dashboard/master-data*') ? 'active open' : '' }}">
+        <li class="menu-item {{ Request::is('dashboard/copies*') || Request::is('dashboard/work-types*') || Request::is('dashboard/work-locations*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-hive"></i>
                 <div data-i18n="Master Data">Master Data</div>
             </a>
             <ul class="menu-sub">
-                <li class="menu-item {{ Request::is('dashboard/master-data/copies*') ? 'active' : '' }}">
-                    <a href="/dashboard/master-data/copies" class="menu-link">
+                <li class="menu-item {{ Request::is('dashboard/copies*') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.copies.index') }}" class="menu-link">
                         <div data-i18n="Tembusan">Tembusan</div>
                     </a>
                 </li>
-                <li class="menu-item {{ Request::is('dashboard/master-data/work-types*') ? 'active' : '' }}">
-                    <a href="/dashboard/master-data/work-types" class="menu-link">
+                <li class="menu-item {{ Request::is('dashboard/work-types*') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.work-types.index') }}" class="menu-link">
                         <div data-i18n="Tipe Pekerjaan">Tipe Pekerjaan</div>
                     </a>
                 </li>
-                <li class="menu-item {{ Request::is('dashboard/master-data/work-locations*') ? 'active' : '' }}">
-                    <a href="/dashboard/master-data/work-locations" class="menu-link">
+                <li class="menu-item {{ Request::is('dashboard/work-locations*') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard.work-locations.index') }}" class="menu-link">
                         <div data-i18n="Lokasi Pekerjaan">Lokasi Pekerjaan</div>
                     </a>
                 </li>
