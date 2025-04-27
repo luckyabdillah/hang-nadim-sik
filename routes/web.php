@@ -5,8 +5,10 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\WorkLocationController;
 use App\Http\Controllers\Dashboard\CopyController;
 use App\Http\Controllers\Dashboard\ApproverController;
+use App\Http\Controllers\Dashboard\ApplicantController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\VendorController;
+use App\Http\Controllers\Dashboard\RegistrationController;
 use App\Http\Controllers\Dashboard\WorkTypeController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -23,8 +25,10 @@ Route::prefix('dashboard')->group(function () {
     Route::resource('work-locations', WorkLocationController::class)->except(['show'])->parameters(['work-locations' => 'location'])->names('dashboard.work-locations');
 
     Route::resource('vendors', VendorController::class)->except(['show'])->names('dashboard.vendors');
+    Route::resource('registrations', RegistrationController::class)->only(['index', 'edit', 'update'])->names('dashboard.registrations');
     
     Route::resource('approvers', ApproverController::class)->except(['show'])->names('dashboard.approvers');
+    Route::resource('applicants', ApplicantController::class)->only(['index', 'show'])->names('dashboard.applicants');
     Route::resource('users', UserController::class)->except(['show'])->names('dashboard.users');
 });
 

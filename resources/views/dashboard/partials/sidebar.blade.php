@@ -62,8 +62,8 @@
                 <div data-i18n="Vendor">Vendor</div>
             </a>
         </li>
-        <li class="menu-item {{ Request::is('dashboard/registration*') ? 'active' : '' }}">
-            <a href="/dashboard/registration" class="menu-link">
+        <li class="menu-item {{ Request::is('dashboard/registrations*') ? 'active' : '' }}">
+            <a href="/dashboard/registrations" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-user-plus"></i>
                 <div data-i18n="Registrasi">Registrasi</div>
             </a>
@@ -71,7 +71,7 @@
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Manajemen</span>
         </li>
-        <li class="menu-item {{ Request::is('dashboard/users*') || Request::is('dashboard/approvers*') ? 'active open' : '' }}">
+        <li class="menu-item {{ Request::is('dashboard/approvers*') || Request::is('dashboard/applicants*') || Request::is('dashboard/users*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-group"></i>
                 <div data-i18n="Pengguna">Pengguna</div>
