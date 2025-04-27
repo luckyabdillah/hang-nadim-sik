@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('name')->get();
+        $users = User::where('role', '!=', 'approver')->where('role', '!=', 'applicant')->orderBy('name')->get();
 
         return view('dashboard.users.index', compact('users'));
     }
@@ -35,7 +35,7 @@ class UserController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|max:255|email:dns|unique:users,email',
             'password' => 'required|min:8|max:255|confirmed',
-            'role' => 'required|in:admin,applicant,verificator,approver,avsec,superuser',
+            'role' => 'required|in:admin,verificator,avsec,superuser',
         ]);
 
         User::create($validatedData);
@@ -66,7 +66,7 @@ class UserController extends Controller
     {
         $rules = [
             'name' => 'required|max:255',
-            'role' => 'required|in:admin,applicant,verificator,approver,avsec,superuser',
+            'role' => 'required|in:admin,verificator,avsec,superuser',
         ];
 
         if ($request->email != $user->email) {

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\WorkLocationController;
 use App\Http\Controllers\Dashboard\CopyController;
+use App\Http\Controllers\Dashboard\ApproverController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\VendorController;
 use App\Http\Controllers\Dashboard\WorkTypeController;
@@ -23,6 +24,7 @@ Route::prefix('dashboard')->group(function () {
 
     Route::resource('vendors', VendorController::class)->except(['show'])->names('dashboard.vendors');
     
+    Route::resource('approvers', ApproverController::class)->except(['show'])->names('dashboard.approvers');
     Route::resource('users', UserController::class)->except(['show'])->names('dashboard.users');
 });
 

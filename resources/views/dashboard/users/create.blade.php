@@ -48,9 +48,9 @@
                         <label for="role" class="form-label">Role</label>
                         <select class="form-select @error('role') is-invalid @enderror" name="role" id="role" required>
                             <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-                            <option value="applicant" {{ old('role') == 'applicant' ? 'selected' : '' }}>Applicant</option>
+                            {{-- <option value="applicant" {{ old('role') == 'applicant' ? 'selected' : '' }}>Applicant</option> --}}
                             <option value="verificator" {{ old('role') == 'verificator' ? 'selected' : '' }}>Verificator</option>
-                            <option value="approver" {{ old('role') == 'approver' ? 'selected' : '' }}>Approver</option>
+                            {{-- <option value="approver" {{ old('role') == 'approver' ? 'selected' : '' }}>Approver</option> --}}
                             <option value="avsec" {{ old('role') == 'avsec' ? 'selected' : '' }}>Avsec</option>
                             <option value="superuser" {{ old('role') == 'superuser' ? 'selected' : '' }}>Super User</option>
                         </select>
