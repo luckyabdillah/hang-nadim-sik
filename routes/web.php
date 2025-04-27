@@ -7,6 +7,8 @@ use App\Http\Controllers\Dashboard\CopyController;
 use App\Http\Controllers\Dashboard\ApproverController;
 use App\Http\Controllers\Dashboard\ApplicantController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\WorkPermitLetterController;
+use App\Http\Controllers\Dashboard\ApprovalController;
 use App\Http\Controllers\Dashboard\VendorController;
 use App\Http\Controllers\Dashboard\RegistrationController;
 use App\Http\Controllers\Dashboard\WorkTypeController;
@@ -24,6 +26,8 @@ Route::prefix('dashboard')->group(function () {
     Route::resource('work-types', WorkTypeController::class)->except(['show'])->parameters(['work-types' => 'type'])->names('dashboard.work-types');
     Route::resource('work-locations', WorkLocationController::class)->except(['show'])->parameters(['work-locations' => 'location'])->names('dashboard.work-locations');
 
+    Route::resource('work-permit-letters', WorkPermitLetterController::class)->except(['create', 'store', 'edit'])->parameters(['work-permit-letters' => 'letter'])->names('dashboard.work-permit-letters');
+    Route::resource('approvals', ApprovalController::class)->except(['create', 'store', 'edit'])->parameters(['approvals' => 'stage'])->names('dashboard.approvals');
     Route::resource('vendors', VendorController::class)->except(['show'])->names('dashboard.vendors');
     Route::resource('registrations', RegistrationController::class)->only(['index', 'edit', 'update'])->names('dashboard.registrations');
     
