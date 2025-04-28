@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Dashboard;
+namespace App\Http\Controllers\Dashboard\My;
 
 use App\Http\Controllers\Controller;
+use App\Models\Applicant;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -13,9 +14,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::where('role', '!=', 'approver')->where('role', '!=', 'applicant')->orderBy('name')->get();
+        $users = User::with('applicant')->whereHas('applicant', function ($query) {
+            $query->where('vendor_id', 6);
+        })->get();
 
-        return view('dashboard.users.index', compact('users'));
+        return view('dashboard.my.users.index', compact('users'));
     }
 
     /**
@@ -23,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('dashboard.users.create');
+        return view('dashboard.my.users.create');
     }
 
     /**
@@ -35,12 +38,17 @@ class UserController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|max:255|email:dns|unique:users,email',
             'password' => 'required|min:8|max:255|confirmed',
-            'role' => 'required|in:admin,verificator,avsec,superuser',
         ]);
 
-        User::create($validatedData);
+        $validatedData['role'] = 'applicant';
 
-        return redirect()->route('dashboard.users.index')->with('success', 'Data berhasil dibuat');
+        $user = User::create($validatedData);
+        Applicant::create([
+            'user_id' => $user->id,
+            'vendor_id' => 6,
+        ]);
+
+        return redirect()->route('dashboard.my.users.index')->with('success', 'Data berhasil dibuat');
     }
 
     /**
@@ -56,7 +64,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('dashboard.users.edit', compact('user'));
+        return view('dashboard.my.users.edit', compact('user'));
     }
 
     /**
@@ -66,19 +74,17 @@ class UserController extends Controller
     {
         $rules = [
             'name' => 'required|max:255',
-            'role' => 'required|in:admin,verificator,avsec,superuser',
             'email' => 'required|email:dns|max:255'
         ];
 
         if ($request->email != $user->email) {
-            $rules['email'] = 'nullable|email:dns|max:255|unique:users,email';
+            $rules['email'] = 'required|email:dns|max:255|unique:users,email';
         }
 
         $validatedData = $request->validate($rules);
-
         $user->update($validatedData);
 
-        return redirect()->route('dashboard.users.index')->with('success', 'Data berhasil diubah');
+        return redirect()->route('dashboard.my.users.index')->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -88,6 +94,6 @@ class UserController extends Controller
     {
         User::destroy($user->id);
 
-        return redirect()->route('dashboard.users.index')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('dashboard.my.users.index')->with('success', 'Data berhasil dihapus');
     }
 }

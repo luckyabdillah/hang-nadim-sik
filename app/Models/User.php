@@ -45,6 +45,11 @@ class User extends Authenticatable
         return $this->hasOne(Approver::class);
     }
 
+    public function applicant()
+    {
+        return $this->hasOne(Applicant::class);
+    }
+
     public function getRouteKeyName()
     {
         return 'uuid';

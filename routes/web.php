@@ -12,6 +12,9 @@ use App\Http\Controllers\Dashboard\ApprovalController;
 use App\Http\Controllers\Dashboard\VendorController;
 use App\Http\Controllers\Dashboard\RegistrationController;
 use App\Http\Controllers\Dashboard\WorkTypeController;
+use App\Http\Controllers\Dashboard\My\DashboardController as MyDashboardController;
+use App\Http\Controllers\Dashboard\My\WorkPermitLetterController as MyWorkPermitLetterController;
+use App\Http\Controllers\Dashboard\My\UserController as MyUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
@@ -36,6 +39,12 @@ Route::prefix('dashboard')->group(function () {
     Route::resource('users', UserController::class)->except(['show'])->names('dashboard.users');
 });
 
+Route::prefix('dashboard/my')->group(function () {
+    Route::get('/', [MyDashboardController::class, 'index']);
+    
+    Route::resource('work-permit-letters', MyWorkPermitLetterController::class)->except(['edit'])->parameters(['work-permit-letters' => 'letter'])->names('dashboard.my.work-permit-letters');
+    Route::resource('users', MyUserController::class)->except(['show'])->names('dashboard.my.users');
+});
 
 Route::get('login', [LoginController::class, 'index'])->name('login');
 Route::post('login', [LoginController::class, 'authenticate']);
