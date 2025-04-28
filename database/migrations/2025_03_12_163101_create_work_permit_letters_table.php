@@ -17,7 +17,8 @@ return new class extends Migration
             $table->foreignId('vendor_id')->constrained();
             $table->foreignId('work_type_id')->constrained();
             $table->foreignId('work_location_id')->constrained();
-            $table->text('description');
+            $table->string('letter_number')->nullable();
+            $table->string('description');
             $table->date('started_at');
             $table->date('ended_at');
             $table->string('external_pic_name', 150);
@@ -26,6 +27,8 @@ return new class extends Migration
             $table->string('internal_pic_number', 15)->nullable();
             $table->string('application_letter');
             $table->string('job_safety_analysis_document')->nullable();
+            $table->string('qr_code')->nullable();
+            $table->text('pointing')->nullable();
             $table->enum('status', ['submitted', 'verified', 'approved', 'rejected'])->default('submitted');
             $table->text('notes')->nullable();
             $table->timestamps();

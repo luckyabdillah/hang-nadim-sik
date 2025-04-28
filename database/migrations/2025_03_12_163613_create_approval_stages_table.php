@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('work_permit_letter_id')->constrained()->onDelete('cascade');
             $table->foreignId('approver_id')->constrained();
+            $table->string('name');
             $table->string('position', 150);
             $table->tinyInteger('level')->unsigned();
             $table->string('signature');
