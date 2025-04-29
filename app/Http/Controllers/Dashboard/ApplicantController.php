@@ -13,7 +13,12 @@ class ApplicantController extends Controller
      */
     public function index()
     {
-        $applicants = Applicant::with('user', 'vendor')->get();
+        $applicants = Applicant::with([
+            'user',
+            'vendor' => function ($query) {
+                $query->withTrashed();
+            },
+        ])->get();
 
         return view('dashboard.applicants.index', compact('applicants'));
     }
@@ -39,7 +44,12 @@ class ApplicantController extends Controller
      */
     public function show(Applicant $applicant)
     {
-        $applicant->load('user', 'vendor');
+        $applicant->load([
+            'user',
+            'vendor' => function ($query) {
+                $query->withTrashed();
+            },
+        ]);
 
         return view('dashboard.applicants.show', compact('applicant'));
     }

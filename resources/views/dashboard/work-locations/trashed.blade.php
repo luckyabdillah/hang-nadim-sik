@@ -2,10 +2,17 @@
 
 @section('content')
     <div class="card">
-        <h5 class="card-header">Daftar Lokasi Pekerjaan</h5>
+        <h5 class="card-header">Daftar Lokasi Pekerjaan Terhapus</h5>
         <div class="card-body">
-            <a href="{{ route('dashboard.work-locations.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
-            <a href="{{ route('dashboard.work-locations.trashed') }}" class="btn btn-secondary mb-4">Recycle Bin</a>
+            <div class="mb-4">
+                <a href="{{ route('dashboard.work-locations.index') }}" class="btn btn-secondary">Kembali</a>
+                <form action="{{ route('dashboard.work-locations.recoverAll') }}" method="post" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-warning btn-restore">
+                        Restore Semua
+                    </button>
+                </form>
+            </div>
             <table class="table table-bordered text-center">
                 <thead>
                     <tr>
@@ -23,13 +30,17 @@
                                 <td>{{ $location->location }}</td>
                                 <td>{{ $location->description }}</td>
                                 <td>
-                                    <a href="{{ route('dashboard.work-locations.index') }}/{{ $location->id }}/edit" class="btn btn-warning rounded-pill">
-                                        <i class="bx bx-edit-alt"></i>
-                                    </a>
-                                    <form action="{{ route('dashboard.work-locations.index') }}/{{ $location->id }}" method="post" class="d-inline">
+                                    <form action="{{ route('dashboard.work-locations.recover', $location->id) }}" method="post" class="d-inline">
+                                        @csrf
+                                        @method('put')
+                                        <button type="submit" class="btn btn-warning rounded-pill btn-restore">
+                                            <i class="bx bx-reset"></i>
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('dashboard.work-locations.forceDelete', $location->id) }}" method="post" class="d-inline">
                                         @csrf
                                         @method('delete')
-                                        <button type="submit" class="btn btn-danger rounded-pill btn-delete">
+                                        <button type="submit" class="btn btn-danger rounded-pill btn-force-delete">
                                             <i class="bx bx-trash"></i>
                                         </button>
                                     </form>

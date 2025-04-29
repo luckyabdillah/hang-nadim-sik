@@ -14,7 +14,17 @@ class WorkPermitLetterController extends Controller
      */
     public function index()
     {
-        $letters = WorkPermitLetter::with('workType', 'workLocation')->where('vendor_id', 1)->get();
+        $letters = WorkPermitLetter::with([
+            'vendor' => function ($query) {
+                $query->withTrashed();
+            },
+            'workType' => function ($query) {
+                $query->withTrashed();
+            },
+            'workLocation' => function ($query) {
+                $query->withTrashed();
+            },
+        ])->where('vendor_id', 1)->get();
 
         return view('dashboard.my.work-permit-letters.index', compact('letters'));
     }
@@ -40,7 +50,17 @@ class WorkPermitLetterController extends Controller
      */
     public function show(WorkPermitLetter $letter)
     {
-        $letter->load('vendor', 'workType', 'workLocation');
+        $letter->load([
+            'vendor' => function ($query) {
+                $query->withTrashed();
+            },
+            'workType' => function ($query) {
+                $query->withTrashed();
+            },
+            'workLocation' => function ($query) {
+                $query->withTrashed();
+            },
+        ]);
 
         return view('dashboard.my.work-permit-letters.show', compact('letter'));
     }
@@ -67,18 +87,5 @@ class WorkPermitLetterController extends Controller
     public function destroy(WorkPermitLetter $letter)
     {
         //
-    }
-
-    /**
-     * Export the specified resource.
-     */
-    public function exportPDF(WorkPermitLetter $letter)
-    {
-        $letter->load('vendor', 'workType', 'workLocation');
-
-        $pdf = Pdf::loadView('dashboard.my.work-permit-letters.export-pdf', compact('letter'));
-        return $pdf->stream('SIK-' . $letter->uuid . '.pdf');
-        
-        // return view('dashboard.my.work-permit-letters.show', compact('letter'));
     }
 }

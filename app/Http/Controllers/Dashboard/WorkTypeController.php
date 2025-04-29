@@ -73,7 +73,6 @@ class WorkTypeController extends Controller
 
         $type->update($validatedData);
 
-
         return redirect()->route('dashboard.work-types.index')->with('success', 'Data berhasil diubah');
     }
 
@@ -85,5 +84,47 @@ class WorkTypeController extends Controller
         WorkType::destroy($type->id);
 
         return redirect()->route('dashboard.work-types.index')->with('success', 'Data berhasil dihapus');
+    }
+
+    /**
+     * Display a trashed listing of the resource.
+     */
+    public function trashed()
+    {
+        $workTypes = WorkType::onlyTrashed()->get();
+
+        return view('dashboard.work-types.trashed', compact('workTypes'));
+    }
+
+    /**
+     * Recover the specified trashed resource in storage.
+     */
+    public function recover($id)
+    {
+        $type = WorkType::onlyTrashed()->findOrFail($id);
+        $type->restore();
+
+        return redirect()->route('dashboard.work-types.trashed')->with('success', 'Data berhasil direstore.');
+    }
+
+    /**
+     * Force delete the specified trashed resource in storage.
+     */
+    public function forceDelete($id)
+    {
+        $type = WorkType::onlyTrashed()->findOrFail($id);
+        $type->forceDelete();
+
+        return redirect()->route('dashboard.work-types.trashed')->with('success', 'Data berhasil dihapus permanen.');
+    }
+
+    /**
+     * Recover all trashed resource in storage.
+     */
+    public function recoverAll()
+    {
+        WorkType::onlyTrashed()->restore();
+
+        return redirect()->route('dashboard.work-types.trashed')->with('success', 'Semua data berhasil direstore.');
     }
 }

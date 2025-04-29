@@ -40,6 +40,21 @@ Route::prefix('dashboard')->group(function () {
     Route::resource('approvers', ApproverController::class)->except(['show'])->names('dashboard.approvers');
     Route::resource('applicants', ApplicantController::class)->only(['index', 'show'])->names('dashboard.applicants');
     Route::resource('users', UserController::class)->except(['show'])->names('dashboard.users');
+
+    Route::get('work-types/trashed', [WorkTypeController::class, 'trashed'])->name('dashboard.work-types.trashed');
+    Route::post('work-types/recover-all', [WorkTypeController::class, 'recoverAll'])->name('dashboard.work-types.recoverAll');
+    Route::put('work-types/{id}/recover', [WorkTypeController::class, 'recover'])->name('dashboard.work-types.recover');
+    Route::delete('work-types/{id}/force', [WorkTypeController::class, 'forceDelete'])->name('dashboard.work-types.forceDelete');
+
+    Route::get('work-locations/trashed', [WorkLocationController::class, 'trashed'])->name('dashboard.work-locations.trashed');
+    Route::post('work-locations/recover-all', [WorkLocationController::class, 'recoverAll'])->name('dashboard.work-locations.recoverAll');
+    Route::put('work-locations/{id}/recover', [WorkLocationController::class, 'recover'])->name('dashboard.work-locations.recover');
+    Route::delete('work-locations/{id}/force', [WorkLocationController::class, 'forceDelete'])->name('dashboard.work-locations.forceDelete');
+
+    Route::get('vendors/trashed', [VendorController::class, 'trashed'])->name('dashboard.vendors.trashed');
+    Route::post('vendors/recover-all', [VendorController::class, 'recoverAll'])->name('dashboard.vendors.recoverAll');
+    Route::put('vendors/{id}/recover', [VendorController::class, 'recover'])->name('dashboard.vendors.recover');
+    Route::delete('vendors/{id}/force', [VendorController::class, 'forceDelete'])->name('dashboard.vendors.forceDelete');
 });
 
 Route::prefix('dashboard/my')->group(function () {

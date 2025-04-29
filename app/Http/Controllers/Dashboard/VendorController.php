@@ -84,4 +84,46 @@ class VendorController extends Controller
 
         return redirect()->route('dashboard.vendors.index')->with('success', 'Data berhasil dihapus');
     }
+
+    /**
+     * Display a trashed listing of the resource.
+     */
+    public function trashed()
+    {
+        $vendors = Vendor::onlyTrashed()->get();
+
+        return view('dashboard.vendors.trashed', compact('vendors'));
+    }
+
+    /**
+     * Recover the specified trashed resource in storage.
+     */
+    public function recover($id)
+    {
+        $vendor = Vendor::onlyTrashed()->findOrFail($id);
+        $vendor->restore();
+
+        return redirect()->route('dashboard.vendors.trashed')->with('success', 'Data berhasil direstore.');
+    }
+
+    /**
+     * Force delete the specified trashed resource in storage.
+     */
+    public function forceDelete($id)
+    {
+        $vendor = Vendor::onlyTrashed()->findOrFail($id);
+        $vendor->forceDelete();
+
+        return redirect()->route('dashboard.vendors.trashed')->with('success', 'Data berhasil dihapus permanen.');
+    }
+
+    /**
+     * Recover all trashed resource in storage.
+     */
+    public function recoverAll()
+    {
+        Vendor::onlyTrashed()->restore();
+
+        return redirect()->route('dashboard.vendors.trashed')->with('success', 'Semua data berhasil direstore.');
+    }
 }

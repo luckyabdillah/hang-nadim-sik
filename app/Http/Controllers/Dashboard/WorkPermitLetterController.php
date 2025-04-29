@@ -26,7 +26,17 @@ class WorkPermitLetterController extends Controller
      */
     public function index()
     {
-        $letters = WorkPermitLetter::with('vendor', 'workType', 'workLocation')->get();
+        $letters = WorkPermitLetter::with([
+            'vendor' => function ($query) {
+                $query->withTrashed();
+            },
+            'workType' => function ($query) {
+                $query->withTrashed();
+            },
+            'workLocation' => function ($query) {
+                $query->withTrashed();
+            },
+        ])->get();
 
         return view('dashboard.work-permit-letters.index', compact('letters'));
     }
@@ -52,7 +62,18 @@ class WorkPermitLetterController extends Controller
      */
     public function show(WorkPermitLetter $letter)
     {
-        $letter->load('vendor', 'workType', 'workLocation');
+        $letter->load([
+            'vendor' => function ($query) {
+                $query->withTrashed();
+            },
+            'workType' => function ($query) {
+                $query->withTrashed();
+            },
+            'workLocation' => function ($query) {
+                $query->withTrashed();
+            },
+        ]);
+        
         $approvers = Approver::orderBy('level')->get();
         $stages = ApprovalStage::where('work_permit_letter_id', $letter->id)->orderBy('level')->get();
 
@@ -179,7 +200,18 @@ class WorkPermitLetterController extends Controller
     {
         if ($letter->status != 'approved') return redirect()->route('dashboard.work-permit-letters.show', ['letter' => $letter->uuid])->with('failed', 'Tidak dapat mendownload SIK yang belum disetujui');
         
-        $letter->load('vendor', 'workType', 'workLocation');
+        $letter->load([
+            'vendor' => function ($query) {
+                $query->withTrashed();
+            },
+            'workType' => function ($query) {
+                $query->withTrashed();
+            },
+            'workLocation' => function ($query) {
+                $query->withTrashed();
+            },
+        ]);
+        
         $fundamentals = LetterFundamental::orderBy('position')->get();
         $copies = Copy::all();
 

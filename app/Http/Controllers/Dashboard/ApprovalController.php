@@ -21,7 +21,9 @@ class ApprovalController extends Controller
     public function index()
     {
         $stages = ApprovalStage::with([
-            'workPermitLetter.vendor',
+            'workPermitLetter.vendor' => function ($query) {
+                $query->withTrashed();
+            },
         ])->get();
 
         return view('dashboard.approvals.index', compact('stages'));
@@ -51,9 +53,19 @@ class ApprovalController extends Controller
         if ($stage->status == 'pending') return redirect()->route('dashboard.approvals.index')->with('failed', 'Tidak dapat memproses tahapan yang masih pending');
 
         $stage->load([
-            'workPermitLetter.vendor',
-            'workPermitLetter.workType',
-            'workPermitLetter.workLocation',
+            'workPermitLetter' => function ($query) {
+                $query->with([
+                    'vendor' => function ($query) {
+                        $query->withTrashed();
+                    },
+                    'workType' => function ($query) {
+                        $query->withTrashed();
+                    },
+                    'workLocation' => function ($query) {
+                        $query->withTrashed();
+                    },
+                ]);
+            },
         ]);
 
         return view('dashboard.approvals.show', compact('stage'));
