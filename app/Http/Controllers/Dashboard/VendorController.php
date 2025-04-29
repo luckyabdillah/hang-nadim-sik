@@ -31,8 +31,9 @@ class VendorController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'nullable|email:dns|max:255|unique:vendors,email',
+            'legal_name' => 'required|max:150',
+            'name' => 'required|max:150',
+            'email' => 'required|email:rfc,dns|max:150',
             'address' => 'nullable|max:255',
         ]);
 
@@ -62,16 +63,12 @@ class VendorController extends Controller
      */
     public function update(Request $request, Vendor $vendor)
     {
-        $rules = [
-            'name' => 'required|max:255',
+        $validatedData = $request->validate([
+            'legal_name' => 'required|max:150',
+            'name' => 'required|max:150',
+            'email' => 'required|email:rfc,dns|max:150',
             'address' => 'nullable|max:255',
-        ];
-
-        if ($request->email != $vendor->email) {
-            $rules['email'] = 'nullable|email:dns|max:255|unique:vendors,email';
-        }
-
-        $validatedData = $request->validate($rules);
+        ]);
 
         $vendor->update($validatedData);
 

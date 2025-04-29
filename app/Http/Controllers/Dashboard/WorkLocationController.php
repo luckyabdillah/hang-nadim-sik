@@ -32,7 +32,8 @@ class WorkLocationController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'location' => 'required|max:150',
+            'location' => 'required|max:100',
+            'description' => 'required|max:255',
         ]);
 
         WorkLocation::create($validatedData);
@@ -62,7 +63,8 @@ class WorkLocationController extends Controller
     public function update(Request $request, WorkLocation $location)
     {
         $validatedData = $request->validate([
-            'location' => 'required|max:150',
+            'location' => 'required|max:100',
+            'description' => 'required|max:255',
         ]);
 
         $location->update($validatedData);

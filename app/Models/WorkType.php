@@ -8,6 +8,7 @@ class WorkType extends Model
 {
     protected $fillable = [ //fungsinya untuk user dapat mengisi table
         'type',
+        'unit_name',
         'provision_text_before',
         'provision_text_after'
     ];

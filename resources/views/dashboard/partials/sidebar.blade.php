@@ -12,7 +12,7 @@
 
     <ul class="menu-inner pt-2 pb-5">
         @php
-            $isExternal = true;
+            $isExternal = false;
         @endphp
         
         @if ($isExternal)
@@ -49,7 +49,7 @@
                     <div data-i18n="Dashboard">Dashboard</div>
                 </a>
             </li>
-            <li class="menu-item {{ Request::is('dashboard/copies*') || Request::is('dashboard/work-types*') || Request::is('dashboard/work-locations*') ? 'active open' : '' }}">
+            <li class="menu-item {{ Request::is('dashboard/copies*') || Request::is('dashboard/work-types*') || Request::is('dashboard/work-locations*') || Request::is('dashboard/letter-fundamentals*') ? 'active open' : '' }}">
                 <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon tf-icons bx bx-hive"></i>
                     <div data-i18n="Master Data">Master Data</div>
@@ -68,6 +68,11 @@
                     <li class="menu-item {{ Request::is('dashboard/work-locations*') ? 'active' : '' }}">
                         <a href="{{ route('dashboard.work-locations.index') }}" class="menu-link">
                             <div data-i18n="Lokasi Pekerjaan">Lokasi Pekerjaan</div>
+                        </a>
+                    </li>
+                    <li class="menu-item {{ Request::is('dashboard/letter-fundamentals*') ? 'active' : '' }}">
+                        <a href="{{ route('dashboard.letter-fundamentals.index') }}" class="menu-link">
+                            <div data-i18n="Lokasi Pekerjaan">Dasar Surat</div>
                         </a>
                     </li>
                 </ul>

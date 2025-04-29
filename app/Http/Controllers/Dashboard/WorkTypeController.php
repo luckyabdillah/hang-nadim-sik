@@ -33,6 +33,7 @@ class WorkTypeController extends Controller
     {
         $validatedData = $request->validate([
             'type' => 'required|max:100',
+            'unit_name' => 'required|max:100',
             'provision_text_before' => 'nullable|max:5000',
             'provision_text_after' => 'nullable|max:5000',
         ]);
@@ -65,6 +66,7 @@ class WorkTypeController extends Controller
     {
         $validatedData = $request->validate([
             'type' => 'required|max:100',
+            'unit_name' => 'required|max:100',
             'provision_text_before' => 'nullable|max:5000',
             'provision_text_after' => 'nullable|max:5000',
         ]);

@@ -10,6 +10,7 @@
                     <tr>
                         <th style="width: 1px;">No</th>
                         <th>Lokasi</th>
+                        <th>Deskripsi</th>
                         <th>#</th>
                     </tr>
                 </thead>
@@ -19,6 +20,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $location->location }}</td>
+                                <td>{{ $location->description }}</td>
                                 <td>
                                     <a href="{{ route('dashboard.work-locations.index') }}/{{ $location->id }}/edit" class="btn btn-warning rounded-pill">
                                         <i class="bx bx-edit-alt"></i>
@@ -35,7 +37,7 @@
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="3">Tidak ada data</td>
+                            <td colspan="4">Tidak ada data</td>
                         </tr>
                     @endif
                 </tbody>

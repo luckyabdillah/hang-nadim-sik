@@ -33,7 +33,7 @@ class UserController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|max:255|email:dns|unique:users,email',
+            'email' => 'required|max:255|email:rfc,dns|unique:users,email',
             'password' => 'required|min:8|max:255|confirmed',
             'role' => 'required|in:admin,verificator,avsec,superuser',
         ]);
@@ -67,11 +67,11 @@ class UserController extends Controller
         $rules = [
             'name' => 'required|max:255',
             'role' => 'required|in:admin,verificator,avsec,superuser',
-            'email' => 'required|email:dns|max:255'
+            'email' => 'required|email:rfc,dns|max:255'
         ];
 
         if ($request->email != $user->email) {
-            $rules['email'] = 'nullable|email:dns|max:255|unique:users,email';
+            $rules['email'] = 'nullable|email:rfc,dns|max:255|unique:users,email';
         }
 
         $validatedData = $request->validate($rules);

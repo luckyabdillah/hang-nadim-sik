@@ -8,9 +8,8 @@
                 <thead>
                     <tr>
                         <th style="width: 1px;">No</th>
+                        <th>No Surat</th>
                         <th>Vendor</th>
-                        <th>Tipe Pekerjaan</th>
-                        <th>Lokasi</th>
                         <th>Status</th>
                         <th>#</th>
                     </tr>
@@ -20,11 +19,12 @@
                         @foreach ($stages as $stage)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $stage->workPermitLetter->vendor->name }}</td>
-                                <td>{{ $stage->workPermitLetter->workType->type }}</td>
-                                <td>{{ $stage->workPermitLetter->workLocation->location }}</td>
+                                <td>{{ $stage->workPermitLetter->letter_number }}</td>
+                                <td>{{ $stage->workPermitLetter->vendor->legal_name }}</td>
                                 <td>
-                                    @if ($stage->status == 'waiting')
+                                    @if ($stage->status == 'pending')
+                                        <span class="badge bg-danger rounded-pill px-3">Pending</span>
+                                    @elseif ($stage->status == 'waiting')
                                         <span class="badge bg-warning rounded-pill px-3">Menunggu Persetujuan</span>
                                     @elseif ($stage->status == 'approved')
                                         <span class="badge bg-success rounded-pill px-3">Disetujui</span>

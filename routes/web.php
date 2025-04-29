@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\WorkLocationController;
+use App\Http\Controllers\Dashboard\LetterFundamentalController;
 use App\Http\Controllers\Dashboard\CopyController;
 use App\Http\Controllers\Dashboard\ApproverController;
 use App\Http\Controllers\Dashboard\ApplicantController;
@@ -28,8 +29,10 @@ Route::prefix('dashboard')->group(function () {
     Route::resource('copies', CopyController::class)->except(['show'])->names('dashboard.copies');
     Route::resource('work-types', WorkTypeController::class)->except(['show'])->parameters(['work-types' => 'type'])->names('dashboard.work-types');
     Route::resource('work-locations', WorkLocationController::class)->except(['show'])->parameters(['work-locations' => 'location'])->names('dashboard.work-locations');
+    Route::resource('letter-fundamentals', LetterFundamentalController::class)->except(['show'])->parameters(['letter-fundamentals' => 'fundamental'])->names('dashboard.letter-fundamentals');
 
     Route::resource('work-permit-letters', WorkPermitLetterController::class)->except(['create', 'store', 'edit'])->parameters(['work-permit-letters' => 'letter'])->names('dashboard.work-permit-letters');
+    Route::get('work-permit-letters/{letter}/export-pdf', [WorkPermitLetterController::class, 'exportPDF'])->name('dashboard.work-permit-letters.export-pdf');
     Route::resource('approvals', ApprovalController::class)->except(['create', 'store', 'edit'])->parameters(['approvals' => 'stage'])->names('dashboard.approvals');
     Route::resource('vendors', VendorController::class)->except(['show'])->names('dashboard.vendors');
     Route::resource('registrations', RegistrationController::class)->only(['index', 'edit', 'update'])->names('dashboard.registrations');

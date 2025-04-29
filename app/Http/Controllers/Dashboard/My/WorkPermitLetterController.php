@@ -14,7 +14,7 @@ class WorkPermitLetterController extends Controller
      */
     public function index()
     {
-        $letters = WorkPermitLetter::with('workType', 'workLocation')->where('vendor_id', 6)->get();
+        $letters = WorkPermitLetter::with('workType', 'workLocation')->where('vendor_id', 1)->get();
 
         return view('dashboard.my.work-permit-letters.index', compact('letters'));
     }
@@ -72,7 +72,7 @@ class WorkPermitLetterController extends Controller
     /**
      * Export the specified resource.
      */
-    public function exportPdf(WorkPermitLetter $letter)
+    public function exportPDF(WorkPermitLetter $letter)
     {
         $letter->load('vendor', 'workType', 'workLocation');
 
@@ -81,5 +81,4 @@ class WorkPermitLetterController extends Controller
         
         // return view('dashboard.my.work-permit-letters.show', compact('letter'));
     }
-
 }

@@ -8,5 +8,6 @@ class WorkLocation extends Model
 {
     protected $fillable = [ 
         'location',
+        'description',
     ];
 }

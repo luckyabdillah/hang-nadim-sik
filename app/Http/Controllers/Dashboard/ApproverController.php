@@ -35,7 +35,7 @@ class ApproverController extends Controller
         $request['is_default_approver'] = isset($request->is_default_approver) ? true : false;
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|max:255|email:dns|unique:users,email',
+            'email' => 'required|max:255|email:rfc,dns|unique:users,email',
             'position' => 'required|max:255',
             'level' => 'required|numeric|min:1|max:100',
             'signature' => 'nullable|image',
@@ -95,14 +95,14 @@ class ApproverController extends Controller
         $request['is_default_approver'] = isset($request->is_default_approver) ? true : false;
         $rules = [
             'name' => 'required|max:255',
-            'email' => 'required|max:255|email:dns',
+            'email' => 'required|max:255|email:rfc,dns',
             'position' => 'required|max:255',
             'level' => 'required|numeric|min:1|max:100',
             'is_default_approver' => 'nullable',
         ];
 
         if ($request->email != $approver->user->email) {
-            $rules['email'] = 'required|max:255|email:dns|unique:users,email';
+            $rules['email'] = 'required|max:255|email:rfc,dns|unique:users,email';
         }
 
         $validatedData = $request->validate($rules);

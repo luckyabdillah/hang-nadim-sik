@@ -9,9 +9,9 @@
                 <thead>
                     <tr>
                         <th style="width: 1px;">No</th>
-                        <th>Nama</th>
+                        <th>Nama Legal</th>
+                        <th>Nama Brand</th>
                         <th>Email</th>
-                        <th>Alamat</th>
                         <th>#</th>
                     </tr>
                 </thead>
@@ -20,9 +20,9 @@
                         @foreach ($vendors as $vendor)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $vendor->legal_name }}</td>
                                 <td>{{ $vendor->name }}</td>
-                                <td>{{ $vendor->email ?? '-' }}</td>
-                                <td>{{ $vendor->address ?? '-' }}</td>
+                                <td>{{ $vendor->email }}</td>
                                 <td>
                                     <a href="{{ route('dashboard.vendors.index') }}/{{ $vendor->uuid }}/edit" class="btn btn-warning rounded-pill">
                                         <i class="bx bx-edit-alt"></i>

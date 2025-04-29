@@ -20,7 +20,7 @@
                         @foreach ($letters as $letter)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $letter->vendor->name }}</td>
+                                <td>{{ $letter->vendor->legal_name }}</td>
                                 <td>{{ $letter->workType->type }}</td>
                                 <td>{{ $letter->workLocation->location }}</td>
                                 <td>

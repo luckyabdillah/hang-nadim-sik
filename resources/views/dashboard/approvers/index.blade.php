@@ -24,7 +24,7 @@
                     <td>{{ $approver->position }}</td>
                     <td>{{ $approver->level }}</td>
                     <td>{{ $approver->is_default_approver ? 'Ya' : 'Tidak' }}</td>
-                    <td>
+                    <td class="text-nowrap">
                         <button
                             class="btn btn-secondary rounded-pill btn-signature"
                             data-is-signed="{{ $approver->signature ? 'true' : '' }}"

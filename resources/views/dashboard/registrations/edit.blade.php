@@ -31,7 +31,7 @@
                     <label for="vendor_id" class="form-label">Pilih Vendor</label>
                     <select type="text" class="form-select @error('vendor_id') is-invalid @enderror" id="vendor_id" name="vendor_id">
                         @foreach ($vendors as $vendor)
-                            <option value="{{ $vendor->id }}" {{ old('vendor_id', $vendorPossibility) == $vendor->id ? 'selected' : '' }}>{{ $vendor->name }}</option>
+                            <option value="{{ $vendor->id }}" {{ old('vendor_id', $vendorPossibility) == $vendor->id ? 'selected' : '' }}>{{ $vendor->legal_name }} ({{ $vendor->name }})</option>
                         @endforeach
                     </select>
                     @error('vendor_id')

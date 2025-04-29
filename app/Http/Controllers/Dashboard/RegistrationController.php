@@ -12,7 +12,7 @@ use App\Models\RegistrationRequest;
 
 class RegistrationController extends Controller
 {
-    protected function findVendorIdBySimilarity($inputtedVendorName, $threshold = 80, $limit = 500)
+    protected function findVendorIdBySimilarity($inputtedVendorName, $threshold = 70, $limit = 500)
     {
         $vendors = Vendor::latest()->limit($limit)->get();
 
@@ -27,11 +27,13 @@ class RegistrationController extends Controller
         $inputtedVendorName = $normalize($inputtedVendorName);
 
         foreach ($vendors as $vendor) {
-            $realVendorName = $normalize($vendor->name);
+            $vendorLegalName = $normalize($vendor->legal_name);
+            $vendorBrandName = $normalize($vendor->name);
 
-            similar_text($inputtedVendorName, $realVendorName, $percent);
+            similar_text($inputtedVendorName, $vendorLegalName, $percent);
+            similar_text($inputtedVendorName, $vendorBrandName, $percent2);
 
-            if ($percent >= $threshold) {
+            if ($percent >= $threshold || $percent2 >= $threshold) {
                 return $vendor->id;
             }
         }

@@ -8,23 +8,30 @@
             <form action="{{ route('dashboard.vendors.index') }}" method="post">
                 @csrf
                 <div class="row g-3 mb-4">
+                    <div class="col-12">
+                        <label for="legal_name" class="form-label">Nama Legal</label>
+                        <input type="text" class="form-control @error('legal_name') is-invalid @enderror" id="legal_name" name="legal_name" value="{{ old('legal_name') }}" placeholder="CV, PT, etc." required autofocus autocomplete="off">
+                        @error('legal_name')
+                            <div class="invalid-feedback text-start">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div class="col-md-6">
-                        <label for="name" class="form-label">Nama Vendor</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror " id="name" name="name" value="{{ old('name') }}" placeholder="Nama Vendor" required autofocus autocomplete="off">
+                        <label for="name" class="form-label">Nama Brand</label>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" placeholder="Nama Brand" required autocomplete="off">
                         @error('name')
                             <div class="invalid-feedback text-start">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email</label>
-                        <input type="text" class="form-control @error('email') is-invalid @enderror " id="email" name="email" value="{{ old('email') }}" placeholder="Email" autocomplete="off">
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" placeholder="Email" required autocomplete="off">
                         @error('email')
                             <div class="invalid-feedback text-start">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col">
                         <label for="address" class="form-label">Alamat</label>
-                        <textarea class="form-control @error('address') is-invalid @enderror " id="address" name="address" placeholder="Alamat" autocomplete="off">{{ old('address') }}</textarea>
+                        <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address" placeholder="Alamat" autocomplete="off">{{ old('address') }}</textarea>
                         @error('address')
                             <div class="invalid-feedback text-start">{{ $message }}</div>
                         @enderror

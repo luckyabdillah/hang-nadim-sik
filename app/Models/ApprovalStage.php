@@ -12,4 +12,9 @@ class ApprovalStage extends Model
     {
         return $this->belongsTo(WorkPermitLetter::class);
     }
+
+    public function approver()
+    {
+        return $this->belongsTo(Approver::class);
+    }
 }

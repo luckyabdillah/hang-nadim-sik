@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('position', 150);
             $table->tinyInteger('level')->unsigned();
             $table->string('signature');
-            $table->enum('status', ['waiting', 'approved', 'rejected'])->default('waiting');
+            $table->enum('status', ['pending', 'waiting', 'approved', 'rejected'])->default('pending');
             $table->text('notes')->nullable();
             $table->timestamps();
         });
