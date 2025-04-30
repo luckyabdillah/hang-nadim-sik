@@ -13,23 +13,22 @@
                 </button>
             </form>
         </div>
-          <table class="table table-bordered text-center">
+          <table class="table table-bordered text-center data-table">
               <thead>
                   <tr>
-                      <th style="width: 1px;">No</th>
-                      <th>Tipe Pekerjaan</th>
-                      <th>Nama Unit</th>
-                      <th>#</th>
+                      <th class="text-center" style="width: 1px;">No</th>
+                      <th class="text-center">Tipe Pekerjaan</th>
+                      <th class="text-center">Nama Unit</th>
+                      <th class="text-center">#</th>
                   </tr>
               </thead>
               <tbody>
-                  @if ($workTypes->count())
                     @foreach ($workTypes as $type)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $type->type }}</td>
-                            <td>{{ $type->unit_name }}</td>
-                            <td>
+                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $type->type }}</td>
+                            <td class="text-center">{{ $type->unit_name }}</td>
+                            <td class="text-center text-nowrap">
                                 <form action="{{ route('dashboard.work-types.recover', $type->id) }}" method="post" class="d-inline">
                                     @csrf
                                     @method('put')
@@ -47,13 +46,24 @@
                             </td>
                         </tr>
                     @endforeach
-                  @else
-                  <tr>
-                      <td colspan="4">Tidak ada data</td>
-                  </tr>
-                  @endif
               </tbody>
           </table>
       </div>
   </div>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/libs/datatable/datatable-bootstrap5-2.0.1.min.css') }}">
+@endpush
+
+@push('scripts')
+    <script src="{{ asset('assets/libs/datatable/datatable-2.0.1.min.js') }}"></script>
+    <script>
+        $('.data-table').DataTable({
+            autoWidth: false,
+            initComplete: function() {
+                $(this.api().table().container()).find('input').attr('autocomplete', 'off')
+            },
+        })
+    </script>
+@endpush

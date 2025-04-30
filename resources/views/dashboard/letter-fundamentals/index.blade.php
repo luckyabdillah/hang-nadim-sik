@@ -5,23 +5,22 @@
       <h5 class="card-header">Daftar Dasar Surat</h5>
       <div class="card-body">
           <a href="{{ route('dashboard.letter-fundamentals.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
-          <table class="table table-bordered text-center">
+          <table class="table table-bordered text-center data-table">
               <thead>
                   <tr>
-                      <th style="width: 1px;">No</th>
-                      <th>Referensi</th>
-                      <th>Posisi</th>
-                      <th>#</th>
+                      <th class="text-center" style="width: 1px;">No</th>
+                      <th class="text-center">Referensi</th>
+                      <th class="text-center">Posisi</th>
+                      <th class="text-center">#</th>
                   </tr>
               </thead>
               <tbody>
-                  @if ($fundamentals->count())
                     @foreach ($fundamentals as $fundamental)
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $fundamental->reference }}</td>
-                            <td>{{ $fundamental->position }}</td>
-                            <td>
+                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $fundamental->reference }}</td>
+                            <td class="text-center">{{ $fundamental->position }}</td>
+                            <td class="text-center text-nowrap">
                                 <a href="{{ route('dashboard.letter-fundamentals.index') }}/{{ $fundamental->id }}/edit" class="btn btn-warning rounded-pill">
                                     <i class="bx bx-edit-alt"></i>
                                 </a>
@@ -35,13 +34,24 @@
                             </td>
                         </tr>
                     @endforeach
-                  @else
-                  <tr>
-                      <td colspan="3">Tidak ada data</td>
-                  </tr>
-                  @endif
               </tbody>
           </table>
       </div>
   </div>
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/libs/datatable/datatable-bootstrap5-2.0.1.min.css') }}">
+@endpush
+
+@push('scripts')
+    <script src="{{ asset('assets/libs/datatable/datatable-2.0.1.min.js') }}"></script>
+    <script>
+        $('.data-table').DataTable({
+            autoWidth: false,
+            initComplete: function() {
+                $(this.api().table().container()).find('input').attr('autocomplete', 'off')
+            },
+        })
+    </script>
+@endpush

@@ -13,47 +13,57 @@
                     </button>
                 </form>
             </div>
-            <table class="table table-bordered text-center">
+            <table class="table table-bordered text-center data-table">
                 <thead>
                     <tr>
-                        <th style="width: 1px;">No</th>
-                        <th>Lokasi</th>
-                        <th>Deskripsi</th>
-                        <th>#</th>
+                        <th class="text-center" style="width: 1px;">No</th>
+                        <th class="text-center">Lokasi</th>
+                        <th class="text-center">Deskripsi</th>
+                        <th class="text-center">#</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($workLocations->count())
-                        @foreach ($workLocations as $location)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $location->location }}</td>
-                                <td>{{ $location->description }}</td>
-                                <td>
-                                    <form action="{{ route('dashboard.work-locations.recover', $location->id) }}" method="post" class="d-inline">
-                                        @csrf
-                                        @method('put')
-                                        <button type="submit" class="btn btn-warning rounded-pill btn-restore">
-                                            <i class="bx bx-reset"></i>
-                                        </button>
-                                    </form>
-                                    <form action="{{ route('dashboard.work-locations.forceDelete', $location->id) }}" method="post" class="d-inline">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit" class="btn btn-danger rounded-pill btn-force-delete">
-                                            <i class="bx bx-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @else
+                    @foreach ($workLocations as $location)
                         <tr>
-                            <td colspan="4">Tidak ada data</td>
+                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $location->location }}</td>
+                            <td class="text-center">{{ $location->description }}</td>
+                            <td class="text-center text-nowrap">
+                                <form action="{{ route('dashboard.work-locations.recover', $location->id) }}" method="post" class="d-inline">
+                                    @csrf
+                                    @method('put')
+                                    <button type="submit" class="btn btn-warning rounded-pill btn-restore">
+                                        <i class="bx bx-reset"></i>
+                                    </button>
+                                </form>
+                                <form action="{{ route('dashboard.work-locations.forceDelete', $location->id) }}" method="post" class="d-inline">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger rounded-pill btn-force-delete">
+                                        <i class="bx bx-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
-                    @endif
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
-@endsection 
+@endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/libs/datatable/datatable-bootstrap5-2.0.1.min.css') }}">
+@endpush
+
+@push('scripts')
+    <script src="{{ asset('assets/libs/datatable/datatable-2.0.1.min.js') }}"></script>
+    <script>
+        $('.data-table').DataTable({
+            autoWidth: false,
+            initComplete: function() {
+                $(this.api().table().container()).find('input').attr('autocomplete', 'off')
+            },
+        })
+    </script>
+@endpush

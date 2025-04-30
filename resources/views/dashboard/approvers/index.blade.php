@@ -5,50 +5,46 @@
     <h5 class="card-header">Daftar Approver</h5>
     <div class="card-body">
         <a href="{{ route('dashboard.approvers.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
-        <table class="table table-bordered text-center">
+        <table class="table table-bordered text-center data-table">
             <thead>
                 <tr>
-                    <th style="width: 1px;">No</th>
-                    <th>Nama</th>
-                    <th>Posisi</th>
-                    <th>Level</th>
-                    <th>Default</th>
-                    <th>#</th>
+                    <th class="text-center" style="width: 1px;">No</th>
+                    <th class="text-center">Nama</th>
+                    <th class="text-center">Posisi</th>
+                    <th class="text-center">Level</th>
+                    <th class="text-center">Default</th>
+                    <th class="text-center">#</th>
                 </tr>
             </thead>
             <tbody>
-                @if ($approvers->count()) @foreach ($approvers as $approver)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $approver->user->name }}</td>
-                    <td>{{ $approver->position }}</td>
-                    <td>{{ $approver->level }}</td>
-                    <td>{{ $approver->is_default_approver ? 'Ya' : 'Tidak' }}</td>
-                    <td class="text-nowrap">
-                        <button
-                            class="btn btn-secondary rounded-pill btn-signature"
-                            data-is-signed="{{ $approver->signature ? 'true' : '' }}"
-                            data-signature="{{ $approver->signature ? asset("storage/$approver->signature") : '' }}"
-                        >
-                            <i class="bx bx-pen"></i>
-                        </button>
-                        <a href="{{ route('dashboard.approvers.index') }}/{{ $approver->id }}/edit" class="btn btn-warning rounded-pill">
-                            <i class="bx bx-edit-alt"></i>
-                        </a>
-                        <form action="{{ route('dashboard.approvers.index') }}/{{ $approver->id }}" method="post" class="d-inline">
-                            @csrf
-                            @method('delete')
-                            <button type="submit" class="btn btn-danger btn-delete rounded-pill">
-                                <i class="bx bx-trash"></i>
+                @foreach ($approvers as $approver)
+                    <tr>
+                        <td class="text-center">{{ $loop->iteration }}</td>
+                        <td class="text-center">{{ $approver->user->name }}</td>
+                        <td class="text-center">{{ $approver->position }}</td>
+                        <td class="text-center">{{ $approver->level }}</td>
+                        <td class="text-center">{{ $approver->is_default_approver ? 'Ya' : 'Tidak' }}</td>
+                        <td class="text-center text-nowrap">
+                            <button
+                                class="btn btn-secondary rounded-pill btn-signature"
+                                data-is-signed="{{ $approver->signature ? 'true' : '' }}"
+                                data-signature="{{ $approver->signature ? asset("storage/$approver->signature") : '' }}"
+                            >
+                                <i class="bx bx-pen"></i>
                             </button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach @else
-                <tr>
-                    <td colspan="6">Tidak ada data</td>
-                </tr>
-                @endif
+                            <a href="{{ route('dashboard.approvers.index') }}/{{ $approver->id }}/edit" class="btn btn-warning rounded-pill">
+                                <i class="bx bx-edit-alt"></i>
+                            </a>
+                            <form action="{{ route('dashboard.approvers.index') }}/{{ $approver->id }}" method="post" class="d-inline">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-danger btn-delete rounded-pill">
+                                    <i class="bx bx-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -74,8 +70,20 @@
 </div>
 @endsection
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/libs/datatable/datatable-bootstrap5-2.0.1.min.css') }}">
+@endpush
+
 @push('scripts')
+    <script src="{{ asset('assets/libs/datatable/datatable-2.0.1.min.js') }}"></script>
     <script>
+        $('.data-table').DataTable({
+            autoWidth: false,
+            initComplete: function() {
+                $(this.api().table().container()).find('input').attr('autocomplete', 'off')
+            },
+        })
+
         $(document).on('click', '.btn-signature', function (e) {
             e.preventDefault()
             const isSigned = $(this).attr('data-is-signed')
@@ -91,4 +99,3 @@
         })
     </script>
 @endpush
-
