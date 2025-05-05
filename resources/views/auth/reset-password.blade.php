@@ -39,38 +39,48 @@
                             </div>
                             <div class="card rounded-4 border-0 shadow bg-white">
                                 <div class="card-body px-4 py-4">
-                                    <div class="card-title text-center mt-3 mb-4">
+                                    <div class="card-title text-center mt-2 mb-4">
                                         <a href="/">
                                             {{-- <img src="{{ asset('assets/img/logo/square.png') }}" alt="Logo" class="img-fluid" style="max-width: 80px;"> --}}
                                             <img src="{{ asset('assets/img/logo/secondary.png') }}" alt="Logo" class="img-fluid w-50">
                                         </a>
                                     </div>
-                                    <form action="/login" method="post">
+                                    <h4 class="text-primary fw-semibold mt-5 mb-3">Reset Password</h4>
+                                    <form action="/reset-password" method="post">
                                         @csrf
+                                        <!-- Password Reset Token -->
+                                        <input type="hidden" name="token" value="{{ $request->route('token') }}">
                                         <div class="mb-3">
                                             <label for="email" class="form-label required-label">Email</label>
-                                            <input type="email" class="form-control" name="email" id="email" autocomplete="off" placeholder="Masukkan email" value="{{ old('email') }}" required>
+                                            <input type="email" class="form-control" name="email" id="email" value="{{ $request->email }}" placeholder="Email" readonly>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="password" class="form-label required-label">Password</label>
+                                            <label for="password" class="form-label required-label">Password Baru</label>
                                             <div class="input-group">
-                                                <input type="password" class="form-control non-hoverable non-focusable" name="password" id="password" autocomplete="off" placeholder="********" style="border-right: 0" required>
+                                                <input type="password" class="form-control @error('password') is-invalid @enderror non-hoverable non-focusable" name="password" id="password" autocomplete="off" placeholder="********" style="border-right: 0" required>
                                                 <span class="input-group-text cursor-pointer btn-show-password" style="border-left: 0;"><i class="bx bx-hide"></i></span>
                                             </div>
+                                            @error('password')
+                                                <div class="invalid-feedback text-start d-block">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
                                         </div>
-                                        <div class="d-flex justify-content-between align-items-center my-4">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="on" name="remember_me" id="remember_me">
-                                                <label class="form-check-label text-primary" for="remember_me">Ingat saya</label>
+                                        <div class="mb-3 pb-2">
+                                            <label for="password_confirmation" class="form-label required-label">Konfirmasi Password</label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror non-hoverable non-focusable" name="password_confirmation" id="password_confirmation" autocomplete="off" placeholder="********" style="border-right: 0" required>
+                                                <span class="input-group-text cursor-pointer btn-show-password-confirm" style="border-left: 0;"><i class="bx bx-hide"></i></span>
                                             </div>
-                                            <div>
-                                                <a href="/forgot-password" class="fw-semibold link-underline link-underline-opacity-0">Lupa password?</a>
-                                            </div>
+                                            @error('password_confirmation')
+                                                <div class="invalid-feedback text-start d-block">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
                                         </div>
-                                        {{-- <button type="submit" class="btn btn-primary d-block btn-submit w-100">Masuk</button> --}}
-                                        <a href="/dashboard" class="btn btn-primary d-block btn-submit w-100">Masuk</a>
-                                        <div class="text-muted text-center mt-4 mb-2 dropup">
-                                            Belum punya akun? <a href="/register" class="fw-semibold link-underline link-underline-opacity-0">Daftar Sekarang</a>
+                                        <button type="submit" class="btn btn-primary d-block btn-submit w-100 my-4">Reset</button>
+                                        <div class="text-muted text-center mt-4 mb-2">
+                                            Ingat password? <a href="/login" class="fw-semibold link-underline link-underline-opacity-0">Login</a>
                                         </div>
                                     </form>
                                 </div>

@@ -18,6 +18,8 @@ use App\Http\Controllers\Dashboard\My\WorkPermitLetterController as MyWorkPermit
 use App\Http\Controllers\Dashboard\My\UserController as MyUserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
+use App\Http\Controllers\Auth\NewPasswordController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -70,3 +72,8 @@ Route::post('login', [LoginController::class, 'authenticate']);
 Route::get('/register/info', [RegisterController::class, 'info']);
 Route::get('/register', [RegisterController::class, 'create'])->name('register');
 Route::post('/register', [RegisterController::class, 'store']);
+
+Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
+Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');
+Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');

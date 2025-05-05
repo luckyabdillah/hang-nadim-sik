@@ -39,40 +39,30 @@
                             </div>
                             <div class="card rounded-4 border-0 shadow bg-white">
                                 <div class="card-body px-4 py-4">
-                                    <div class="card-title text-center mt-3 mb-4">
+                                    <div class="card-title text-center mt-2 mb-4">
                                         <a href="/">
                                             {{-- <img src="{{ asset('assets/img/logo/square.png') }}" alt="Logo" class="img-fluid" style="max-width: 80px;"> --}}
                                             <img src="{{ asset('assets/img/logo/secondary.png') }}" alt="Logo" class="img-fluid w-50">
                                         </a>
                                     </div>
-                                    <form action="/login" method="post">
+                                    <h4 class="text-primary fw-semibold mt-5 mb-3">Lupa Password</h4>
+                                    <p>Silakan masukkan email yang terkait dengan akun Anda</p>
+                                    <form action="/forgot-password" method="post">
                                         @csrf
-                                        <div class="mb-3">
+                                        <div class="pb-2">
                                             <label for="email" class="form-label required-label">Email</label>
-                                            <input type="email" class="form-control" name="email" id="email" autocomplete="off" placeholder="Masukkan email" value="{{ old('email') }}" required>
+                                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" autocomplete="off" placeholder="Masukkan email" value="{{ old('email') }}" required>
+                                            @error('email')
+                                                <div class="invalid-feedback text-start">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="password" class="form-label required-label">Password</label>
-                                            <div class="input-group">
-                                                <input type="password" class="form-control non-hoverable non-focusable" name="password" id="password" autocomplete="off" placeholder="********" style="border-right: 0" required>
-                                                <span class="input-group-text cursor-pointer btn-show-password" style="border-left: 0;"><i class="bx bx-hide"></i></span>
-                                            </div>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center my-4">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="on" name="remember_me" id="remember_me">
-                                                <label class="form-check-label text-primary" for="remember_me">Ingat saya</label>
-                                            </div>
-                                            <div>
-                                                <a href="/forgot-password" class="fw-semibold link-underline link-underline-opacity-0">Lupa password?</a>
-                                            </div>
-                                        </div>
-                                        {{-- <button type="submit" class="btn btn-primary d-block btn-submit w-100">Masuk</button> --}}
-                                        <a href="/dashboard" class="btn btn-primary d-block btn-submit w-100">Masuk</a>
-                                        <div class="text-muted text-center mt-4 mb-2 dropup">
-                                            Belum punya akun? <a href="/register" class="fw-semibold link-underline link-underline-opacity-0">Daftar Sekarang</a>
-                                        </div>
+                                        <button type="submit" class="btn btn-primary d-block btn-submit w-100 my-4">Reset Password</button>
                                     </form>
+                                    <div class="text-muted text-center mt-4 mb-2">
+                                        Ingat password? <a href="/login" class="fw-semibold link-underline link-underline-opacity-0">Login</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

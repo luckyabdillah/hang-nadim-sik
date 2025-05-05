@@ -1,12 +1,31 @@
-@import 'tailwindcss';
-
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source "../**/*.blade.php";
-@source "../**/*.js";
-@source "../**/*.vue";
-
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
-}
+/* XS: <576px */
+@media (max-width: 575.98px) {
+    html {
+      font-size: 85%; /* 13.6px */
+    }
+  
+    .container {
+      padding: 0 18px;
+    }
+  }
+  
+  /* SM: 576px - 767px */
+  @media (min-width: 576px) and (max-width: 767.98px) {
+    html {
+      font-size: 90%; /* 14.4px */
+    }
+  }
+  
+  /* MD: 768px - 991px */
+  @media (min-width: 768px) and (max-width: 991.98px) {
+    html {
+      font-size: 95%; /* 15.2px */
+    }
+  }
+  
+  /* LG: 992px - 1199px */
+  @media (min-width: 992px) and (max-width: 1199.98px) {
+    html {
+      font-size: 100%; /* Default 16px */
+    }
+  }
