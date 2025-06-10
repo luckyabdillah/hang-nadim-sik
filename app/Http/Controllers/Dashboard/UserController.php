@@ -13,7 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('name')->get();
+        $users = User::where('role', '!=', 'approver')->where('role', '!=', 'applicant')->orderBy('name')->get();
 
         return view('dashboard.users.index', compact('users'));
     }
@@ -33,14 +33,14 @@ class UserController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|max:255|email:dns|unique:users,email',
+            'email' => 'required|max:255|email:rfc,dns|unique:users,email',
             'password' => 'required|min:8|max:255|confirmed',
-            'role' => 'required|in:admin,applicant,verificator,approver,avsec,superuser',
+            'role' => 'required|in:admin,verificator,avsec,superuser',
         ]);
 
         User::create($validatedData);
 
-        return redirect('/dashboard/users')->with('success', 'Data berhasil dibuat');
+        return redirect()->route('dashboard.users.index')->with('success', 'Data berhasil dibuat');
     }
 
     /**
@@ -66,18 +66,19 @@ class UserController extends Controller
     {
         $rules = [
             'name' => 'required|max:255',
-            'role' => 'required|in:admin,applicant,verificator,approver,avsec,superuser',
+            'role' => 'required|in:admin,verificator,avsec,superuser',
+            'email' => 'required|email:rfc,dns|max:255'
         ];
 
         if ($request->email != $user->email) {
-            $rules['email'] = 'nullable|email:dns|max:255|unique:users,email';
+            $rules['email'] = 'nullable|email:rfc,dns|max:255|unique:users,email';
         }
 
         $validatedData = $request->validate($rules);
 
         $user->update($validatedData);
 
-        return redirect('/dashboard/users')->with('success', 'Data berhasil diubah');
+        return redirect()->route('dashboard.users.index')->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -87,6 +88,6 @@ class UserController extends Controller
     {
         User::destroy($user->id);
 
-        return redirect('/dashboard/users')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('dashboard.users.index')->with('success', 'Data berhasil dihapus');
     }
 }

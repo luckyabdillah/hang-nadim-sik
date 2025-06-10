@@ -32,12 +32,13 @@ class WorkLocationController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'location' => 'required|max:150',
+            'location' => 'required|max:100',
+            'description' => 'required|max:255',
         ]);
 
         WorkLocation::create($validatedData);
 
-        return redirect('/dashboard/work-locations')->with('success', 'Data berhasil dibuat');
+        return redirect()->route('dashboard.work-locations.index')->with('success', 'Data berhasil dibuat');
     }
 
     /**
@@ -62,12 +63,13 @@ class WorkLocationController extends Controller
     public function update(Request $request, WorkLocation $location)
     {
         $validatedData = $request->validate([
-            'location' => 'required|max:150',
+            'location' => 'required|max:100',
+            'description' => 'required|max:255',
         ]);
 
         $location->update($validatedData);
 
-        return redirect('/dashboard/work-locations')->with('success', 'Data berhasil diubah');
+        return redirect()->route('dashboard.work-locations.index')->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -77,6 +79,48 @@ class WorkLocationController extends Controller
     {
         WorkLocation::destroy($location->id);
 
-        return redirect('/dashboard/work-locations')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('dashboard.work-locations.index')->with('success', 'Data berhasil dihapus');
+    }
+
+    /**
+     * Display a trashed listing of the resource.
+     */
+    public function trashed()
+    {
+        $workLocations = WorkLocation::onlyTrashed()->get();
+
+        return view('dashboard.work-locations.trashed', compact('workLocations'));
+    }
+
+    /**
+     * Recover the specified trashed resource in storage.
+     */
+    public function recover($id)
+    {
+        $location = WorkLocation::onlyTrashed()->findOrFail($id);
+        $location->restore();
+
+        return redirect()->route('dashboard.work-locations.trashed')->with('success', 'Data berhasil direstore.');
+    }
+
+    /**
+     * Force delete the specified trashed resource in storage.
+     */
+    public function forceDelete($id)
+    {
+        $location = WorkLocation::onlyTrashed()->findOrFail($id);
+        $location->forceDelete();
+
+        return redirect()->route('dashboard.work-locations.trashed')->with('success', 'Data berhasil dihapus permanen.');
+    }
+
+    /**
+     * Recover all trashed resource in storage.
+     */
+    public function recoverAll()
+    {
+        WorkLocation::onlyTrashed()->restore();
+
+        return redirect()->route('dashboard.work-locations.trashed')->with('success', 'Semua data berhasil direstore.');
     }
 }

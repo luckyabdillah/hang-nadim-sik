@@ -33,13 +33,14 @@ class WorkTypeController extends Controller
     {
         $validatedData = $request->validate([
             'type' => 'required|max:100',
+            'unit_name' => 'required|max:100',
             'provision_text_before' => 'nullable|max:5000',
             'provision_text_after' => 'nullable|max:5000',
         ]);
 
         WorkType::create($validatedData);
 
-        return redirect('/dashboard/work-types')->with('success', 'Data berhasil dibuat');
+        return redirect()->route('dashboard.work-types.index')->with('success', 'Data berhasil dibuat');
     }
 
     /**
@@ -65,14 +66,14 @@ class WorkTypeController extends Controller
     {
         $validatedData = $request->validate([
             'type' => 'required|max:100',
+            'unit_name' => 'required|max:100',
             'provision_text_before' => 'nullable|max:5000',
             'provision_text_after' => 'nullable|max:5000',
         ]);
 
         $type->update($validatedData);
 
-
-        return redirect('/dashboard/work-types')->with('success', 'Data berhasil diubah');
+        return redirect()->route('dashboard.work-types.index')->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -82,6 +83,48 @@ class WorkTypeController extends Controller
     {
         WorkType::destroy($type->id);
 
-        return redirect('/dashboard/work-types')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('dashboard.work-types.index')->with('success', 'Data berhasil dihapus');
+    }
+
+    /**
+     * Display a trashed listing of the resource.
+     */
+    public function trashed()
+    {
+        $workTypes = WorkType::onlyTrashed()->get();
+
+        return view('dashboard.work-types.trashed', compact('workTypes'));
+    }
+
+    /**
+     * Recover the specified trashed resource in storage.
+     */
+    public function recover($id)
+    {
+        $type = WorkType::onlyTrashed()->findOrFail($id);
+        $type->restore();
+
+        return redirect()->route('dashboard.work-types.trashed')->with('success', 'Data berhasil direstore.');
+    }
+
+    /**
+     * Force delete the specified trashed resource in storage.
+     */
+    public function forceDelete($id)
+    {
+        $type = WorkType::onlyTrashed()->findOrFail($id);
+        $type->forceDelete();
+
+        return redirect()->route('dashboard.work-types.trashed')->with('success', 'Data berhasil dihapus permanen.');
+    }
+
+    /**
+     * Recover all trashed resource in storage.
+     */
+    public function recoverAll()
+    {
+        WorkType::onlyTrashed()->restore();
+
+        return redirect()->route('dashboard.work-types.trashed')->with('success', 'Semua data berhasil direstore.');
     }
 }

@@ -1,0 +1,70 @@
+$orange: #FFA400;
+$orange-subtle: #FCE2BA;
+$orange-subtle-rgb: 252, 226, 186;
+
+.bg-orange {
+    background-color: $orange !important;
+}
+
+.bg-orange-subtle {
+    background-color: rgba($orange-subtle, 0.5) !important;
+}
+
+.text-orange {
+    color: $orange;
+}
+
+#hero {
+    position: relative;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-x: center;
+}
+
+#hero::after {
+    display: block;
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to right, $primary , #ffffff0c);
+}
+
+.hero-tagline {
+    max-width: 50%;
+}
+
+.hero-tagline-login {
+    max-width: 90%;
+}
+
+@media (max-width: 991px) {
+    .offcanvas .btn-auth-action {
+        margin-top: 8px;
+    }
+
+    .hero-tagline {
+        max-width: 75%;
+    }
+}
+
+.form-label {
+    color: $primary;
+}
+
+.form-control:hover,
+.form-select:hover {
+    box-shadow: 0 0 0 .5px $primary;
+}
+
+.form-control.non-hoverable:hover,
+.form-select.non-hoverable:hover {
+    box-shadow: 0 0 0 0;
+}
+
+.form-control.non-focusable:focus,
+.form-select.non-focusable:focus {
+    box-shadow: 0 0 0 0;
+}

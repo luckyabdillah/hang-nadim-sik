@@ -40,6 +40,44 @@ $(document).on('click', '.btn-delete', function (event) {
     })
 })
 
+$(document).on('click', '.btn-restore', function (event) {
+    event.preventDefault()
+    let form = $(this).closest("form")
+    Swal({
+        title: "Restore Data",
+        text: "Yakin ingin melakukan restore data?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#ff3e1d',
+        cancelButtonColor: '#8592a3',
+        confirmButtonText: 'Restore',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.value) {
+            form.submit()
+        }
+    })
+})
+
+$(document).on('click', '.btn-force-delete', function (event) {
+    event.preventDefault()
+    let form = $(this).closest("form")
+    Swal({
+        title: "Hapus Data Permanen",
+        text: "Yakin ingin menghapus data ini secara permanen?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#ff3e1d',
+        cancelButtonColor: '#8592a3',
+        confirmButtonText: 'Hapus',
+        cancelButtonText: 'Batal'
+    }).then((result) => {
+        if (result.value) {
+            form.submit()
+        }
+    })
+})
+
 document.querySelectorAll('form').forEach(form => {
     form.addEventListener('submit', function(e) {
         e.preventDefault()

@@ -4,46 +4,57 @@
     <div class="card">
         <h5 class="card-header">Daftar Vendor</h5>
         <div class="card-body">
-            <a href="/dashboard/vendors/create" class="btn btn-primary mb-4">Tambah Data</a>
-            <table class="table table-bordered text-center">
+            <a href="{{ route('dashboard.vendors.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
+            <a href="{{ route('dashboard.vendors.trashed') }}" class="btn btn-secondary mb-4">Recycle Bin</a>
+            <table class="table table-bordered text-center data-table">
                 <thead>
                     <tr>
-                        <th style="width: 1px;">No</th>
-                        <th>Nama</th>
-                        <th>Email</th>
-                        <th>Alamat</th>
-                        <th>#</th>
+                        <th class="text-center" style="width: 1px;">No</th>
+                        <th class="text-center">Nama Legal</th>
+                        <th class="text-center">Nama Brand</th>
+                        <th class="text-center">Email</th>
+                        <th class="text-center">#</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($vendors->count())
-                        @foreach ($vendors as $vendor)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $vendor->name }}</td>
-                                <td>{{ $vendor->email ?? '-' }}</td>
-                                <td>{{ $vendor->address ?? '-' }}</td>
-                                <td>
-                                    <a href="/dashboard/vendors/{{ $vendor->uuid }}/edit" class="btn btn-warning rounded-pill">
-                                        <i class="bx bx-edit-alt"></i>
-                                    </a>
-                                    <form action="/dashboard/vendors/{{ $vendor->uuid }}" method="post" class="d-inline">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit" class="btn btn-danger rounded-pill btn-delete">
-                                            <i class="bx bx-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    @else
+                    @foreach ($vendors as $vendor)
                         <tr>
-                            <td colspan="5">Tidak ada data</td>
+                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $vendor->legal_name }}</td>
+                            <td class="text-center">{{ $vendor->name }}</td>
+                            <td class="text-center">{{ $vendor->email }}</td>
+                            <td class="text-center text-nowrap">
+                                <a href="{{ route('dashboard.vendors.index') }}/{{ $vendor->uuid }}/edit" class="btn btn-warning rounded-pill">
+                                    <i class="bx bx-edit-alt"></i>
+                                </a>
+                                <form action="{{ route('dashboard.vendors.index') }}/{{ $vendor->uuid }}" method="post" class="d-inline">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger rounded-pill btn-delete">
+                                        <i class="bx bx-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
-                    @endif
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
-@endsection 
+@endsection
+
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/libs/datatable/datatable-bootstrap5-2.0.1.min.css') }}">
+@endpush
+
+@push('scripts')
+    <script src="{{ asset('assets/libs/datatable/datatable-2.0.1.min.js') }}"></script>
+    <script>
+        $('.data-table').DataTable({
+            autoWidth: false,
+            initComplete: function() {
+                $(this.api().table().container()).find('input').attr('autocomplete', 'off')
+            },
+        })
+    </script>
+@endpush
