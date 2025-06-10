@@ -11,6 +11,7 @@ class Vendor extends Model
     use SoftDeletes;
     
     protected $fillable = [
+        'legal_name',
         'name',
         'email',
         'address',

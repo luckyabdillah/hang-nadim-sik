@@ -4,12 +4,12 @@
     <div class="card">
         <h5 class="card-header">Tambah Tembusan</h5>
         <div class="card-body">
-            <a href="/dashboard/copies" class="btn btn-secondary mb-3">Kembali</a>
-            <form action="/dashboard/copies" method="POST">
+            <a href="{{ route('dashboard.copies.index') }}" class="btn btn-secondary mb-3">Kembali</a>
+            <form action="{{ route('dashboard.copies.index') }}" method="POST">
                 @csrf
                 <div class="mb-4">
                     <label for="name" class="form-label">Nama</label>
-                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Nama" value="{{ old('name') }}" required autofocus>
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Nama" value="{{ old('name') }}" required autofocus autocomplete="off">
                     @error('name')
                         <div class="invalid-feedback text-start">
                             {{ $message }}

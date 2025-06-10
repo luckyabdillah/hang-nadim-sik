@@ -31,14 +31,15 @@ class VendorController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'nullable|email:dns|max:255|unique:vendors,email',
+            'legal_name' => 'required|max:150',
+            'name' => 'required|max:150',
+            'email' => 'required|email:rfc,dns|max:150',
             'address' => 'nullable|max:255',
         ]);
 
         Vendor::create($validatedData);
 
-        return redirect('/dashboard/vendors')->with('success', 'Data berhasil dibuat');
+        return redirect()->route('dashboard.vendors.index')->with('success', 'Data berhasil dibuat');
     }
 
     /**
@@ -62,20 +63,16 @@ class VendorController extends Controller
      */
     public function update(Request $request, Vendor $vendor)
     {
-        $rules = [
-            'name' => 'required|max:255',
+        $validatedData = $request->validate([
+            'legal_name' => 'required|max:150',
+            'name' => 'required|max:150',
+            'email' => 'required|email:rfc,dns|max:150',
             'address' => 'nullable|max:255',
-        ];
-
-        if ($request->email != $vendor->email) {
-            $rules['email'] = 'nullable|email:dns|max:255|unique:vendors,email';
-        }
-
-        $validatedData = $request->validate($rules);
+        ]);
 
         $vendor->update($validatedData);
 
-        return redirect('/dashboard/vendors')->with('success', 'Data berhasil diubah');
+        return redirect()->route('dashboard.vendors.index')->with('success', 'Data berhasil diubah');
     }
 
     /**
@@ -85,6 +82,48 @@ class VendorController extends Controller
     {
         Vendor::destroy($vendor->id);
 
-        return redirect('/dashboard/vendors')->with('success', 'Data berhasil dihapus');
+        return redirect()->route('dashboard.vendors.index')->with('success', 'Data berhasil dihapus');
+    }
+
+    /**
+     * Display a trashed listing of the resource.
+     */
+    public function trashed()
+    {
+        $vendors = Vendor::onlyTrashed()->get();
+
+        return view('dashboard.vendors.trashed', compact('vendors'));
+    }
+
+    /**
+     * Recover the specified trashed resource in storage.
+     */
+    public function recover($id)
+    {
+        $vendor = Vendor::onlyTrashed()->findOrFail($id);
+        $vendor->restore();
+
+        return redirect()->route('dashboard.vendors.trashed')->with('success', 'Data berhasil direstore.');
+    }
+
+    /**
+     * Force delete the specified trashed resource in storage.
+     */
+    public function forceDelete($id)
+    {
+        $vendor = Vendor::onlyTrashed()->findOrFail($id);
+        $vendor->forceDelete();
+
+        return redirect()->route('dashboard.vendors.trashed')->with('success', 'Data berhasil dihapus permanen.');
+    }
+
+    /**
+     * Recover all trashed resource in storage.
+     */
+    public function recoverAll()
+    {
+        Vendor::onlyTrashed()->restore();
+
+        return redirect()->route('dashboard.vendors.trashed')->with('success', 'Semua data berhasil direstore.');
     }
 }

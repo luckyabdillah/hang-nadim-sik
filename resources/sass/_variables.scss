@@ -1,7 +1,22 @@
+$primary: #024687;
+
 // Body
 $body-bg: #f8fafc;
 
 // Typography
-$font-family-sans-serif: 'Nunito', sans-serif;
-$font-size-base: 0.9rem;
+$font-family-sans-serif: 'Lato', sans-serif;
+// $font-size-base: 0.9rem;
 $line-height-base: 1.6;
+
+$btn-border-radius: 1rem;
+$focus-ring-color: rgba($primary, .75);
+
+$input-focus-width: 2px;
+$input-focus-box-shadow: 0 0 0 $input-focus-width $primary;
+
+$input-color: $primary;
+$input-border-radius: .75rem;
+$input-border-color: rgba($primary, .5);
+$input-placeholder-color: rgba($primary, .5);
+
+$form-check-input-border: .5px solid grey;

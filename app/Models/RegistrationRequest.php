@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 
 class RegistrationRequest extends Model
 {
-
     /**
      * The attributes that are mass assignable.
      *
@@ -33,6 +32,11 @@ class RegistrationRequest extends Model
         'id',
         'uuid',
     ];
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 
     protected static function boot()
     {

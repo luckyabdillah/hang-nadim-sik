@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('work_permit_letter_id')->constrained()->onDelete('cascade');
             $table->foreignId('approver_id')->constrained();
+            $table->string('name');
             $table->string('position', 150);
             $table->tinyInteger('level')->unsigned();
             $table->string('signature');
-            $table->enum('status', ['waiting', 'approved', 'rejected'])->default('waiting');
+            $table->enum('status', ['pending', 'waiting', 'approved', 'rejected'])->default('pending');
             $table->text('notes')->nullable();
             $table->timestamps();
         });
