@@ -26,6 +26,10 @@ Route::get('/', [SinglePageController::class, 'index']);
 Route::get('/sik', [SinglePageController::class, 'sik']);
 Route::get('/contact', [SinglePageController::class, 'contact']);
 
+Route::get('/', [SinglePageController::class, 'index']);
+Route::get('/sik', [SinglePageController::class, 'sik']);
+Route::get('/contact', [SinglePageController::class, 'contact']);
+
 Route::prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
     
