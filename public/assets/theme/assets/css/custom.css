@@ -17,3 +17,20 @@
     display: block !important;
     align-items: center;
 }
+
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered {
+    display: block !important;
+    align-items: center;
+    padding: 10px 4px !important;
+}
+
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+    display: flexbox !important;
+    align-items: center;
+}
+
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-search {
+    display: block !important;
+    align-items: center;
+}
+

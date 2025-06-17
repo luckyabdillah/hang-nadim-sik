@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SinglePageController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\WorkLocationController;
 use App\Http\Controllers\Dashboard\LetterFundamentalController;
@@ -21,9 +22,13 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\NewPasswordController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [SinglePageController::class, 'index']);
+Route::get('/sik', [SinglePageController::class, 'sik']);
+Route::get('/contact', [SinglePageController::class, 'contact']);
+
+Route::get('/', [SinglePageController::class, 'index']);
+Route::get('/sik', [SinglePageController::class, 'sik']);
+Route::get('/contact', [SinglePageController::class, 'contact']);
 
 Route::prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index']);
