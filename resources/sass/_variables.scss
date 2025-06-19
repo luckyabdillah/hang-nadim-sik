@@ -11,6 +11,12 @@ $line-height-base: 1.6;
 $btn-border-radius: 1rem;
 $focus-ring-color: rgba($primary, .75);
 
+$dropdown-link-hover-bg: $primary;
+$dropdown-link-hover-color: #fff;
+
+$navbar-light-hover-color: $primary;
+$navbar-light-active-color: $primary;
+
 $input-focus-width: 2px;
 $input-focus-box-shadow: 0 0 0 $input-focus-width $primary;
 

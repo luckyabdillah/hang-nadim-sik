@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\WorkPermitLetter;
 use Illuminate\Http\Request;
 
 class SinglePageController extends Controller
@@ -13,7 +14,9 @@ class SinglePageController extends Controller
 
     public function sik()
     {
-        return view('sik');
+        $workPermitLetters = WorkPermitLetter::with('vendor')->orderBy('started_at', 'desc')->get();
+
+        return view('sik', compact('workPermitLetters'));
     }
 
     public function contact()

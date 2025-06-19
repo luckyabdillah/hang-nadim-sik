@@ -1,178 +1,126 @@
 @extends('layouts.main')
 
-@section('style')
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: "Inter", sans-serif;
-    color: #1f2937;
-  }
-
-  .font-headland {
-    font-family: "Headland One", serif;
-  }
-  .bg-blue-900 {
-    background-color: #043870 !important;
-  }
-  .text-blue-900 {
-    color: #043870 !important;
-  }
-  .hover-blue:hover {
-    color: #1e40af !important;
-  }
-
-  .guideline-step {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-  }
-
-  .bg-pink {
-    background-color: #ec4899 !important;
-  }
-
-  @media (max-width: 999px) {
-    .wave-top,
-    .wave-bottom {
-      display: none !important;
-    }
-
-    .smart {
-      color: #043870;
-    }
-  }
-</style>
-@endsection
-
 @section('content')
-    <!-- Hero Section -->
-    <div class="position-relative overflow-hidden">
-      <img src="{{ asset('assets/img/background/pesawat.png') }}" alt="Airport" class="w-100 object-fit-cover" style="aspect-ratio: 16 / 9" />
-    </div>
-
-    <!-- Hero Tagline and Smaller Wave -->
-    <div class="position-relative" style="margin-top: -80px; height: 200px">
-      \
-      <!-- Tagline -->
-      <div class="position-absolute top-50 start-50 translate-middle text-white text-center" style="z-index: 30">
-        <h1 class="smart fs-4 fs-md-3 fw-semibold">Smart, Integrated, Key to Productivity!</h1>
-      </div>
-
-      <!-- Smaller Wave Top -->
-      <div class="wave-top position-absolute top-0 w-100" style="z-index: 20">
-        <svg viewBox="0 0 1440 150" class="w-100" preserveAspectRatio="none">
-          <path d="M0 0C0 0 436 35 720 35C1004 35 1440 0 1440 0V150H0V0Z" fill="#043870" />
-        </svg>
-      </div>
-
-      <!-- Smaller Wave Bottom -->
-      <div class="wave-bottom position-absolute bottom-0 w-100" style="z-index: 20">
-        <svg viewBox="0 0 1440 150" class="w-100" preserveAspectRatio="none" style="transform: rotate(180deg)">
-          <path d="M0 0C0 0 436 35 720 35C1004 35 1440 0 1440 0V150H0V0Z" fill="#043870" />
-        </svg>
-      </div>
-    </div>
-
-    <!-- Work Permit Section -->
-    <div class="container py-5">
-      <div class="row align-items-center">
-        <div class="col-md-6 mb-4 mb-md-0">
-          <h2 class="text-blue-900 fw-bold mb-3">Work Permit Letter</h2>
-          <p class="fs-5 text-blue-900">
-            The Work Permit Letter system (SIK) is a web-based application designed to handle the process of submitting, verifying, approving, and issuing SIK digitally. This system aims to improve efficiency in the management of work
-            permits, reducing administrative errors.
-          </p>
+    <nav id="hero" style="background-image: url('{{ asset('assets/img/background/home.png') }}')">
+        <div class="container py-5 my-5 text-white position-relative z-1">
+            <h6 class="fw-semibold mb-3 mt-4">
+                <img src="{{ asset('assets/img/icon/airplane.png') }}" alt="" width="25em" class="img-fluid">
+                &nbsp;PT Bandara Internasional Batam
+            </h6>
+            <h1 class="fw-semibold lh-sm hero-tagline" style="font-size: 3.25em;">Pengajuan <span class="bg-orange text-white px-2">SIK</span> menjadi mudah dengan sistem terdigitalisasi</h1>
+            <p class="mt-3 mb-4">Segera daftar bersama 20+ vendor lainnya</p>
+            <div class="text-center text-md-start pb-4">
+                <a href="/login" class="btn btn-light fw-semibold px-3">Mulai Sekarang</a>
+            </div>
         </div>
-        <div class="col-md-6 text-center">
-          <img src="{{ asset('assets/img/background/komputer.png') }}" class="img-fluid rounded shadow" alt="Laptop and Discussion" />
+    </nav>
+    <nav id="about" class="bg-white rounded-5 rounded-bottom-0 position-relative" style="margin-top: -70px;">
+        <div class="container py-5">
+            <div class="row row-gap-4 pt-5">
+                <div class="col-md-6 my-auto order-md-1 order-2">
+                    <h3 class="text-primary fw-semibold fs-1">Sistem Surat Izin Kerja</h3>
+                    <p class="my-4">Sistem Surat Izin Kerja (SIK) adalah aplikasi berbasis web yang dirancang untuk menangani proses pengajuan, verifikasi, persetujuan, dan penerbitan SIK secara digital. Sistem ini bertujuan untuk meningkatkan efisiensi dalam pengelolaan surat izin kerja serta mengurangi kesalahan administratif.</p>
+                    <a href="/contact" class="btn btn-primary">Kontak Kami</a>
+                </div>
+                <div class="col-md-6 order-md-2 order-1 text-center">
+                    <img src="{{ asset('assets/img/background/about.png') }}" alt="" class="img-fluid w-75">
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-
-    <!-- Guidelines Section -->
-    <section class="container py-5">
-      <h2 class="text-center fw-bold mb-5" style="color: #043870; font-family: 'Inter', sans-serif">GUIDELINES FOR CREATING SIK</h2>
-
-      <!-- Background with Overlay -->
-      <div class="position-relative rounded-4 overflow-hidden">
-        <img src="{{ asset('assets/img/background/6.png') }}" class="position-absolute w-100 h-100 object-fit-cover" alt="Background" style="object-fit: cover" />
-        <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(4, 56, 112, 0.85)"></div>
-
-        <!-- Guideline Steps Content -->
-        <div class="position-relative text-white py-5 px-4">
-          <div class="row row-cols-1 row-cols-md-5 g-4 text-center">
-            <div class="col h-100 d-flex flex-column align-items-center text-center guideline-step">
-              <img src="{{ asset('assets/img/logo/1.png') }}" class="mb-3" style="height: 48px" alt="Step 1" />
-              <p class="fw-bold mb-2">Submissions by External Parties</p>
-              <div class="mx-auto my-2" style="width: 160px; height: 2px; background-color: white"></div>
-              <p class="small opacity-75">External party (contractor/vendor) fill out the SIK application form</p>
+    </nav>
+    <nav id="guide" class="bg-white py-5">
+        <div class="container">
+            <h3 class="text-primary fw-semibold fs-2 mb-4 pb-1">Panduan Pembuatan SIK</h3>
+            <div class="card rounded-5 border-0 text-white shadow py-5" style="background-image: url({{ asset('assets/img/background/guide.png') }}); background-size: cover; background-repeat: no-repeat; background-position: center;">
+                <div class="row justify-content-center text-center g-3">
+                    <div class="col-lg col-md-6 px-4">
+                        <img src="{{ asset('assets/img/icon/guide-1.png') }}" alt="" class="img-fluid px-5 mb-4">
+                        <h5 class="fw-semibold">Pengajuan oleh Pihak Eksternal</h5>
+                        <hr>
+                        <p class="mb-4">Pihak eksternal (kontraktor/vendor) mengisi formulir pengajuan SIK.</p>
+                    </div>
+                    <div class="col-lg col-md-6 px-4">
+                      <img src="{{ asset('assets/img/icon/guide-2.png') }}" alt="" class="img-fluid px-5 mb-4">
+                        <h5 class="fw-semibold">Verifikasi <span class="d-md-inline-block d-none">&nbsp;</span>Dokumen</h5>
+                        <hr>
+                        <p class="mb-4">Pihak internal menerima dan memeriksa kelengkapan data yang telah diajukan.</p>
+                    </div>
+                    <div class="col-lg col-md-6 px-4">
+                        <img src="{{ asset('assets/img/icon/guide-3.png') }}" alt="" class="img-fluid px-5 mb-4">
+                        <h5 class="fw-semibold">Persetujuan oleh Pejabat Internal</h5>
+                        <hr>
+                        <p class="mb-4">Pejabat internal akan meninjau dan menyetujui pengajuan SIK.</p>
+                    </div>
+                    <div class="col-lg col-md-6 px-4">
+                        <img src="{{ asset('assets/img/icon/guide-4.png') }}" alt="" class="img-fluid px-5 mb-4">
+                        <h5 class="fw-semibold">Penerbitan Surat Izin Kerja</h5>
+                        <hr>
+                        <p class="mb-4">Setelah mendapatkan persetujuan, SIK akan diterbitkan berdasarkan data yang telah disetujui.</p>
+                    </div>
+                    <div class="col-lg col-md-6 px-4">
+                        <img src="{{ asset('assets/img/icon/guide-5.png') }}" alt="" class="img-fluid px-5 mb-4">
+                        <h5 class="fw-semibold">Pemantauan oleh AVSEC</h5>
+                        <hr>
+                        <p class="mb-4">AVSEC dapat melihat daftar pekerjaan aktif saat melakukan patroli di area kerja.</p>
+                    </div>
+                </div>
             </div>
-            <div class="col h-100 d-flex flex-column align-items-center text-center guideline-step">
-              <img src="{{ asset('assets/img/logo/2.png') }}" class="mb-3" style="height: 48px" alt="Step 2" />
-              <p class="fw-bold mb-2">Verification of Documents</p>
-              <div class="mx-auto my-2" style="width: 160px; height: 2px; background-color: white"></div>
-              <p class="small opacity-75">The Director of Operations receives and checks the completeness of the submitted data</p>
-            </div>
-            <div class="col h-100 d-flex flex-column align-items-center text-center guideline-step">
-              <img src="{{ asset('assets/img/logo/3.png') }}" class="mb-3" style="height: 48px" alt="Step 3" />
-              <p class="fw-bold mb-2">Approval by Internal Officials</p>
-              <div class="mx-auto my-2" style="width: 160px; height: 2px; background-color: white"></div>
-              <p class="small opacity-75">The Senior Manager and Vice President will review and approve the SIK application.</p>
-            </div>
-            <div class="col h-100 d-flex flex-column align-items-center text-center guideline-step">
-              <img src="{{ asset('assets/img/logo/4.png') }}" class="mb-4" style="height: 48px" alt="Step 4" />
-              <p class="fw-bold mb-4">Issuance of Work Permit</p>
-              <div class="mx-auto my-2" style="width: 160px; height: 2px; background-color: white"></div>
-              <p class="small opacity-75">After obtaining approval from the Senior Manager and Vice President, the SIK will be issued based on the approved data</p>
-            </div>
-            <div class="col h-100 d-flex flex-column align-items-center text-center guideline-step">
-              <img src="{{ asset('assets/img/logo/5.png') }}" class="mb-4" style="height: 48px" alt="Step 5" />
-              <p class="fw-bold mb-4">Monitoring by AVSEC</p>
-              <div class="mx-auto my-2" style="width: 160px; height: 2px; background-color: white"></div>
-              <p class="small opacity-75">AVSec can view a list of active jobs in progress through the app when patrolling the work area</p>
-            </div>
-          </div>
         </div>
-      </div>
-    </section>
-
-    <!-- Testimonial Section -->
-    <div class="bg-white py-5">
-      <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-center gap-4">
-        <div class="mb-4 mb-lg-0 pe-lg-5">
-          <h3 class="fw-bold text-dark mb-3">Look What Our Customers<br />Say About Our Services!</h3>
-          <div class="text-center">
-            <a href="#" class="btn btn-lg text-white" style="background-color: #0a3d75">Get Started</a>
-          </div>
-        </div>
-        <div class="position-relative" style="max-width: 600px">
-          <!-- Left Arrow -->
-          <button class="btn btn-primary rounded-circle position-absolute top-50 start-0 translate-middle-y" style="background-color: #043870; z-index: 2">
-            <span class="fw-bold">&lt;</span>
-          </button>
-
-          <!-- Testimonial Card -->
-          <div class="card border-0 shadow rounded-4 px-4 py-4 mx-5" style="background-color: #f9f9f9">
-            <div class="fs-1 text-black mb-2">“</div>
-            <p class="text-dark mb-3">This website for making a Work Permit (SIK) is very helpful with a clear, fast, and transparent process. The application flow is well-structured, making it easy for users to apply for permissions.</p>
-            <hr />
-            <div class="d-flex align-items-center">
-              <div class="rounded-circle bg-pink text-white d-flex justify-content-center align-items-center me-2" style="width: 36px; height: 36px; font-weight: 600">K</div>
-              <span class="fw-medium">Kek Pisang Villa</span>
+    </nav>
+    <nav id="testimonials" class="bg-white py-5 rounded-5 rounded-top-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 my-auto">
+                    <h6 class="fs-1 fw-semibold text-primary">Lihat Apa Kata Vendor Tentang Sistem SIK!</h6>
+                    <div class="text-center text-lg-start d-none d-lg-block">
+                        <a href="/login" class="btn btn-primary mt-4 px-3">Mulai Sekarang</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div id="carouselExampleDark" class="carousel carousel-dark slide">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" data-bs-interval="10000">
+                                <div style="min-height: 280px;">
+                                    <div class="carousel-caption d-block text-start">
+                                      <h1 class="mb-0 pb-0">"</h1>
+                                      <p>Website untuk pembuatan Surat Izin Kerja (SIK) ini sangat membantu dengan proses yang jelas, cepat, dan transparan. Alur pengajuannya terstruktur dengan baik, sehingga memudahkan pengguna dalam mengajukan izin.</p>
+                                      <h5><span class="rounded-circle bg-danger px-2 py-1 text-white d-inline-block me-1">K</span> Kek Pisang Vila</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <div style="min-height: 280px;">
+                                    <div class="carousel-caption d-block text-start">
+                                      <h1 class="mb-0 pb-0">"</h1>
+                                      <p>Website untuk pembuatan Surat Izin Kerja (SIK) ini sangat membantu dengan proses yang jelas, cepat, dan transparan. Alur pengajuannya terstruktur dengan baik, sehingga memudahkan pengguna dalam mengajukan izin.</p>
+                                      <h5><span class="rounded-circle bg-warning px-2 py-1 text-white d-inline-block me-1">R</span> RM Sederhana</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div style="min-height: 280px;">
+                                    <div class="carousel-caption d-block text-start">
+                                      <h1 class="mb-0 pb-0">"</h1>
+                                      <p>Website untuk pembuatan Surat Izin Kerja (SIK) ini sangat membantu dengan proses yang jelas, cepat, dan transparan. Alur pengajuannya terstruktur dengan baik, sehingga memudahkan pengguna dalam mengajukan izin.</p>
+                                      <h5><span class="rounded-circle bg-success px-2 py-1 text-white d-inline-block me-1">M</span> MM Cafe</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                    <div class="text-center text-lg-start d-block d-lg-none">
+                        <a href="/login" class="btn btn-primary px-3">Mulai Sekarang</a>
+                    </div>
+                </div>
             </div>
-          </div>
-
-          <!-- Right Arrow -->
-          <button class="btn btn-primary rounded-circle position-absolute top-50 end-0 translate-middle-y" style="background-color: #043870; z-index: 2">
-            <span class="fw-bold">&gt;</span>
-          </button>
         </div>
-      </div>
-    </div>
+    </nav>
 @endsection
