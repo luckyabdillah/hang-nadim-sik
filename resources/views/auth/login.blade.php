@@ -67,8 +67,8 @@
                                                 <a href="/forgot-password" class="fw-semibold link-underline link-underline-opacity-0">Lupa password?</a>
                                             </div>
                                         </div>
-                                        {{-- <button type="submit" class="btn btn-primary d-block btn-submit w-100">Masuk</button> --}}
-                                        <a href="/dashboard" class="btn btn-primary d-block btn-submit w-100">Masuk</a>
+                                        <button type="submit" class="btn btn-primary d-block btn-submit w-100">Masuk</button>
+                                        {{-- <a href="/dashboard" class="btn btn-primary d-block btn-submit w-100">Masuk</a> --}}
                                         <div class="text-muted text-center mt-4 mb-2 dropup">
                                             Belum punya akun? <a href="/register" class="fw-semibold link-underline link-underline-opacity-0">Daftar Sekarang</a>
                                         </div>

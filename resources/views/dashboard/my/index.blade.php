@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="alert alert-secondary mb-3">
-        Selamat Datang kembali, John Doe.
+        Selamat Datang kembali, {{ auth()->user()->name }}.
     </div>
 @endsection

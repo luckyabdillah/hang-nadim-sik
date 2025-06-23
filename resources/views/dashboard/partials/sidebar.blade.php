@@ -11,10 +11,6 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner pt-2 pb-5">
-        @php
-            $isExternal = false;
-        @endphp
-        
         @if ($isExternal)
             <!-- Dashboard -->
             <li class="menu-item {{ Request::is('dashboard/my') ? 'active' : '' }}">

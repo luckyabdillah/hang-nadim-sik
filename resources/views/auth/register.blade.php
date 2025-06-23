@@ -45,7 +45,7 @@
                                             <img src="{{ asset('assets/img/logo/secondary.png') }}" alt="Logo" class="img-fluid w-50">
                                         </a>
                                     </div>
-                                    <form action="/login" method="post">
+                                    <form action="/register" method="post">
                                         @csrf
                                         <div class="mb-3">
                                             <label for="name" class="form-label required-label">Nama</label>

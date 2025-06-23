@@ -23,9 +23,8 @@ class RegisterController extends Controller
         ]);
 
         RegistrationRequest::create($validatedData);
-        dd('register berhasil');
 
-        return redirect('/register/info')->with('registration-success', 'Your request has been successfully submitted!');
+        return redirect('/register/info')->with('registration-success', 'Pendaftaran berhasil dikirim');
     }
 
     public function info()
