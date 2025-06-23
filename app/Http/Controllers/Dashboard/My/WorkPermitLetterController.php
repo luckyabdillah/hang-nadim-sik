@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Dashboard\My;
 
 use App\Http\Controllers\Controller;
+use App\Models\WorkLocation;
 use App\Models\WorkPermitLetter;
+use App\Models\WorkType;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -14,6 +16,7 @@ class WorkPermitLetterController extends Controller
      */
     public function index()
     {
+        $vendor = auth()->user()->applicant->vendor;
         $letters = WorkPermitLetter::with([
             'vendor' => function ($query) {
                 $query->withTrashed();
@@ -24,7 +27,7 @@ class WorkPermitLetterController extends Controller
             'workLocation' => function ($query) {
                 $query->withTrashed();
             },
-        ])->where('vendor_id', 1)->get();
+        ])->where('vendor_id', $vendor->id)->get();
 
         return view('dashboard.my.work-permit-letters.index', compact('letters'));
     }
@@ -34,7 +37,10 @@ class WorkPermitLetterController extends Controller
      */
     public function create()
     {
-        //
+        $workLocations = WorkLocation::all();
+        $workTypes = WorkType::all();
+        
+        return view('dashboard.my.work-permit-letters.create', compact('workLocations', 'workTypes'));
     }
 
     /**
@@ -42,7 +48,30 @@ class WorkPermitLetterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $vendor = auth()->user()->applicant->vendor;
+        $validatedData = $request->validate([
+            'work_location_id' => 'required|numeric|exists:work_locations,id',
+            'work_type_id' => 'required|numeric|exists:work_types,id',
+            'started_at' => 'required|date|after_or_equal:today',
+            'ended_at' => 'required|date|after:started_at',
+            'description' => 'required|max:255',
+            'external_pic_name' => 'required|max:150',
+            'external_pic_number' => 'required|numeric|max_digits:12',
+            'application_letter' => 'required|file|mimes:pdf|max:4096',
+            'job_safety_analysis_document' => 'nullable|file|mimes:pdf|max:4096'
+        ]);
+
+        $validatedData['external_pic_number'] = '+62' . $validatedData['external_pic_number'];
+
+        $validatedData['vendor_id'] = $vendor->id;
+        $validatedData['application_letter'] = $request->file('application_letter')->store('application_letters');
+        if ($request->file('job_safety_analysis_document')) {
+            $validatedData['job_safety_analysis_document'] = $request->file('job_safety_analysis_document')->store('jsa_documents');
+        }
+
+        WorkPermitLetter::create($validatedData);
+
+        return redirect('/dashboard/my/work-permit-letters')->with('success', 'Data berhasil dibuat');
     }
 
     /**

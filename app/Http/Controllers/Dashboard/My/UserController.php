@@ -14,8 +14,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::with('applicant')->whereHas('applicant', function ($query) {
-            $query->where('vendor_id', 6);
+        $vendor = auth()->user()->applicant->vendor;
+
+        $users = User::with('applicant')->whereHas('applicant', function ($query) use ($vendor) {
+            $query->where('vendor_id', $vendor->id);
         })->get();
 
         return view('dashboard.my.users.index', compact('users'));
@@ -34,9 +36,10 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $vendor = auth()->user()->applicant->vendor;
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|max:255|email:rfc,dns|unique:users,email',
+            'email' => 'required|max:255|email:rfc,dns|unique:users,email|unique:registration_requests,email',
             'password' => 'required|min:8|max:255|confirmed',
         ]);
 
@@ -45,7 +48,7 @@ class UserController extends Controller
         $user = User::create($validatedData);
         Applicant::create([
             'user_id' => $user->id,
-            'vendor_id' => 6,
+            'vendor_id' => $vendor->id,
         ]);
 
         return redirect()->route('dashboard.my.users.index')->with('success', 'Data berhasil dibuat');
