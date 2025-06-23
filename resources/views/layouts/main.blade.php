@@ -44,7 +44,7 @@
                                     <a class="nav-link {{ Request::is('/') ? 'active' : '' }}" href="/">Beranda</a>
                                 </li>
                                 <li class="nav-item pe-3">
-                                    <a class="nav-link {{ Request::is('sik') ? 'active' : '' }}" href="/sik">SIK</a>
+                                    <a class="nav-link {{ Request::is('work-permit-letters') ? 'active' : '' }}" href="/work-permit-letters">SIK</a>
                                 </li>
                                 <li class="nav-item pe-3">
                                     <a class="nav-link {{ Request::is('contact') ? 'active' : '' }}" href="/contact">Kontak</a>

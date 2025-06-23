@@ -18,10 +18,10 @@
               </nav>
           </div>
           <div class="table-responsive text-nowrap">
-              <table class="table table-hover data-table">
+              <table class="table table-bordered table-hover data-table">
                   <thead>
                       <tr>
-                          <th style="width: 1px;" class="text-center">No</th>
+                          <th style="width: 1px;" class="text-center px-3">No</th>
                           <th class="text-center">Vendor</th>
                           <th class="text-center">Deskripsi</th>
                           <th class="text-center">Tanggal</th>
@@ -38,12 +38,13 @@
                       @endforeach
                   </tbody>
               </table>
+              {{ $workPermitLetters->links() }}
           </div>
         </div>
     </nav>
 @endsection
 
-@push('styles')
+{{-- @push('styles')
     <link rel="stylesheet" href="{{ asset('assets/libs/datatable/datatable-bootstrap5-2.0.1.min.css') }}">
 @endpush
 
@@ -57,7 +58,7 @@
             },
         })
     </script>
-@endpush
+@endpush --}}
 
 {{-- @extends('layouts.main')
 
