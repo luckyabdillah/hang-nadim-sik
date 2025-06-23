@@ -1,5 +1,67 @@
 @extends('layouts.main')
 
+@section('content')
+    <nav id="hero" style="height: 18em; background-image: url('{{ asset('assets/img/background/sik.png') }}');">
+        <div class="container py-5 mt-5 text-white position-relative z-1 h-100 d-flex justify-content-center align-items-center">
+            <h1 class="">Surat Izin Kerja (SIK)</h1>
+        </div>
+    </nav>
+    <nav id="sik" class="bg-white rounded-5 rounded-bottom-0 position-relative" style="margin-top: -27px;">
+        <div class="container py-5">
+          <h3 class="text-primary fw-semibold mb-3">SIK</h3>
+          <div class="mb-4">
+              <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb">
+                      <li class="breadcrumb-item"><a href="/">Beranda</a></li>
+                      <li class="breadcrumb-item active" aria-current="page">SIK</li>
+                  </ol>
+              </nav>
+          </div>
+          <div class="table-responsive text-nowrap">
+              <table class="table table-bordered table-hover data-table">
+                  <thead>
+                      <tr>
+                          <th style="width: 1px;" class="text-center px-3">No</th>
+                          <th class="text-center">Vendor</th>
+                          <th class="text-center">Deskripsi</th>
+                          <th class="text-center">Tanggal</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      @foreach ($workPermitLetters as $letter)
+                          <tr>
+                              <td class="text-center">{{ $loop->iteration }}</td>
+                              <td class="text-center">{{ $letter->vendor->name }}</td>
+                              <td class="text-center text-wrap">{{ $letter->description }}</td>
+                              <td class="text-center">{{ date('d/m/Y', strtotime($letter->started_at)) }} - {{ date('d/m/Y', strtotime($letter->ended_at)) }}</td>
+                          </tr>
+                      @endforeach
+                  </tbody>
+              </table>
+              {{ $workPermitLetters->links() }}
+          </div>
+        </div>
+    </nav>
+@endsection
+
+{{-- @push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/libs/datatable/datatable-bootstrap5-2.0.1.min.css') }}">
+@endpush
+
+@push('scripts')
+    <script src="{{ asset('assets/libs/datatable/datatable-2.0.1.min.js') }}"></script>
+    <script>
+        $('.data-table').DataTable({
+            autoWidth: false,
+            initComplete: function() {
+                $(this.api().table().container()).find('input').attr('autocomplete', 'off')
+            },
+        })
+    </script>
+@endpush --}}
+
+{{-- @extends('layouts.main')
+
 @section('style')
 <style>
   body {
@@ -100,4 +162,4 @@
 
   <div class="small text-muted mt-3">Showing 1 of 1 entries</div>
 </div>
-@endsection
+@endsection --}}

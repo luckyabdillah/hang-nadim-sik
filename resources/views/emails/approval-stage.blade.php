@@ -8,8 +8,6 @@ You have a pending work permit letter approval. Please approve the letter at you
 Approve Now
 @endcomponent
 
-{{-- This quotation will expire in hours. --}}
-
 If you did not initiate this action or suspect any email misuse, please contact our support team immediately at [info@sik.bthairport.com](mailto:info@sik.bthairport.com).
 
 Regards,<br>

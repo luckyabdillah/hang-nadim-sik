@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Storage;
 use Mail;
 use Illuminate\Support\Facades\DB;
 use App\Mail\ApprovalStageMail;
+use App\Mail\ApprovedLetterMail;
+use App\Mail\RejectedLetterMail;
+use App\Models\WorkPermitLetter;
 use Exception;
 
 class ApprovalController extends Controller
@@ -99,6 +102,8 @@ class ApprovalController extends Controller
                 'status' => $stage->status,
                 'notes' => $stage->notes,
             ]);
+
+            $letter = WorkPermitLetter::with('vendor')->where('id', $stage->work_permit_letter_id)->first();
             
             $approvalStepCompletion = false;
             if ($request->status == 'approved') {
@@ -132,6 +137,31 @@ class ApprovalController extends Controller
                         throw new Exception("An error occurred when sending email notification");
                     }
                 }
+            } else {
+                $allApprovalStages = ApprovalStage::where('id', $stage->work_permit_letter_id)->get();
+                foreach ($allApprovalStages as $approvalStage) {
+                    $approvalStage->update(['status' => 'rejected']);
+                }
+                
+                $mailDelivery = false;
+                $mailAttemps = 0;
+                while (!$mailDelivery) {
+                    if ($mailAttemps >= 3) {
+                        break;
+                    }
+                    try {
+                        Mail::to($letter->vendor->email)
+                            ->send(new RejectedLetterMail($letter));
+                        
+                        $mailDelivery = true;
+                    } catch (\Throwable $th) {
+                        $mailAttemps += 1;
+                    }
+                }
+    
+                if (!$mailDelivery) {
+                    throw new Exception("An error occurred when sending email notification");
+                }
             }
 
             if ($approvalStepCompletion) {
@@ -145,25 +175,25 @@ class ApprovalController extends Controller
                 $stage->workPermitLetter->update(['qr_code' => $qrImageName]);
 
                 // Send mail to vendor
-                // $mailDelivery = false;
-                // $mailAttemps = 0;
-                // while (!$mailDelivery) {
-                //     if ($mailAttemps >= 3) {
-                //         break;
-                //     }
-                //     try {
-                //         Mail::to($stage->workPermitLetter->vendor->email)
-                //             ->send(new ApprovedMail($oneStageAfter->workPermitLetter));
+                $mailDelivery = false;
+                $mailAttemps = 0;
+                while (!$mailDelivery) {
+                    if ($mailAttemps >= 3) {
+                        break;
+                    }
+                    try {
+                        Mail::to($letter->vendor->email)
+                            ->send(new ApprovedLetterMail($letter));
                         
-                //         $mailDelivery = true;
-                //     } catch (\Throwable $th) {
-                //         $mailAttemps += 1;
-                //     }
-                // }
+                        $mailDelivery = true;
+                    } catch (\Throwable $th) {
+                        $mailAttemps += 1;
+                    }
+                }
     
-                // if (!$mailDelivery) {
-                //     throw new Exception("An error occurred when sending email notification");
-                // }
+                if (!$mailDelivery) {
+                    throw new Exception("An error occurred when sending email notification");
+                }
             }
 
             DB::commit();
@@ -172,7 +202,7 @@ class ApprovalController extends Controller
             return redirect()->route('dashboard.approvals.show', ['stage' => $stage->id])->withInput()->with('failed', $th->getMessage());
         }
 
-        return redirect()->route('dashboard.approvals.show', ['stage' => $stage->id])->with('success', 'SIK berhasil disetujui');
+        return redirect()->route('dashboard.approvals.show', ['stage' => $stage->id])->with('success', 'SIK berhasil diupdate');
     }
 
     /**

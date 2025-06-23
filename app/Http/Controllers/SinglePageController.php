@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\WorkPermitLetter;
 use Illuminate\Http\Request;
+
+use Mail;
+use App\Mail\ContactMail;
 
 class SinglePageController extends Controller
 {
@@ -11,61 +15,52 @@ class SinglePageController extends Controller
         return view('index');
     }
 
-    public function sik()
+    public function workPermitLetter()
     {
-        return view('sik');
+        $workPermitLetters = WorkPermitLetter::with('vendor')->orderBy('started_at', 'desc')->paginate(10);
+
+        return view('work-permit-letters', compact('workPermitLetters'));
     }
 
     public function contact()
     {
         return view('contact');
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    
+    public function storeContact(Request $request)
     {
-        //
-    }
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|max:255',
+            'whatsapp_number' => 'required|numeric|digits_between:8,20',
+            'title' => 'required|max:100',
+            'message' => 'required',
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $mailDelivery = false;
+        $mailAttemps = 0;
+        // $mailInfo = 'info@bthairport.com';
+        $mailInfo = 'tech@luckyabdillah.com';
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        while (!$mailDelivery) {
+            if ($mailAttemps >= 2) {
+                break;
+            }
+            try {
+                Mail::to($mailInfo)
+                    ->cc($validatedData['email'])
+                    ->send(new ContactMail($validatedData));
+                
+                $mailDelivery = true;
+            } catch (\Throwable $th) {
+                $mailAttemps += 1;
+            }
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
+        if (!$mailDelivery) {
+            return redirect()->back()->withInput()->with('failed', 'Failed while sending email, please try to submit again');
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return redirect('/contact')->with('success', 'Message has been successfully sent');
     }
 }

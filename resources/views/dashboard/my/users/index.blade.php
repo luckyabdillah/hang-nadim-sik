@@ -21,16 +21,20 @@
                         <td class="text-center">{{ $user->name }}</td>
                         <td class="text-center">{{ $user->email }}</td>
                         <td class="text-center text-nowrap">
-                            <a href="{{ route('dashboard.my.users.index') }}/{{ $user->uuid }}/edit" class="btn btn-warning rounded-pill">
-                                <i class="bx bx-edit-alt"></i>
-                            </a>
-                            <form action="{{ route('dashboard.my.users.index') }}/{{ $user->uuid }}" method="post" class="d-inline">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger btn-delete rounded-pill">
-                                    <i class="bx bx-trash"></i>
-                                </button>
-                            </form>
+                            @if ($user->id == auth()->user()->id)
+                                Anda
+                            @else
+                                <a href="{{ route('dashboard.my.users.index') }}/{{ $user->uuid }}/edit" class="btn btn-warning rounded-pill">
+                                    <i class="bx bx-edit-alt"></i>
+                                </a>
+                                <form action="{{ route('dashboard.my.users.index') }}/{{ $user->uuid }}" method="post" class="d-inline">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger btn-delete rounded-pill">
+                                        <i class="bx bx-trash"></i>
+                                    </button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

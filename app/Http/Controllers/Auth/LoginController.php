@@ -21,12 +21,10 @@ class LoginController extends Controller
 
         $remember = $request->remember_me ? true : false;
         if (Auth::attempt($credentials, $remember)) {
-            dd('logged in');
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
         }
-        dd('wrong email / password');
-        return redirect('/login')->withInput()->with('failed', 'Wrong email/password!');
+        return redirect('/login')->withInput()->with('failed', 'Email atau password salah');
     }
 
     public function logout(Request $request){

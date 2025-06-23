@@ -2,6 +2,14 @@ $orange: #FFA400;
 $orange-subtle: #FCE2BA;
 $orange-subtle-rgb: 252, 226, 186;
 
+.nav-item .nav-link.active {
+    font-weight: bold;
+}
+
+.btn-light {
+    color: $primary !important;
+}
+
 .bg-orange {
     background-color: $orange !important;
 }
@@ -38,6 +46,10 @@ $orange-subtle-rgb: 252, 226, 186;
 
 .hero-tagline-login {
     max-width: 90%;
+}
+
+footer .nav-link:hover {
+    text-decoration: underline;
 }
 
 @media (max-width: 991px) {

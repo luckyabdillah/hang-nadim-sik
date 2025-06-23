@@ -1,3 +1,17 @@
+input[type="number"].textfield-appearance::-webkit-outer-spin-button,
+input[type="number"].textfield-appearance::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type="number"].textfield-appearance {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+.dropdown-item.btn-logout:hover {
+  color: #fff !important;
+}
+
 /* XS: <576px */
 @media (max-width: 575.98px) {
     html {

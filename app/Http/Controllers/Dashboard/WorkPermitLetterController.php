@@ -2,22 +2,22 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
-use App\Models\ApprovalStage;
-use App\Models\Approver;
-use App\Models\WorkPermitLetter;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-// use Illuminate\Support\Carbon;
-use Carbon\Carbon;
-use Barryvdh\DomPDF\Facade\Pdf;
-
 use Mail;
-use Illuminate\Support\Facades\DB;
-use App\Mail\ApprovalStageMail;
-use App\Models\Copy;
-use App\Models\LetterFundamental;
 use Exception;
+use Carbon\Carbon;
+use App\Models\Copy;
+use App\Models\Approver;
+use Illuminate\Http\Request;
+use App\Models\ApprovalStage;
+use App\Mail\ApprovalStageMail;
+
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Mail\RejectedLetterMail;
+use App\Models\WorkPermitLetter;
+use App\Models\LetterFundamental;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class WorkPermitLetterController extends Controller
 {
@@ -117,7 +117,7 @@ class WorkPermitLetterController extends Controller
             'letter_number_end' => 'required|max:10|alpha',
             'pointing' => 'nullable|max:1000',
             'internal_pic_name' => 'required|max:150',
-            'internal_pic_number' => 'required|max:15',
+            'internal_pic_number' => 'required|numeric|max_digits:12',
         ]);
 
         $validatedData['letter_number'] = 'BTH.' . $validatedData['letter_number'] . '/SIK/BIB/' . date('Y') . '-' . $validatedData['letter_number_end'];
@@ -187,9 +187,38 @@ class WorkPermitLetterController extends Controller
             'notes' => 'required|max:255',
         ]);
         $validatedData['status'] = 'rejected';
+        
+        try {
+            DB::beginTransaction();
+            
+            $mailDelivery = false;
+            $mailAttemps = 0;
+            while (!$mailDelivery) {
+                if ($mailAttemps >= 3) {
+                    break;
+                }
+                try {
+                    Mail::to($letter->vendor->email)
+                        ->send(new RejectedLetterMail($letter));
+                    
+                    $mailDelivery = true;
+                } catch (\Throwable $th) {
+                    $mailAttemps += 1;
+                }
+            }
+    
+            if (!$mailDelivery) {
+                throw new Exception("An error occurred when sending email notification");
+            }
+    
+            $letter->update($validatedData);
 
-        $letter->update($validatedData);
-
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->route('dashboard.work-permit-letters.show', ['letter' => $letter->uuid])->withInput()->with('failed', $th->getMessage());
+        }
+    
         return redirect()->route('dashboard.work-permit-letters.show', ['letter' => $letter->uuid])->with('success', 'SIK berhasil ditolak');
     }
 
