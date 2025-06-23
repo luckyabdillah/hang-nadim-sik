@@ -264,7 +264,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        <button type="button" class="btn btn-secondary btn-cancel" data-bs-dismiss="modal">Tutup</button>
                         <button type="submit" class="btn btn-primary btn-submit">Submit</button>
                     </div>
                 </div>
