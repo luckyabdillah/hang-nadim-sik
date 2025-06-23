@@ -125,7 +125,7 @@
         <tr style="vertical-align: top; line-height: 26px;">
             <td></td>
             <td style="white-space: nowrap;"><span style="padding-right: 30px;">&nbsp;</span>&nbsp;2.&nbsp;&nbsp;</td>
-            <td>Lokasi: {{ $letter->workLocation->location }}{{ $letter->workLocation->description ? '(' . $letter->workLocation->description . ');' : ';' }}</td>
+            <td>Lokasi: {{ $letter->workLocation->location }}{{ $letter->workLocation->description ? ' (' . $letter->workLocation->description . ');' : ';' }}</td>
         </tr>
         @foreach ($provisionsBefore as $provision)
             @if (!empty(trim($provision)))
