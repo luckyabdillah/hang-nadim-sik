@@ -27,7 +27,7 @@ class WorkPermitLetterController extends Controller
             'workLocation' => function ($query) {
                 $query->withTrashed();
             },
-        ])->where('vendor_id', $vendor->id)->get();
+        ])->where('vendor_id', $vendor->id)->latest()->paginate(10);
 
         return view('dashboard.my.work-permit-letters.index', compact('letters'));
     }

@@ -49,6 +49,9 @@
                     @endif
                 </tbody>
             </table>
+            <div class="mt-3">
+                {{ $letters->links() }}
+            </div>
         </div>
     </div>
 @endsection 
