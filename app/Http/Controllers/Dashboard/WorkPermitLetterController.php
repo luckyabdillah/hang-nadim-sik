@@ -36,7 +36,7 @@ class WorkPermitLetterController extends Controller
             'workLocation' => function ($query) {
                 $query->withTrashed();
             },
-        ])->get();
+        ])->latest()->paginate(10);
 
         return view('dashboard.work-permit-letters.index', compact('letters'));
     }
