@@ -30,7 +30,7 @@
                                 &nbsp;PT Bandara Internasional Batam
                             </h6>
                             <h1 class="fw-semibold lh-sm hero-tagline-login" style="font-size: 2.5em;">Pengajuan <span class="bg-orange text-white px-2">SIK</span> menjadi mudah dengan sistem terdigitalisasi</h1>
-                            <p class="mt-3">Segera daftar bersama 20+ vendor lainya</p>
+                            <p class="mt-3">Segera daftar bersama 20+ vendor lainnya</p>
                             <a href="/" class="btn btn-light"><i class="bx bx-chevron-left bx-sm"></i> Kembali</a>
                         </div>
                         <div class="col-lg-6">
