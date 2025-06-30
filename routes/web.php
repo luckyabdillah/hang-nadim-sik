@@ -25,7 +25,6 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\ChangeablePasswordController;
 
 Route::get('/', [SinglePageController::class, 'index']);
-Route::get('/work-permit-letters', [SinglePageController::class, 'workPermitLetter']);
 Route::get('/contact', [SinglePageController::class, 'contact']);
 Route::post('/contact', [SinglePageController::class, 'storeContact']);
 
