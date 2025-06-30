@@ -22,7 +22,7 @@
                     <div class="mb-4">
                         <h3>Informasi Kontak</h3>
                         <ul class="navbar-nav bx-ul">
-                            <li class="nav-item"><a href="tel:(0778) 7630660" class="nav-link pb-1"><i class="bx bxs-phone bx-fw bx-sm ms-1"></i> (0778) 7630660</a></li>
+                            <li class="nav-item"><a href="tel:08117002313" class="nav-link pb-1"><i class="bx bxs-phone bx-fw bx-sm ms-1"></i> 0811-7002-313</a></li>
                             <li class="nav-item"><a href="mailto:info@bthairport.com" class="nav-link pb-1"><i class="bx bxs-envelope bx-fw bx-sm ms-1"></i> info@bthairport.com</a></li>
                             <li class="nav-item"><a href="javascript:void(0)" class="nav-link pb-1"><i class="bx bxs-map bx-fw bx-sm ms-1"></i> Jl. Hang Nadim no. 01 (Area Perkantoran Lt. 2) Batu Besar, Nongsa, Kota Batam, Kepulauan Riau - 29466</a></li>
                         </ul>

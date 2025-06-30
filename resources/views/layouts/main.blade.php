@@ -44,9 +44,6 @@
                                     <a class="nav-link {{ Request::is('/') ? 'active' : '' }}" href="/">Beranda</a>
                                 </li>
                                 <li class="nav-item pe-3">
-                                    <a class="nav-link {{ Request::is('work-permit-letters') ? 'active' : '' }}" href="/work-permit-letters">SIK</a>
-                                </li>
-                                <li class="nav-item pe-3">
                                     <a class="nav-link {{ Request::is('contact') ? 'active' : '' }}" href="/contact">Kontak</a>
                                 </li>
                                 <li class="nav-item pe-3">
@@ -101,7 +98,6 @@
                         <h6 class="fs-5 mb-3">Navigasi</h6>
                         <ul class="navbar-nav fw-light">
                             <li class="nav-item lh-sm"><a href="/" class="nav-link">Beranda</a></li>
-                            <li class="nav-item lh-sm"><a href="/sik" class="nav-link">SIK</a></li>
                             <li class="nav-item lh-sm"><a href="/contact" class="nav-link">Kontak</a></li>
                             <li class="nav-item lh-sm"><a href="/register" class="nav-link d-inline-block">Daftar</a>/<a href="/login" class="nav-link d-inline-block">Masuk</a></li>
                         </ul>

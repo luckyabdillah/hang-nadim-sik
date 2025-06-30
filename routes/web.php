@@ -25,9 +25,12 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\ChangeablePasswordController;
 
 Route::get('/', [SinglePageController::class, 'index']);
-Route::get('/work-permit-letters', [SinglePageController::class, 'workPermitLetter']);
 Route::get('/contact', [SinglePageController::class, 'contact']);
 Route::post('/contact', [SinglePageController::class, 'storeContact']);
+    
+Route::get('/register/info', [RegisterController::class, 'info']);
+Route::get('/register', [RegisterController::class, 'create'])->name('register');
+Route::post('/register', [RegisterController::class, 'store']);
 
 Route::middleware(['auth', 'type'])->group(function () {
     Route::prefix('dashboard')->group(function () {
@@ -82,10 +85,6 @@ Route::middleware(['auth', 'type'])->group(function () {
 Route::middleware(['guest'])->group(function () {
     Route::get('login', [LoginController::class, 'index'])->name('login');
     Route::post('login', [LoginController::class, 'authenticate']);
-    
-    Route::get('/register/info', [RegisterController::class, 'info']);
-    Route::get('/register', [RegisterController::class, 'create'])->name('register');
-    Route::post('/register', [RegisterController::class, 'store']);
     
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])->name('password.email');

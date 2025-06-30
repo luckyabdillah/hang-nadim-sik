@@ -15,13 +15,6 @@ class SinglePageController extends Controller
         return view('index');
     }
 
-    public function workPermitLetter()
-    {
-        $workPermitLetters = WorkPermitLetter::with('vendor')->orderBy('started_at', 'desc')->paginate(10);
-
-        return view('work-permit-letters', compact('workPermitLetters'));
-    }
-
     public function contact()
     {
         return view('contact');
