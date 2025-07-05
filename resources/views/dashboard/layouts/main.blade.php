@@ -127,9 +127,6 @@
     <!-- Main JS -->
     <script src="{{ asset('assets/theme/assets/js/main.js') }}"></script>
 
-    <!-- Page JS -->
-    <script src="{{ asset('assets/theme/assets/js/dashboards-analytics.js') }}"></script>
-
     <!-- SweetAlert2 JS -->
     <script src="{{ asset('assets/theme/assets/vendor/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
     
