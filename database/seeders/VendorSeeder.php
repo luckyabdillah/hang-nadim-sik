@@ -14,18 +14,8 @@ class VendorSeeder extends Seeder
     public function run(): void
     {
         Vendor::create([
+            'user_id' => 7,
             'legal_name' => 'CV. Media Kreasi Bangsa',
-            'name' => 'Kek Pisang Vila',
-        ]);
-
-        Vendor::create([
-            'legal_name' => 'CV. Cendana Jaya Abadi',
-            'name' => 'Keripik Singkong Gohoky',
-        ]);
-
-        Vendor::create([
-            'legal_name' => 'Liong Group Pte. Ltd.',
-            'name' => 'Keripik Singkong Gohoky',
         ]);
     }
 }

@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('approval_stages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('work_permit_letter_id')->constrained()->onDelete('cascade');
-            $table->foreignId('approver_id')->constrained();
+            $table->foreignId('approver_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('email');
             $table->string('name');
             $table->string('position', 150);
             $table->tinyInteger('level')->unsigned();

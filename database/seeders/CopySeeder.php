@@ -15,26 +15,32 @@ class CopySeeder extends Seeder
     {
         Copy::create([
             'name' => 'Direktur Operasi',
+            'email' => 'luckyabdillah00@gmail.com',
         ]);
 
         Copy::create([
             'name' => 'VP Airport Safety and Security',
+            'email' => 'luckyabdillah00@gmail.com',
         ]);
 
         Copy::create([
             'name' => 'VP Airport Maintenance & Readiness',
+            'email' => 'luckyabdillah00@gmail.com',
         ]);
 
         Copy::create([
             'name' => 'VP Business & Development',
+            'email' => 'luckyabdillah00@gmail.com',
         ]);
 
         Copy::create([
             'name' => 'Airport Duty Manager',
+            'email' => 'luckyabdillah00@gmail.com',
         ]);
 
         Copy::create([
             'name' => 'Terminal and Landside Services Team Leader',
+            'email' => 'luckyabdillah00@gmail.com',
         ]);
     }
 }

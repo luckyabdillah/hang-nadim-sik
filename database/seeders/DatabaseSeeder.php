@@ -17,42 +17,49 @@ class DatabaseSeeder extends Seeder
             'name' => 'Lucky Abdillah',
             'email' => 'luckyabdillah00@gmail.com',
             'password' => bcrypt('password'),
-            'role' => 'superuser',
+            'user_type' => 'internal',
         ]);
 
         User::create([
             'name' => 'Rizky Alfiansyah',
             'email' => 'rizky.alfiansyah2006@gmail.com',
             'password' => bcrypt('password'),
-            'role' => 'superuser',
+            'user_type' => 'internal',
         ]);
 
         User::create([
             'name' => 'Keysya Arghinaya',
             'email' => 'keysyarghinaya.2006@gmail.com',
             'password' => bcrypt('password'),
-            'role' => 'superuser',
+            'user_type' => 'internal',
         ]);
 
         User::create([
             'name' => 'Nauval Widaya',
             'email' => 'nauvalwidaya@gmail.com',
             'password' => bcrypt('password'),
-            'role' => 'superuser',
+            'user_type' => 'internal',
         ]);
 
         User::create([
             'name' => 'Ziva Dasfi Sadira',
             'email' => 'zivadasfi@gmail.com',
             'password' => bcrypt('password'),
-            'role' => 'superuser',
+            'user_type' => 'internal',
         ]);
 
         User::create([
             'name' => 'Jainal Arthur Sibuea',
             'email' => 'jainalsibuea05@gmail.com',
             'password' => bcrypt('password'),
-            'role' => 'superuser',
+            'user_type' => 'internal',
+        ]);
+
+        User::create([
+            'name' => 'Kek Pisang Vila',
+            'email' => 'kekpisangviladummy@gmail.com',
+            'password' => bcrypt('password'),
+            'user_type' => 'external',
         ]);
 
         $this->call([
