@@ -18,6 +18,8 @@ use App\Models\LetterFundamental;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use App\Exports\WorkPermitLetterExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class WorkPermitLetterController extends Controller
 {
@@ -26,6 +28,17 @@ class WorkPermitLetterController extends Controller
      */
     public function index()
     {
+        $requestedDateRange = request('date');
+        if ($requestedDateRange) {
+            [$dateRangeStart, $dateRangeEnd] = explode(' - ', $requestedDateRange);
+        } else {
+            $dateRangeStart = date('01/m/Y');
+            $dateRangeEnd = date('d/m/Y');
+        }
+
+        $start = Carbon::createFromFormat('d/m/Y', $dateRangeStart)->startOfDay();
+        $end = Carbon::createFromFormat('d/m/Y', $dateRangeEnd)->endOfDay();
+        
         $letters = WorkPermitLetter::with([
             'vendor' => function ($query) {
                 $query->withTrashed();
@@ -33,12 +46,19 @@ class WorkPermitLetterController extends Controller
             'workType' => function ($query) {
                 $query->withTrashed();
             },
-            'workLocation' => function ($query) {
-                $query->withTrashed();
-            },
-        ])->latest()->paginate(10);
+        ])->whereBetween('created_at', [$start, $end]);
 
-        return view('dashboard.work-permit-letters.index', compact('letters'));
+        if (request('search')) {
+            $letters = $letters->where('letter_number', 'like', '%' . request('search') . '%')->orWhereHas('vendor', function ($query) {
+                $query->where('legal_name', 'like', '%' . request('search') . '%')->orWhereHas('user', function ($query) {
+                    $query->where('name',  'like', '%' . request('search') . '%');
+                });
+            });
+        }
+        
+        $letters = $letters->latest()->paginate(10)->withQueryString();
+
+        return view('dashboard.work-permit-letters.index', compact('letters', 'dateRangeStart', 'dateRangeEnd'));
     }
 
     /**
@@ -69,13 +89,14 @@ class WorkPermitLetterController extends Controller
             'workType' => function ($query) {
                 $query->withTrashed();
             },
-            'workLocation' => function ($query) {
-                $query->withTrashed();
-            },
         ]);
+
+        $currentMonth = date('Y-m');
         
         $approvers = Approver::orderBy('level')->get();
         $stages = ApprovalStage::where('work_permit_letter_id', $letter->id)->orderBy('level')->get();
+        $totalLettersCurrentMonth = WorkPermitLetter::where('created_at', 'like', "$currentMonth%")->count();
+        $newLetterNumber = str_pad($totalLettersCurrentMonth + 1, 3, '0', STR_PAD_LEFT);
 
         $letterMonth = date('m', strtotime($letter->ended_at));
         $monthsInAlphaList = [
@@ -95,7 +116,7 @@ class WorkPermitLetterController extends Controller
 
         $monthInAlpha = $monthsInAlphaList[$letterMonth];
 
-        return view('dashboard.work-permit-letters.show', compact('letter', 'approvers', 'stages', 'monthInAlpha'));
+        return view('dashboard.work-permit-letters.show', compact('letter', 'approvers', 'stages', 'newLetterNumber', 'monthInAlpha'));
     }
 
     /**
@@ -130,14 +151,20 @@ class WorkPermitLetterController extends Controller
             
             $approvers = Approver::with('user')
                             ->whereIn('id', $validatedData['approvers'])
+                            ->orderBy('level')
                             ->get()
                             ->keyBy('id');
 
             foreach ($validatedData['approvers'] as $approverId) {
                 $approver = $approvers->get($approverId);
+                if (!$approver->signature) {
+                    throw new Exception("Tanda tangan $approver->position belum ada. Mohon lengkapi terlebih dahulu");
+                }
+
                 $stage = ApprovalStage::create([
                     'work_permit_letter_id' => $letter->id,
                     'approver_id' => $approver->id,
+                    'email' => $approver->user->email,
                     'name' => $approver->user->name,
                     'position' => $approver->position,
                     'level' => $approver->level,
@@ -145,7 +172,7 @@ class WorkPermitLetterController extends Controller
                 ]);
     
                 // Send email to first approver
-                if ($approver->level == 1) {
+                if ($approver->id == $approvers->first()->id) {
                     $stage->update(['status' => 'waiting']);
                     $mailDelivery = false;
                     $mailAttemps = 0;
@@ -223,7 +250,7 @@ class WorkPermitLetterController extends Controller
     }
 
     /**
-     * Export the specified resource.
+     * Export the specified resource to PDF.
      */
     public function exportPDF(WorkPermitLetter $letter)
     {
@@ -234,9 +261,6 @@ class WorkPermitLetterController extends Controller
                 $query->withTrashed();
             },
             'workType' => function ($query) {
-                $query->withTrashed();
-            },
-            'workLocation' => function ($query) {
                 $query->withTrashed();
             },
         ]);
@@ -264,5 +288,62 @@ class WorkPermitLetterController extends Controller
         $canvas->page_text(260, 813, "www.bthairport.com", $font, 10, [0.5, 0.5, 0.5]);
         
         return $pdf->stream(str_replace('/', '-', $letter->letter_number) . '.pdf');
+    }
+
+    /**
+     * Export the specified listing resource to Excel.
+     */
+    public function exportExcel()
+    {
+        $requestedDateRange = request('date');
+        if ($requestedDateRange) {
+            [$dateRangeStart, $dateRangeEnd] = explode(' - ', $requestedDateRange);
+        } else {
+            $dateRangeStart = date('01/m/Y');
+            $dateRangeEnd = date('d/m/Y');
+        }
+
+        Carbon::setLocale('id');
+        $start = Carbon::createFromFormat('d/m/Y', $dateRangeStart)->startOfDay();
+        $end = Carbon::createFromFormat('d/m/Y', $dateRangeEnd)->endOfDay();
+        
+        $letters = WorkPermitLetter::with([
+            'vendor' => function ($query) {
+                $query->withTrashed();
+            },
+            'workType' => function ($query) {
+                $query->withTrashed();
+            },
+        ])->whereBetween('created_at', [$start, $end]);
+
+        if (request('search')) {
+            $letters = $letters->where('letter_number', 'like', '%' . request('search') . '%')->orWhereHas('vendor', function ($query) {
+                $query->where('legal_name', 'like', '%' . request('search') . '%')->orWhereHas('user', function ($query) {
+                    $query->where('name',  'like', '%' . request('search') . '%');
+                });
+            });
+        }
+        
+        $letters = $letters->get();
+        $period = $start->translatedFormat('d F Y') . ' - ' . $end->translatedFormat('d F Y');
+        $appName = strtoupper(config('app.name'));
+
+        return Excel::download(new WorkPermitLetterExport($letters, $period), 'LAPORAN_SURAT_IZIN_KERJA_' . str_replace(' ', '_', $appName) . '_' . str_replace(' ', '_', $period) . '.xlsx');
+    }
+
+    /**
+     * Completion update the specified resource in storage.
+     */
+    public function updateCompletion(Request $request, WorkPermitLetter $letter)
+    {
+        $validatedData = $request->validate([
+            'photo' => 'required|image',
+        ]);
+
+        $validatedData['status'] = 'finished';
+        $validatedData['photo'] = $request->file('photo')->store('completion_photos');
+        $letter->update($validatedData);
+
+        return redirect()->route('dashboard.work-permit-letters.show', ['letter' => $letter->uuid])->with('success', 'SIK berhasil diperbarui');
     }
 }
