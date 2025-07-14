@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="card mb-4">
-        <h5 class="card-header">Profile Details</h5>
+        <h5 class="card-header mb-0">Profile Details</h5>
         <form action="/dashboard/profile" method="post" enctype="multipart/form-data">
             @csrf
             @method('put')
@@ -30,12 +30,12 @@
                 @if ($isExternal)
                     <div class="mb-3">
                         <label for="vendor_name" class="form-label">Nama Vendor</label>
-                        <input type="text" class="form-control" name="vendor_name" id="vendor_name" placeholder="Nama Vendor" value="{{ $user->applicant->vendor->name }}" autocomplete="off" disabled>
+                        <input type="text" class="form-control" name="vendor_name" id="vendor_name" placeholder="Nama Vendor" value="{{ $user->vendor->legal_name }}" autocomplete="off" disabled>
                     </div>
                 @else
                     <div class="mb-3">
                         <label for="role" class="form-label">Role</label>
-                        <input type="text" class="form-control" name="role" id="role" placeholder="Role" value="{{ ucwords($user->role) }}" autocomplete="off" disabled>
+                        <input type="text" class="form-control" name="role" id="role" placeholder="Role" value="{{ $user->role_id ? $user->role->title : '-' }}" autocomplete="off" disabled>
                     </div>
                 @endif
                 <div class="mt-4">
@@ -44,8 +44,63 @@
             </div>
         </form>
     </div>
+    @if (auth()->user()->approver)
+        <div class="card mb-4">
+            <h5 class="card-header mb-0">Detail Approver</h5>
+            <form method="post" action="/dashboard/approver-details" enctype="multipart/form-data">
+                @csrf
+                @method('put')
+                <div class="card-body">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-8">
+                            <label for="position" class="form-label">Posisi</label>
+                            <input type="text" class="form-control" name="position" id="position" placeholder="Posisi" value="{{ $user->approver->position }}" disabled>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="level" class="form-label">Level</label>
+                            <input type="text" class="form-control" name="level" id="level" placeholder="Level" value="{{ $user->approver->level }}" disabled>
+                        </div>
+                        <div class="col-12">
+                            <label for="signature" class="form-label">Tanda Tangan</label>
+                            <input type="file" class="form-control @error('signature') is-invalid @enderror" name="signature" id="signature" accept="image/*" required>
+                            @error('signature')
+                                <div class="invalid-feedback text-start">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        @if ($user->approver->signature)
+                            <button type="button" class="btn btn-primary me-1" data-bs-toggle="modal" data-bs-target="#signatureModal">Lihat Tanda Tangan</butt>
+                        @endif
+                        <button type="submit" class="btn btn-secondary btn-submit">Update</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Signature Modal -->
+        <div class="modal fade" id="signatureModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="signatureModalLabel">Tanda Tangan</h1>
+                    </div>
+                    <div class="modal-body">
+                        <div class="text-center">
+                            <img src="{{ asset("storage") . '/' . $user->approver->signature }}" alt="Signature" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="card mb-4">
-        <h5 class="card-header">Ubah Password</h5>
+        <h5 class="card-header mb-0">Ubah Password</h5>
         <form method="post" action="/change-password">
             @csrf
             @method('put')

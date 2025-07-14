@@ -12,23 +12,29 @@
                 @elseif ($letter->status == 'verified')
                     <span class="fw-bold text-warning">Menunggu Persetujuan</span>
                 @elseif ($letter->status == 'approved')
-                    <span class="fw-bold text-success">Disetujui</span>
+                    @if (strtotime($letter->ended_at) < strtotime('now'))
+                        <span class="fw-bold text-danger">Expired</span>
+                    @else
+                        <span class="fw-bold text-success">Disetujui</span>
+                    @endif
+                @elseif ($letter->status == 'finished')
+                    <span class="fw-bold text-success">Selesai</span>
                 @else
                     <span class="fw-bold text-danger">Ditolak</span>
                 @endif
             </p>
             <div class="row g-3 mb-4">
-                <div class="col-12">
+                <div class="col-md-7">
                     <label class="form-label">Vendor</label>
-                    <input type="text" class="form-control" value="{{ $letter->vendor->legal_name }} ({{ $letter->vendor->name }})" readonly>
+                    <input type="text" class="form-control" value="{{ $letter->vendor->legal_name }} ({{ $letter->vendor->user->name }})" readonly>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label">No. Surat</label>
+                    <input type="text" class="form-control" value="{{ $letter->letter_number ?? '-' }}" readonly>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Lokasi Pekerjaan</label>
-                    @if ($letter->workLocation->description)
-                        <input type="text" class="form-control" value="{{ $letter->workLocation->location }} ({{ $letter->workLocation->description }})" readonly>
-                    @else
-                        <input type="text" class="form-control" value="{{ $letter->workLocation->location }}" readonly>
-                    @endif
+                    <input type="text" class="form-control" value="{{ $letter->work_location }}" readonly>
                 </div>
                 <div class="col-md-4 col-6">
                     <label class="form-label">Tipe Pekerjaan</label>
@@ -69,7 +75,7 @@
                     </div>
                 @endif
             </div>
-            @if ($letter->status == 'approved')
+            @if ($letter->status == 'approved' || $letter->status == 'finished')
                 <a href="{{ route('dashboard.work-permit-letters.index') }}/{{ $letter->uuid }}/export-pdf" target="_blank" class="btn btn-primary">Download PDF</a>
                 <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#qrCodeModal">Show QR Code</button>
             @else
@@ -77,11 +83,14 @@
                 @if ($letter->job_safety_analysis_document)
                     <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#jsaDocumentModal">Dokumen JSA</button>
                 @endif
+                @if ($letter->airport_pass)
+                    <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#airportPassModal">Pass Bandara</button>
+                @endif
             @endif
         </div>
     </div>
     @if ($letter->status == 'submitted')
-        <div class="card">
+        <div class="card mb-3">
             <h5 class="card-header">Verifikasi</h5>
             <div class="card-body">
                 <form action="{{ route('dashboard.work-permit-letters.index') }}/{{ $letter->uuid }}" method="post">
@@ -103,7 +112,7 @@
                             <label for="letter_number" class="form-label">Nomor Surat</label>
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1">BTH.</span>
-                                <input type="text" class="form-control @error('letter_number') is-invalid @enderror" id="letter_number" name="letter_number" value="{{ old('letter_number') }}" placeholder="Nomor Surat" required autocomplete="off">
+                                <input type="text" class="form-control @error('letter_number') is-invalid @enderror" id="letter_number" name="letter_number" value="{{ old('letter_number', $newLetterNumber) }}" placeholder="Nomor Surat" required autocomplete="off">
                                 <span class="input-group-text" id="basic-addon2">/SIK/BIB/{{ date('Y') }}-</span>
                                 <input type="text" class="form-control @error('letter_number_end') is-invalid @enderror" id="letter_number_end" name="letter_number_end" value="{{ old('letter_number_end', $monthInAlpha) }}" placeholder="A-L" required autocomplete="off">
                             </div>
@@ -113,7 +122,7 @@
                         </div>
                         <div class="col-12">
                             <label for="pointing" class="form-label">Tunjukan</label>
-                            <textarea class="form-control @error('pointing') is-invalid @enderror" id="pointing" name="pointing" placeholder="Surat HR. Dept ... Nomor ... " autocomplete="off">{{ old('pointing') }}</textarea>
+                            <textarea class="form-control @error('pointing') is-invalid @enderror" id="pointing" name="pointing" placeholder="Surat HR. Dept ... Nomor ... " autocomplete="off">{{ old('pointing', $letter->pointing) }}</textarea>
                             @error('pointing')
                                 <div class="invalid-feedback text-start">{{ $message }}</div>
                             @enderror
@@ -133,13 +142,15 @@
                             @enderror
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-submit">Verifikasi</button>
-                    <button type="button" class="btn btn-danger btn-cancel" data-bs-toggle="modal" data-bs-target="#rejectionModal">Tolak</button>
+                    @if (in_array('dashboard_work-permit-letters_edit', $userPermissions))
+                        <button class="btn btn-primary btn-submit">Verifikasi</button>
+                        <button type="button" class="btn btn-danger btn-cancel" data-bs-toggle="modal" data-bs-target="#rejectionModal">Tolak</button>
+                    @endif
                 </form>
             </div>
         </div>
     @else
-        <div class="card">
+        <div class="card mb-3">
             <h5 class="card-header">Tahap Persetujuan</h5>
             <div class="card-body">
                 <table class="table table-bordered text-center">
@@ -182,7 +193,44 @@
         </div>
     @endif
 
-    @if ($letter->status == 'approved')
+    @if ($letter->status == 'approved' || $letter->status == 'finished')
+        <div class="card">
+            <h5 class="card-header">Verifikasi Penyelesaian</h5>
+            <div class="card-body">
+                @if ($letter->status == 'finished')
+                    <div class="text-center">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6">
+                                <a href="{{ asset("storage/$letter->photo") }}" download="{{ $letter->letter_number }} [COMPLETED].png">
+                                    <img src="{{ asset("storage/$letter->photo") }}" alt="Completion Photo" class="img-fluid mb-3">
+                                </a>
+                            </div>
+                        </div>
+                        <p class="m-0 text-muted">Diperbarui tanggal: {{ date('d/m/Y, H:i', strtotime($letter->updated_at)) }} (Klik gambar untuk mendownload)</p>
+                    </div>
+                @else
+                    @if (in_array('dashboard_work-permit-letters_completion', $userPermissions))
+                        <form action="{{ route('dashboard.work-permit-letters.index') }}/{{ $letter->uuid }}/completion" method="post" enctype="multipart/form-data">
+                            @csrf
+                            @method('put')
+                            <div class="mb-3">
+                                <label for="photo" class="form-label">Gambar</label>
+                                <input type="file" accept="image/*" class="form-control @error('photo') is-invalid @enderror" name="photo" id="photo" value="{{ old('photo') }}" required>
+                                @error('photo')
+                                    <div class="invalid-feedback text-start">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <button class="btn btn-primary btn-submit">Submit</button>
+                        </form>
+                    @else
+                        <p class="text-center">Anda tidak memiliki akses untuk memperbarui status</p>
+                    @endif
+                @endif
+            </div>
+        </div>
+
         <!-- QR Code Modal -->
         <div class="modal fade" id="qrCodeModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
@@ -242,35 +290,58 @@
                 </div>
             </div>
         @endif
-    @endif
 
-    <!-- Rejection Modal -->
-    <div class="modal fade" id="rejectionModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog">
-            <form action="{{ route('dashboard.work-permit-letters.index') }}/{{ $letter->uuid }}" method="post">
-                @csrf
-                @method('delete')
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="rejectionModalLabel">Penolakan SIK</h1>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="notes" class="form-label">Catatan</label>
-                            <textarea class="form-control @error('notes') is-invalid @enderror" id="notes" name="notes" placeholder="Catatan" required autocomplete="off">{{ old('notes') }}</textarea>
-                            @error('notes')
-                                <div class="invalid-feedback text-start">{{ $message }}</div>
-                            @enderror
+        @if ($letter->airport_pass)
+            <!-- Airport Pass Modal -->
+            <div class="modal fade" id="airportPassModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="airportPassModalLabel">Pass Bandara</h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center">
+                                <embed src="{{ asset("storage/$letter->airport_pass") }}" type="application/pdf" width="100%" height="500px">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-cancel" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary btn-submit">Submit</button>
-                    </div>
                 </div>
-            </form>
+            </div>
+        @endif
+    @endif
+
+    @if (in_array('dashboard_work-permit-letters_edit', $userPermissions))
+        <!-- Rejection Modal -->
+        <div class="modal fade" id="rejectionModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <form action="{{ route('dashboard.work-permit-letters.index') }}/{{ $letter->uuid }}" method="post">
+                    @csrf
+                    @method('delete')
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="rejectionModalLabel">Penolakan SIK</h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="notes" class="form-label">Catatan</label>
+                                <textarea class="form-control @error('notes') is-invalid @enderror" id="notes" name="notes" placeholder="Catatan" required autocomplete="off">{{ old('notes') }}</textarea>
+                                @error('notes')
+                                    <div class="invalid-feedback text-start">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary btn-cancel" data-bs-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
+    @endif
 @endsection
 
 @push('styles')

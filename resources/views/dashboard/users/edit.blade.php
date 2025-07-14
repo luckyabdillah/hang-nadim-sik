@@ -28,16 +28,13 @@
                         @enderror
                     </div>
                     <div class="col">
-                        <label for="role" class="form-label">Role</label>
-                        <select class="form-select @error('role') is-invalid @enderror" name="role" id="role" required>
-                            <option value="admin" {{ old('role', $user->role) == 'admin' ? 'selected' : '' }}>Admin</option>
-                            {{-- <option value="applicant" {{ old('role', $user->role) == 'applicant' ? 'selected' : '' }}>Applicant</option> --}}
-                            <option value="verificator" {{ old('role', $user->role) == 'verificator' ? 'selected' : '' }}>Verificator</option>
-                            {{-- <option value="approver" {{ old('role', $user->role) == 'approver' ? 'selected' : '' }}>Approver</option> --}}
-                            <option value="avsec" {{ old('role', $user->role) == 'avsec' ? 'selected' : '' }}>Avsec</option>
-                            <option value="superuser" {{ old('role', $user->role) == 'superuser' ? 'selected' : '' }}>Super User</option>
+                        <label for="role_id" class="form-label">Role</label>
+                        <select class="form-select @error('role_id') is-invalid @enderror" name="role_id" id="role_id" required>
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>{{ $role->title }}</option>
+                            @endforeach
                         </select>
-                        @error('role')
+                        @error('role_id')
                             <div class="invalid-feedback text-start">
                                 {{ $message }}
                             </div>

@@ -16,7 +16,7 @@ class WorkPermitLetterSeeder extends Seeder
         WorkPermitLetter::create([
             'vendor_id' => 1,
             'work_type_id' => 1,
-            'work_location_id' => 1,
+            'work_location' => 'Gerai FF. 01 (Dekat Gate A3)',
             'description' => 'Renovasi Gerai',
             'started_at' => '2025-05-01',
             'ended_at' => '2025-05-08',
@@ -28,7 +28,7 @@ class WorkPermitLetterSeeder extends Seeder
         WorkPermitLetter::create([
             'vendor_id' => 1,
             'work_type_id' => 2,
-            'work_location_id' => 2,
+            'work_location' => 'Gerai FF. 02 (Dekat Gate A3)',
             'description' => 'Renovasi Gerai',
             'started_at' => '2025-05-07',
             'ended_at' => '2025-05-12',

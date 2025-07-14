@@ -15,21 +15,11 @@
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
                         <label for="name" class="form-label">Nama</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" placeholder="Nama" value="{{ old('name', $approver->user->name) }}" required autofocus autocomplete="off">
-                        @error('name')
-                            <div class="invalid-feedback text-start">
-                                {{ $message }}
-                            </div>
-                        @enderror
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Nama" value="{{ $approver->user->name }}" disabled>
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" id="email" placeholder="Email" value="{{ old('email', $approver->user->email) }}" required autocomplete="off">
-                        @error('email')
-                            <div class="invalid-feedback text-start">
-                                {{ $message }}
-                            </div>
-                        @enderror
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Email" value="{{ $approver->user->email }}" disabled>
                     </div>
                     <div class="col-md-8">
                         <label for="position" class="form-label">Posisi</label>
@@ -49,7 +39,7 @@
                         </div>
                         @enderror
                     </div>
-                    {{-- <div class="col-12">
+                    <div class="col-12">
                         <label for="signature" class="form-label">Tanda Tangan</label>
                         <input type="file" class="form-control @error('signature') is-invalid @enderror" name="signature" id="signature" accept="image/*">
                         @error('signature')
@@ -57,7 +47,7 @@
                                 {{ $message }}
                             </div>
                         @enderror
-                    </div> --}}
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-submit">Submit</button>
             </form>

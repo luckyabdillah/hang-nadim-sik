@@ -8,6 +8,8 @@ use App\Http\Controllers\Dashboard\LetterFundamentalController;
 use App\Http\Controllers\Dashboard\CopyController;
 use App\Http\Controllers\Dashboard\ApproverController;
 use App\Http\Controllers\Dashboard\ApplicantController;
+use App\Http\Controllers\Dashboard\PermissionController;
+use App\Http\Controllers\Dashboard\RoleController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\WorkPermitLetterController;
 use App\Http\Controllers\Dashboard\ApprovalController;
@@ -35,46 +37,47 @@ Route::post('/register', [RegisterController::class, 'store']);
 Route::middleware(['auth', 'type'])->group(function () {
     Route::prefix('dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'index']);
+
+        Route::middleware(['permission'])->group(function () {
+            Route::resource('copies', CopyController::class)->except(['show'])->names('dashboard.copies');
+            Route::resource('work-types', WorkTypeController::class)->except(['show'])->parameters(['work-types' => 'type'])->names('dashboard.work-types');
+            Route::resource('work-locations', WorkLocationController::class)->except(['show'])->parameters(['work-locations' => 'location'])->names('dashboard.work-locations');
+            Route::resource('letter-fundamentals', LetterFundamentalController::class)->except(['show'])->parameters(['letter-fundamentals' => 'fundamental'])->names('dashboard.letter-fundamentals');
         
-        Route::resource('copies', CopyController::class)->except(['show'])->names('dashboard.copies');
-        Route::resource('work-types', WorkTypeController::class)->except(['show'])->parameters(['work-types' => 'type'])->names('dashboard.work-types');
-        Route::resource('work-locations', WorkLocationController::class)->except(['show'])->parameters(['work-locations' => 'location'])->names('dashboard.work-locations');
-        Route::resource('letter-fundamentals', LetterFundamentalController::class)->except(['show'])->parameters(['letter-fundamentals' => 'fundamental'])->names('dashboard.letter-fundamentals');
-    
-        Route::resource('work-permit-letters', WorkPermitLetterController::class)->except(['create', 'store', 'edit'])->parameters(['work-permit-letters' => 'letter'])->names('dashboard.work-permit-letters');
-        Route::get('work-permit-letters/{letter}/export-pdf', [WorkPermitLetterController::class, 'exportPDF'])->name('dashboard.work-permit-letters.export-pdf');
-        Route::resource('approvals', ApprovalController::class)->except(['create', 'store', 'edit'])->parameters(['approvals' => 'stage'])->names('dashboard.approvals');
-        Route::resource('vendors', VendorController::class)->except(['show'])->names('dashboard.vendors');
-        Route::resource('registrations', RegistrationController::class)->only(['index', 'edit', 'update'])->names('dashboard.registrations');
+            Route::get('work-permit-letters/export-excel', [WorkPermitLetterController::class, 'exportExcel'])->name('dashboard.work-permit-letters.export-excel');
+            Route::resource('work-permit-letters', WorkPermitLetterController::class)->except(['create', 'store', 'edit'])->parameters(['work-permit-letters' => 'letter'])->names('dashboard.work-permit-letters');
+            Route::get('work-permit-letters/{letter}/export-pdf', [WorkPermitLetterController::class, 'exportPDF'])->name('dashboard.work-permit-letters.export-pdf');
+            Route::put('work-permit-letters/{letter}/completion', [WorkPermitLetterController::class, 'updateCompletion'])->name('dashboard.work-permit-letters.completion');
+            Route::resource('approvals', ApprovalController::class)->except(['create', 'store', 'edit'])->parameters(['approvals' => 'stage'])->names('dashboard.approvals');
+            Route::resource('vendors', VendorController::class)->except(['create', 'show', 'destroy'])->names('dashboard.vendors');
+            Route::resource('registrations', RegistrationController::class)->only(['index', 'edit', 'update'])->names('dashboard.registrations');
+            
+            Route::resource('approvers', ApproverController::class)->except(['show'])->names('dashboard.approvers');
         
-        Route::resource('approvers', ApproverController::class)->except(['show'])->names('dashboard.approvers');
-        Route::resource('applicants', ApplicantController::class)->only(['index', 'show'])->names('dashboard.applicants');
-        Route::resource('users', UserController::class)->except(['show'])->names('dashboard.users');
+            Route::get('work-types/trashed', [WorkTypeController::class, 'trashed'])->name('dashboard.work-types.trashed');
+            Route::post('work-types/recover-all', [WorkTypeController::class, 'recoverAll'])->name('dashboard.work-types.recoverAll');
+            Route::put('work-types/{id}/recover', [WorkTypeController::class, 'recover'])->name('dashboard.work-types.recover');
+        
+            Route::get('work-locations/trashed', [WorkLocationController::class, 'trashed'])->name('dashboard.work-locations.trashed');
+            Route::post('work-locations/recover-all', [WorkLocationController::class, 'recoverAll'])->name('dashboard.work-locations.recoverAll');
+            Route::put('work-locations/{id}/recover', [WorkLocationController::class, 'recover'])->name('dashboard.work-locations.recover');
     
-        Route::get('work-types/trashed', [WorkTypeController::class, 'trashed'])->name('dashboard.work-types.trashed');
-        Route::post('work-types/recover-all', [WorkTypeController::class, 'recoverAll'])->name('dashboard.work-types.recoverAll');
-        Route::put('work-types/{id}/recover', [WorkTypeController::class, 'recover'])->name('dashboard.work-types.recover');
-        Route::delete('work-types/{id}/force', [WorkTypeController::class, 'forceDelete'])->name('dashboard.work-types.forceDelete');
-    
-        Route::get('work-locations/trashed', [WorkLocationController::class, 'trashed'])->name('dashboard.work-locations.trashed');
-        Route::post('work-locations/recover-all', [WorkLocationController::class, 'recoverAll'])->name('dashboard.work-locations.recoverAll');
-        Route::put('work-locations/{id}/recover', [WorkLocationController::class, 'recover'])->name('dashboard.work-locations.recover');
-        Route::delete('work-locations/{id}/force', [WorkLocationController::class, 'forceDelete'])->name('dashboard.work-locations.forceDelete');
-    
-        Route::get('vendors/trashed', [VendorController::class, 'trashed'])->name('dashboard.vendors.trashed');
-        Route::post('vendors/recover-all', [VendorController::class, 'recoverAll'])->name('dashboard.vendors.recoverAll');
-        Route::put('vendors/{id}/recover', [VendorController::class, 'recover'])->name('dashboard.vendors.recover');
-        Route::delete('vendors/{id}/force', [VendorController::class, 'forceDelete'])->name('dashboard.vendors.forceDelete');
+            Route::prefix('user-management')->group(function () {
+                Route::resource('permissions', PermissionController::class)->except(['create', 'show', 'edit'])->names('dashboard.permissions');
+                Route::resource('roles', RoleController::class)->names('dashboard.roles');
+                Route::resource('users', UserController::class)->except(['show'])->names('dashboard.users');
+            });
+        });
     
         Route::get('/profile', [ProfileController::class, 'edit']);
         Route::put('/profile', [ProfileController::class, 'update']);
+        Route::put('/approver-details', [ProfileController::class, 'updateApprover']);
     });
     
     Route::prefix('dashboard/my')->group(function () {
         Route::get('/', [MyDashboardController::class, 'index']);
         
         Route::resource('work-permit-letters', MyWorkPermitLetterController::class)->except(['edit'])->parameters(['work-permit-letters' => 'letter'])->names('dashboard.my.work-permit-letters');
-        Route::resource('users', MyUserController::class)->except(['show'])->names('dashboard.my.users');
         Route::get('work-permit-letters/{letter}/export-pdf', [WorkPermitLetterController::class, 'exportPDF'])->name('dashboard.work-permit-letters.export-pdf');
     });
     

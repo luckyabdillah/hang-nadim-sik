@@ -44,7 +44,7 @@ class DashboardController extends Controller
         $allWorkPermitLetters = WorkPermitLetter::count();
         $workPermitLetters = (clone $getWorkPermitLetters)->get();
         $activeWorkPermitLetters = (clone $getWorkPermitLetters)->where('status', 'approved')->where('ended_at', '>=', $currentDate)->get();
-        $finishedWorkPermitLetters = (clone $getWorkPermitLetters)->where('status', 'approved')->where('started_at', '<=', $currentDate)->where('ended_at', '>=', $currentDate)->get();
+        $finishedWorkPermitLetters = (clone $getWorkPermitLetters)->where('status', 'finished')->get();
         $expiredWorkPermitLetters = (clone $getWorkPermitLetters)->where('status', 'approved')->where('ended_at', '<', $currentDate)->get();
         $pendingWorkPermitLetters = (clone $getWorkPermitLetters)->whereIn('status', ['submitted', 'verified'])->get();
         $expireTodayWorkPermitLetters = (clone $getWorkPermitLetters)->where('status', 'approved')->where('ended_at', '=', $currentDate)->get();

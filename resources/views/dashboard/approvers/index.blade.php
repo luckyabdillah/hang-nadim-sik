@@ -4,7 +4,9 @@
 <div class="card">
     <h5 class="card-header">Daftar Approver</h5>
     <div class="card-body">
-        <a href="{{ route('dashboard.approvers.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
+        @if (in_array('dashboard_approvers_create', $userPermissions))
+            <a href="{{ route('dashboard.approvers.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
+        @endif
         <table class="table table-bordered text-center data-table">
             <thead>
                 <tr>
@@ -32,16 +34,20 @@
                             >
                                 <i class="bx bx-pen"></i>
                             </button>
-                            <a href="{{ route('dashboard.approvers.index') }}/{{ $approver->id }}/edit" class="btn btn-warning rounded-pill">
-                                <i class="bx bx-edit-alt"></i>
-                            </a>
-                            <form action="{{ route('dashboard.approvers.index') }}/{{ $approver->id }}" method="post" class="d-inline">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger btn-delete rounded-pill">
-                                    <i class="bx bx-trash"></i>
-                                </button>
-                            </form>
+                            @if (in_array('dashboard_approvers_edit', $userPermissions))
+                                <a href="{{ route('dashboard.approvers.index') }}/{{ $approver->id }}/edit" class="btn btn-warning rounded-pill">
+                                    <i class="bx bx-edit-alt"></i>
+                                </a>
+                            @endif
+                            @if (in_array('dashboard_approvers_delete', $userPermissions))
+                                <form action="{{ route('dashboard.approvers.index') }}/{{ $approver->id }}" method="post" class="d-inline">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger btn-delete rounded-pill">
+                                        <i class="bx bx-trash"></i>
+                                    </button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

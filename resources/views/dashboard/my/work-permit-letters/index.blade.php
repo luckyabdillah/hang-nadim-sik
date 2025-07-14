@@ -22,7 +22,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $letter->workType->type }}</td>
-                                <td>{{ $letter->workLocation->location }}</td>
+                                <td>{{ $letter->work_location }}</td>
                                 <td>{{ date('d/m/Y, H:i', strtotime($letter->created_at)) }}</td>
                                 <td>
                                     @if ($letter->status == 'submitted')
@@ -30,7 +30,13 @@
                                     @elseif ($letter->status == 'verified')
                                         <span class="badge bg-warning rounded-pill px-3">Menunggu Persetujuan</span>
                                     @elseif ($letter->status == 'approved')
-                                        <span class="badge bg-success rounded-pill px-3">Disetujui</span>
+                                        @if (strtotime($letter->ended_at) < strtotime('now'))
+                                            <span class="badge bg-danger rounded-pill px-3">Expired</span>
+                                        @else
+                                            <span class="badge bg-success rounded-pill px-3">Disetujui</span>
+                                        @endif
+                                    @elseif ($letter->status == 'finished')
+                                        <span class="badge bg-success rounded-pill px-3">Selesai</span>
                                     @else
                                         <span class="badge bg-danger rounded-pill px-3">Ditolak</span>
                                     @endif

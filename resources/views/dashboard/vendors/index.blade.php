@@ -4,8 +4,6 @@
     <div class="card">
         <h5 class="card-header">Daftar Vendor</h5>
         <div class="card-body">
-            <a href="{{ route('dashboard.vendors.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
-            <a href="{{ route('dashboard.vendors.trashed') }}" class="btn btn-secondary mb-4">Recycle Bin</a>
             <table class="table table-bordered text-center data-table">
                 <thead>
                     <tr>
@@ -21,19 +19,14 @@
                         <tr>
                             <td class="text-center">{{ $loop->iteration }}</td>
                             <td class="text-center">{{ $vendor->legal_name }}</td>
-                            <td class="text-center">{{ $vendor->name }}</td>
-                            <td class="text-center">{{ $vendor->email }}</td>
+                            <td class="text-center">{{ $vendor->user->name }}</td>
+                            <td class="text-center">{{ $vendor->user->email }}</td>
                             <td class="text-center text-nowrap">
-                                <a href="{{ route('dashboard.vendors.index') }}/{{ $vendor->uuid }}/edit" class="btn btn-warning rounded-pill">
-                                    <i class="bx bx-edit-alt"></i>
-                                </a>
-                                <form action="{{ route('dashboard.vendors.index') }}/{{ $vendor->uuid }}" method="post" class="d-inline">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-danger rounded-pill btn-delete">
-                                        <i class="bx bx-trash"></i>
-                                    </button>
-                                </form>
+                                @if (in_array('dashboard_vendors_edit', $userPermissions))
+                                    <a href="{{ route('dashboard.vendors.index') }}/{{ $vendor->uuid }}/edit" class="btn btn-warning rounded-pill">
+                                        <i class="bx bx-edit-alt"></i>
+                                    </a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

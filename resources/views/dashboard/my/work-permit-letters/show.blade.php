@@ -12,23 +12,29 @@
                 @elseif ($letter->status == 'verified')
                     <span class="fw-bold text-warning">Menunggu Persetujuan</span>
                 @elseif ($letter->status == 'approved')
-                    <span class="fw-bold text-success">Disetujui</span>
+                    @if (strtotime($letter->ended_at) < strtotime('now'))
+                        <span class="fw-bold text-danger">Expired</span>
+                    @else
+                        <span class="fw-bold text-success">Disetujui</span>
+                    @endif
+                @elseif ($letter->status == 'finished')
+                    <span class="fw-bold text-success">Selesai</span>
                 @else
                     <span class="fw-bold text-danger">Ditolak</span>
                 @endif
             </p>
             <div class="row g-3 mb-4">
-                <div class="col-12">
+                <div class="col-md-7">
                     <label class="form-label">Vendor</label>
-                    <input type="text" class="form-control" value="{{ $letter->vendor->legal_name }} ({{ $letter->vendor->name }})" readonly>
+                    <input type="text" class="form-control" value="{{ $letter->vendor->legal_name }} ({{ $letter->vendor->user->name }})" readonly>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label">No. Surat</label>
+                    <input type="text" class="form-control" value="{{ $letter->letter_number ?? '-' }}" readonly>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Lokasi Pekerjaan</label>
-                    @if ($letter->workLocation->description)
-                        <input type="text" class="form-control" value="{{ $letter->workLocation->location }} ({{ $letter->workLocation->description }})" readonly>
-                    @else
-                        <input type="text" class="form-control" value="{{ $letter->workLocation->location }}" readonly>
-                    @endif
+                    <input type="text" class="form-control" value="{{ $letter->work_location }}" readonly>
                 </div>
                 <div class="col-md-4 col-6">
                     <label class="form-label">Tipe Pekerjaan</label>
@@ -69,7 +75,7 @@
                     </div>
                 @endif
             </div>
-            @if ($letter->status == 'approved')
+            @if ($letter->status == 'approved' || $letter->status == 'finished')
                 <a href="{{ route('dashboard.work-permit-letters.index') }}/{{ $letter->uuid }}/export-pdf" target="_blank" class="btn btn-primary">Download PDF</a>
                 <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#qrCodeModal">Show QR Code</button>
             @else

@@ -22,7 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'user_type',
+        'role_id',
     ];
 
     /**
@@ -45,9 +46,9 @@ class User extends Authenticatable
         return $this->hasOne(Approver::class);
     }
 
-    public function applicant()
+    public function vendor()
     {
-        return $this->hasOne(Applicant::class);
+        return $this->hasOne(Vendor::class);
     }
 
     public function getRouteKeyName()
@@ -77,5 +78,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function hasPermission($permission)
+    {
+        return $this->role->permissions->contains('name', $permission);
     }
 }

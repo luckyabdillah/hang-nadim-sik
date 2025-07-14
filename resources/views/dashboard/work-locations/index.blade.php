@@ -4,7 +4,9 @@
     <div class="card">
         <h5 class="card-header">Daftar Lokasi Pekerjaan</h5>
         <div class="card-body">
-            <a href="{{ route('dashboard.work-locations.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
+            @if (in_array('dashboard_work-locations_create', $userPermissions))
+                <a href="{{ route('dashboard.work-locations.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
+            @endif
             <a href="{{ route('dashboard.work-locations.trashed') }}" class="btn btn-secondary mb-4">Recycle Bin</a>
             <table class="table table-bordered text-center data-table">
                 <thead>
@@ -22,16 +24,20 @@
                             <td class="text-center">{{ $location->location }}</td>
                             <td class="text-center">{{ $location->description }}</td>
                             <td class="text-center text-nowrap">
-                                <a href="{{ route('dashboard.work-locations.index') }}/{{ $location->id }}/edit" class="btn btn-warning rounded-pill">
-                                    <i class="bx bx-edit-alt"></i>
-                                </a>
-                                <form action="{{ route('dashboard.work-locations.index') }}/{{ $location->id }}" method="post" class="d-inline">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-danger rounded-pill btn-delete">
-                                        <i class="bx bx-trash"></i>
-                                    </button>
-                                </form>
+                                @if (in_array('dashboard_work-locations_edit', $userPermissions))
+                                    <a href="{{ route('dashboard.work-locations.index') }}/{{ $location->id }}/edit" class="btn btn-warning rounded-pill">
+                                        <i class="bx bx-edit-alt"></i>
+                                    </a>
+                                @endif
+                                @if (in_array('dashboard_work-locations_delete', $userPermissions))
+                                    <form action="{{ route('dashboard.work-locations.index') }}/{{ $location->id }}" method="post" class="d-inline">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit" class="btn btn-danger rounded-pill btn-delete">
+                                            <i class="bx bx-trash"></i>
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

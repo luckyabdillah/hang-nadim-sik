@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\RegistrationRequest;
+use App\Models\User;
+use App\Models\Vendor;
 
 class RegisterController extends Controller
 {
@@ -18,13 +20,23 @@ class RegisterController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|min:3|max:255',
             'vendor_name' => 'required|min:3|max:255',
-            'email' => 'required|email:rfc,dns|max:255|lowercase|unique:registration_requests,email|unique:users,email',
-            'password' => 'required|min:8',
+            'email' => 'required|email:rfc,dns|max:255|lowercase|unique:users,email',
+            'password' => 'required|confirmed|min:8',
         ]);
 
-        RegistrationRequest::create($validatedData);
+        $user = User::create([
+            'name' => $validatedData['name'],
+            'email' => $validatedData['email'],
+            'password' => $validatedData['password'],
+            'user_type' => 'external',
+        ]);
 
-        return redirect('/register/info')->with('registration-success', 'Pendaftaran berhasil dikirim');
+        Vendor::create([
+            'user_id' => $user->id,
+            'legal_name' => $validatedData['vendor_name'],
+        ]);
+
+        return redirect('/login')->with('success', 'Pendaftaran berhasil');
     }
 
     public function info()

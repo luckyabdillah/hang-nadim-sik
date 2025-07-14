@@ -48,8 +48,8 @@
                                     <form action="/register" method="post">
                                         @csrf
                                         <div class="mb-3">
-                                            <label for="name" class="form-label required-label">Nama</label>
-                                            <input type="name" class="form-control @error('name') is-invalid @enderror" name="name" id="name" autocomplete="off" placeholder="Masukkan nama" value="{{ old('name') }}" required>
+                                            <label for="name" class="form-label required-label">Nama Brand</label>
+                                            <input type="name" class="form-control @error('name') is-invalid @enderror" name="name" id="name" autocomplete="off" placeholder="Masukkan nama brand" value="{{ old('name') }}" required>
                                             @error('name')
                                                 <div class="invalid-feedback text-start d-block">
                                                     {{ $message }}
@@ -67,8 +67,8 @@
                                                 @enderror
                                             </div>
                                             <div class="col-md">
-                                                <label for="vendor_name" class="form-label required-label">Nama Vendor</label>
-                                                <input type="vendor_name" class="form-control @error('vendor_name') is-invalid @enderror" name="vendor_name" id="vendor_name" autocomplete="off" placeholder="Masukkan nama vendor" value="{{ old('vendor_name') }}" required>
+                                                <label for="vendor_name" class="form-label required-label">Nama Legal</label>
+                                                <input type="vendor_name" class="form-control @error('vendor_name') is-invalid @enderror" name="vendor_name" id="vendor_name" autocomplete="off" placeholder="Masukkan nama legal vendor" value="{{ old('vendor_name') }}" required>
                                                 @error('vendor_name')
                                                     <div class="invalid-feedback text-start d-block">
                                                         {{ $message }}
@@ -79,14 +79,26 @@
                                         <div class="mb-3">
                                             <label for="password" class="form-label required-label">Password</label>
                                             <div class="input-group">
-                                                <input type="password" class="form-control non-hoverable non-focusable  @error('password') is-invalid @enderror" name="password" id="password" autocomplete="off" placeholder="********" style="border-right: 0" required>
+                                                <input type="password" class="form-control non-hoverable non-focusable @error('password') is-invalid @enderror" name="password" id="password" autocomplete="off" placeholder="********" style="border-right: 0" required>
                                                 <span class="input-group-text cursor-pointer btn-show-password" style="border-left: 0;"><i class="bx bx-hide"></i></span>
-                                                @error('password')
-                                                    <div class="invalid-feedback text-start d-block">
-                                                        {{ $message }}
-                                                    </div>
-                                                @enderror
                                             </div>
+                                            @error('password')
+                                                <div class="invalid-feedback text-start d-block">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="password_confirmation" class="form-label required-label">Konfirmasi Password</label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control non-hoverable non-focusable @error('password_confirmation') is-invalid @enderror" name="password_confirmation" id="password_confirmation" autocomplete="off" placeholder="********" style="border-right: 0" required>
+                                                <span class="input-group-text cursor-pointer btn-show-password-confirmation" style="border-left: 0;"><i class="bx bx-hide"></i></span>
+                                            </div>
+                                            @error('password_confirmation')
+                                                <div class="invalid-feedback text-start d-block">
+                                                    {{ $message }}
+                                                </div>
+                                            @enderror
                                         </div>
                                         <div class="my-4">
                                             <div class="form-check">
@@ -127,12 +139,24 @@
                     }
                 })
 
+                const passwordConfirmationField = document.querySelector('#password_confirmation')
+                const btnShowPasswordConfirmation = document.querySelector('.btn-show-password-confirmation')
+                btnShowPasswordConfirmation.addEventListener('click', e => {
+                    if (passwordConfirmationField.getAttribute('type') == 'password') {
+                        btnShowPasswordConfirmation.innerHTML = '<i class="bx bx-show"></i>'
+                        passwordConfirmationField.setAttribute('type', 'text')
+                    } else {
+                        btnShowPasswordConfirmation.innerHTML = '<i class="bx bx-hide"></i>'
+                        passwordConfirmationField.setAttribute('type', 'password')
+                    }
+                })
+
                 document.querySelector('form').addEventListener('submit', function(e) {
                     e.preventDefault()
                     const container = e.target
                     const submitBtn = container.querySelector('.btn-submit')
-                    const submitBtnWidth = submitBtn.offsetWidth;
-                    submitBtn.style.width = `${submitBtnWidth}px`;
+                    const submitBtnWidth = submitBtn.offsetWidth
+                    submitBtn.style.width = `${submitBtnWidth}px`
 
                     submitBtn.setAttribute('disabled', true)
                     submitBtn.innerHTML = `

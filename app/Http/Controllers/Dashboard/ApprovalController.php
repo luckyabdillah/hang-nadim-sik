@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\ApprovalStage;
+use App\Models\Copy;
 use Illuminate\Http\Request;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 use Mail;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use App\Mail\ApprovalStageMail;
 use App\Mail\ApprovedLetterMail;
@@ -23,13 +26,41 @@ class ApprovalController extends Controller
      */
     public function index()
     {
+        $requestedDateRange = request('date');
+        if ($requestedDateRange) {
+            [$dateRangeStart, $dateRangeEnd] = explode(' - ', $requestedDateRange);
+        } else {
+            $dateRangeStart = date('01/m/Y');
+            $dateRangeEnd = date('d/m/Y');
+        }
+
+        $start = Carbon::createFromFormat('d/m/Y', $dateRangeStart)->startOfDay();
+        $end = Carbon::createFromFormat('d/m/Y', $dateRangeEnd)->endOfDay();
+        
         $stages = ApprovalStage::with([
             'workPermitLetter.vendor' => function ($query) {
                 $query->withTrashed();
             },
-        ])->get();
+        ])->whereBetween('created_at', [$start, $end]);
 
-        return view('dashboard.approvals.index', compact('stages'));
+        if (auth()->user()->role->title != 'Super User') {
+            $approverId = Auth::user()->approver?->id;
+            $stages = $stages->where('approver_id', $approverId);
+        }
+
+        if (request('search')) {
+            $stages = $stages->whereHas('workPermitLetter', function ($query) {
+                $query->where('letter_number', 'like', '%' . request('search') . '%')->orWhereHas('vendor', function ($query) {
+                    $query->where('legal_name', 'like', '%' . request('search') . '%')->orWhereHas('user', function ($query) {
+                        $query->where('name',  'like', '%' . request('search') . '%');
+                    });
+                });
+            });
+        }
+
+        $stages = $stages->latest()->paginate(10)->withQueryString();
+
+        return view('dashboard.approvals.index', compact('stages', 'dateRangeStart', 'dateRangeEnd'));
     }
 
     /**
@@ -62,9 +93,6 @@ class ApprovalController extends Controller
                         $query->withTrashed();
                     },
                     'workType' => function ($query) {
-                        $query->withTrashed();
-                    },
-                    'workLocation' => function ($query) {
                         $query->withTrashed();
                     },
                 ]);
@@ -111,7 +139,7 @@ class ApprovalController extends Controller
                 $stage->workPermitLetter->update(['notes' => null]);
                 $approvalStepCompletion = true;
     
-                $oneStageAfter = ApprovalStage::with(['workPermitLetter', 'approver.user'])->where('work_permit_letter_id', $stage->workPermitLetter->id)->where('level', '>', $stage->level)->orderBy('level')->first();
+                $oneStageAfter = ApprovalStage::with(['workPermitLetter', 'approver.user'])->where('id', '!=', $stage->id)->where('work_permit_letter_id', $stage->workPermitLetter->id)->where('level', '>=', $stage->level)->orderBy('level')->first();
                 if ($oneStageAfter) {
                     $approvalStepCompletion = false;
                     $oneStageAfter->update(['status' => 'waiting']);
@@ -174,6 +202,8 @@ class ApprovalController extends Controller
                 Storage::put($qrImageName, $qr);
                 $stage->workPermitLetter->update(['qr_code' => $qrImageName]);
 
+                $copies = Copy::where('send_email', 1)->pluck('email');
+
                 // Send mail to vendor
                 $mailDelivery = false;
                 $mailAttemps = 0;
@@ -182,7 +212,8 @@ class ApprovalController extends Controller
                         break;
                     }
                     try {
-                        Mail::to($letter->vendor->email)
+                        Mail::to($letter->vendor->user->email)
+                            ->cc($copies)
                             ->send(new ApprovedLetterMail($letter));
                         
                         $mailDelivery = true;

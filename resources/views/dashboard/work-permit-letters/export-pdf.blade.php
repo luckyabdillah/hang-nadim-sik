@@ -125,7 +125,7 @@
         <tr style="vertical-align: top; line-height: 26px;">
             <td></td>
             <td style="white-space: nowrap;"><span style="padding-right: 30px;">&nbsp;</span>&nbsp;2.&nbsp;&nbsp;</td>
-            <td>Lokasi: {{ $letter->workLocation->location }}{{ $letter->workLocation->description ? ' (' . $letter->workLocation->description . ');' : ';' }}</td>
+            <td>Lokasi: {{ $letter->work_location }}</td>
         </tr>
         @foreach ($provisionsBefore as $provision)
             @if (!empty(trim($provision)))
@@ -226,6 +226,9 @@
             <li><a href="{{ asset("storage/$letter->application_letter") }}">Surat Permohonan</a></li>
             @if ($letter->job_safety_analysis_document)
                 <li><a href="{{ asset("storage/$letter->job_safety_analysis_document") }}">JSA</a></li>
+            @endif
+            @if ($letter->airport_pass)
+                <li><a href="{{ asset("storage/$letter->airport_pass") }}">Pass Bandara</a></li>
             @endif
         </ul>
     </div>

@@ -14,9 +14,7 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
         
-        $isExternal = $user->role == 'applicant';
-        
-        return view('dashboard.profile.edit', compact('user', 'isExternal'));
+        return view('dashboard.profile.edit', compact('user'));
     }
 
     /**
@@ -38,6 +36,25 @@ class ProfileController extends Controller
         $validatedData = $request->validate($rules);
 
         $user->update($validatedData);
+
+        return redirect('/dashboard/profile')->with('success', 'Data berhasil diperbarui');
+    }
+
+    /**
+     * Update the user's approver information.
+     */
+    public function updateApprover(Request $request)
+    {
+        $user = auth()->user();
+
+        if (!$user->approver) return redirect()->back()->with('failed', 'Akun bukan approver');
+
+        $validatedData = $request->validate([
+            'signature' => 'required|image',
+        ]);
+
+        $validatedData['signature'] = $request->file('signature')->store('signatures');
+        $user->approver->update($validatedData);
 
         return redirect('/dashboard/profile')->with('success', 'Data berhasil diperbarui');
     }
