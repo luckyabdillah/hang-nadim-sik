@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,7 @@ class VendorController extends Controller
      */
     public function index()
     {
-        $vendors = Vendor::orderBy('name')->get();
+        $vendors = Vendor::with('user')->orderBy('legal_name')->get();
         return view('dashboard.vendors.index', compact('vendors'));
     }
 
@@ -32,8 +33,6 @@ class VendorController extends Controller
     {
         $validatedData = $request->validate([
             'legal_name' => 'required|max:150',
-            'name' => 'required|max:150',
-            'email' => 'required|email:rfc,dns|max:150',
             'address' => 'nullable|max:255',
         ]);
 
@@ -55,6 +54,8 @@ class VendorController extends Controller
      */
     public function edit(Vendor $vendor)
     {
+        $vendor->load('user');
+
         return view('dashboard.vendors.edit', compact('vendor'));
     }
 
@@ -64,13 +65,20 @@ class VendorController extends Controller
     public function update(Request $request, Vendor $vendor)
     {
         $validatedData = $request->validate([
+            'name' => 'required',
             'legal_name' => 'required|max:150',
-            'name' => 'required|max:150',
-            'email' => 'required|email:rfc,dns|max:150',
             'address' => 'nullable|max:255',
         ]);
 
-        $vendor->update($validatedData);
+        $user = User::whereHas('vendor', function ($query) use ($vendor) {
+            $query->where('id', $vendor->id);
+        })->first();
+
+        $user->update(['name' => $validatedData['name']]);
+        $vendor->update([
+            'legal_name' => $validatedData['legal_name'],
+            'address' => $validatedData['address'],
+        ]);
 
         return redirect()->route('dashboard.vendors.index')->with('success', 'Data berhasil diubah');
     }
