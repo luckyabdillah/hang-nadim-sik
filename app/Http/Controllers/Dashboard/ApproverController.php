@@ -24,7 +24,14 @@ class ApproverController extends Controller
      */
     public function create()
     {
-        return view('dashboard.approvers.create');
+        // $users = User::where('user_type', 'internal')
+        //                 ->whereNotIn('id', function ($query) {
+        //                     $query->select('user_id')->from('approvers');
+        //                 })->get();
+
+        $users = User::where('user_type', 'internal')->whereDoesntHave('approver')->get();
+
+        return view('dashboard.approvers.create', compact('users'));
     }
 
     /**
@@ -34,39 +41,16 @@ class ApproverController extends Controller
     {
         $request['is_default_approver'] = isset($request->is_default_approver) ? true : false;
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|max:255|email:rfc,dns|unique:users,email',
+            'user_id' => 'required|exists:users,id|unique:approvers,user_id',
             'position' => 'required|max:255',
             'level' => 'required|numeric|min:1|max:100',
-            'signature' => 'nullable|image',
-            'password' => 'required|min:8|max:255|confirmed',
+            'signature' => 'required|image',
             'is_default_approver' => 'nullable',
         ]);
 
-        if ($request->file('signature')) {
-            $validatedData['signature'] = $request->file('signature')->store('signature');
-        } else {
-            $validatedData['signature'] = null;
-        }
+        $validatedData['signature'] = $request->file('signature')->store('signatures');
 
-        $validatedDataUser = [
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'password' => $validatedData['password'],
-            'role' => 'approver',
-        ];
-
-        $user = User::create($validatedDataUser);
-
-        $validatedDataApprover = [
-            'user_id' => $user->id,
-            'position' => $validatedData['position'],
-            'level' => $validatedData['level'],
-            'signature' => $validatedData['signature'],
-            'is_default_approver' => $validatedData['is_default_approver'],
-        ];
-
-        Approver::create($validatedDataApprover);
+        Approver::create($validatedData);
 
         return redirect()->route('dashboard.approvers.index')->with('success', 'Data berhasil dibuat');
     }
@@ -93,34 +77,20 @@ class ApproverController extends Controller
     public function update(Request $request, Approver $approver)
     {
         $request['is_default_approver'] = isset($request->is_default_approver) ? true : false;
-        $rules = [
-            'name' => 'required|max:255',
-            'email' => 'required|max:255|email:rfc,dns',
+        $validatedData = $request->validate([
             'position' => 'required|max:255',
             'level' => 'required|numeric|min:1|max:100',
+            'signature' => 'nullable|image',
             'is_default_approver' => 'nullable',
-        ];
+        ]);
 
-        if ($request->email != $approver->user->email) {
-            $rules['email'] = 'required|max:255|email:rfc,dns|unique:users,email';
+        if ($request->file('signature')) {
+            $validatedData['signature'] = $request->file('signature')->store('signatures');
+        } else {
+            $validatedData['signature'] = null;
         }
 
-        $validatedData = $request->validate($rules);
-
-        $validatedDataUser = [
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-        ];
-
-        User::where('id', $approver->user_id)->update($validatedDataUser);
-
-        $validatedDataApprover = [
-            'position' => $validatedData['position'],
-            'level' => $validatedData['level'],
-            'is_default_approver' => $validatedData['is_default_approver'],
-        ];
-
-        $approver->update($validatedDataApprover);
+        $approver->update($validatedData);
 
         return redirect()->route('dashboard.approvers.index')->with('success', 'Data berhasil diubah');
     }
