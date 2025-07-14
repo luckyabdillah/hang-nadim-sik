@@ -23,7 +23,7 @@ class CopyController extends Controller
      */
     public function create()
     {
-        return view('dashboard.copies.create');
+       //
     }
 
     /**
@@ -31,11 +31,18 @@ class CopyController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|max:150',
-        ]);
-
-        Copy::create($validatedData);
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|max:150',
+                'email' => 'required|email:rfc,dns',
+                'send_email' => 'nullable',
+            ]);
+            $validatedData['send_email'] = isset($validatedData['send_email']) ? 1 : 0;
+    
+            Copy::create($validatedData);
+        } catch (\Throwable $th) {
+            return redirect()->route('dashboard.copies.index')->with('failed', $th->getMessage());
+        }
 
         return redirect()->route('dashboard.copies.index')->with('success', 'Data berhasil dibuat');
     }
@@ -53,7 +60,7 @@ class CopyController extends Controller
      */
     public function edit(Copy $copy)
     {
-        return view('dashboard.copies.edit', compact('copy'));
+        //
     }
 
     /**
@@ -61,11 +68,19 @@ class CopyController extends Controller
      */
     public function update(Request $request, Copy $copy)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|max:150',
-        ]);
-
-        $copy->update($validatedData);
+        try {
+            $validatedData = $request->validate([
+                'name' => 'required|max:150',
+                'email' => 'required|email:rfc,dns',
+                'send_email' => 'nullable',
+            ]);
+    
+            $validatedData['send_email'] = isset($validatedData['send_email']) ? 1 : 0;
+    
+            $copy->update($validatedData);
+        } catch (\Throwable $th) {
+            return redirect()->route('dashboard.copies.index')->with('failed', $th->getMessage());
+        }
 
         return redirect()->route('dashboard.copies.index')->with('success', 'Data berhasil diubah');
     }
