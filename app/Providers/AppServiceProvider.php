@@ -22,11 +22,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Paginator::useBootstrapFive();
         View::composer('dashboard.*', function ($view) {
             $user = Auth::user();
-            $isExternal = $user->role == 'applicant';
-            $view->with('isExternal', $isExternal);
+
+            $userPermissions = $user->role_id ? $user->role->permissions->pluck('name')->toArray() : [];
+            $isExternal = $user->user_type == 'external';
+
+            $view->with([
+                'userPermissions' => $userPermissions,
+                'isExternal' => $isExternal,
+            ]);
         });
+        Paginator::useBootstrapFive();
     }
 }

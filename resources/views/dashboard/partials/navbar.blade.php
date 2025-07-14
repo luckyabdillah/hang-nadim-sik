@@ -39,7 +39,11 @@
                                     </div>
                                     <div class="flex-grow-1">
                                         <span class="fw-semibold d-block">{{ auth()->user()->name }}</span>
-                                        <small class="text-muted">{{ ucwords(auth()->user()->role) }}</small>
+                                        @if ($isExternal)
+                                            <small class="text-muted">{{ auth()->user()->vendor->legal_name }}</small>
+                                        @else
+                                            <small class="text-muted">{{ auth()->user()->role_id ? auth()->user()->role->title : '-' }}</small>
+                                        @endif
                                     </div>
                                 </div>
                             </a>

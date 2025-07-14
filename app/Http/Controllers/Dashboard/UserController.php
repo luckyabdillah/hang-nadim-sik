@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -13,7 +14,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::where('role', '!=', 'approver')->where('role', '!=', 'applicant')->orderBy('name')->get();
+        $users = User::with('role')->where('user_type', 'internal')->orderBy('name')->get();
 
         return view('dashboard.users.index', compact('users'));
     }
@@ -23,7 +24,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('dashboard.users.create');
+        $roles = Role::all();
+
+        return view('dashboard.users.create', compact('roles'));
     }
 
     /**
@@ -33,10 +36,12 @@ class UserController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|max:255',
+            'role_id' => 'required|numeric',
             'email' => 'required|max:255|email:rfc,dns|unique:users,email',
             'password' => 'required|min:8|max:255|confirmed',
-            'role' => 'required|in:admin,verificator,avsec,superuser',
         ]);
+
+        $validatedData['user_type'] = 'internal';
 
         User::create($validatedData);
 
@@ -56,7 +61,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('dashboard.users.edit', compact('user'));
+        $roles = Role::all();
+
+        return view('dashboard.users.edit', compact('user', 'roles'));
     }
 
     /**
@@ -66,7 +73,7 @@ class UserController extends Controller
     {
         $rules = [
             'name' => 'required|max:255',
-            'role' => 'required|in:admin,verificator,avsec,superuser',
+            'role_id' => 'required|numeric',
             'email' => 'required|email:rfc,dns|max:255'
         ];
 

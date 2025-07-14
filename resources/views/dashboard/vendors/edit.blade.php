@@ -18,17 +18,14 @@
                     </div>
                     <div class="col-md-6">
                         <label for="name" class="form-label">Nama Brand</label>
-                        <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $vendor->name) }}" placeholder="Nama Brand" required autocomplete="off">
-                        @error('name')
+                        <input type="text" class="form-control @error('legal_name') is-invalid @enderror" id="name" name="name" value="{{ old('legal_name', $vendor->user->name) }}" placeholder="Nama brand" required autocomplete="off">
+                        @error('legal_name')
                             <div class="invalid-feedback text-start">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="col-md-6">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $vendor->email) }}" placeholder="Email" required autocomplete="off">
-                        @error('email')
-                            <div class="invalid-feedback text-start">{{ $message }}</div>
-                        @enderror
+                        <input type="email" class="form-control" id="email" name="email" value="{{ $vendor->user->email }}" disabled>
                     </div>
                     <div class="col">
                         <label for="address" class="form-label">Alamat</label>

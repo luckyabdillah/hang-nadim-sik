@@ -6,12 +6,14 @@
       <div class="card-body">
         <div class="mb-4">
             <a href="{{ route('dashboard.work-types.index') }}" class="btn btn-secondary">Kembali</a>
-            <form action="{{ route('dashboard.work-types.recoverAll') }}" method="post" class="d-inline">
-                @csrf
-                <button type="submit" class="btn btn-warning btn-restore">
-                    Restore Semua
-                </button>
-            </form>
+            @if (in_array('dashboard_work-types_delete', $userPermissions))
+                <form action="{{ route('dashboard.work-types.recoverAll') }}" method="post" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-warning btn-restore">
+                        Restore Semua
+                    </button>
+                </form>
+            @endif
         </div>
           <table class="table table-bordered text-center data-table">
               <thead>
@@ -29,20 +31,22 @@
                             <td class="text-center">{{ $type->type }}</td>
                             <td class="text-center">{{ $type->unit_name }}</td>
                             <td class="text-center text-nowrap">
-                                <form action="{{ route('dashboard.work-types.recover', $type->id) }}" method="post" class="d-inline">
-                                    @csrf
-                                    @method('put')
-                                    <button type="submit" class="btn btn-warning rounded-pill btn-restore">
-                                        <i class="bx bx-reset"></i>
-                                    </button>
-                                </form>
-                                <form action="{{ route('dashboard.work-types.forceDelete', $type->id) }}" method="post" class="d-inline">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-danger rounded-pill btn-force-delete">
-                                        <i class="bx bx-trash"></i>
-                                    </button>
-                                </form>
+                                @if (in_array('dashboard_work-types_delete', $userPermissions))
+                                    <form action="{{ route('dashboard.work-types.recover', $type->id) }}" method="post" class="d-inline">
+                                        @csrf
+                                        @method('put')
+                                        <button type="submit" class="btn btn-warning rounded-pill btn-restore">
+                                            <i class="bx bx-reset"></i>
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('dashboard.work-types.forceDelete', $type->id) }}" method="post" class="d-inline">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit" class="btn btn-danger rounded-pill btn-force-delete">
+                                            <i class="bx bx-trash"></i>
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

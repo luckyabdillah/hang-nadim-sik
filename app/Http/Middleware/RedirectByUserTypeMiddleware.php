@@ -22,7 +22,7 @@ class RedirectByUserTypeMiddleware
             return $next($request);
         }
 
-        $isExternal = $user->role == 'applicant';
+        $isExternal = $user->user_type == 'external';
         $path = $request->path();
 
         $resources = config('redirects.redirectable_resources', []);

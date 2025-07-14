@@ -4,7 +4,9 @@
 <div class="card">
     <h5 class="card-header">Daftar Pengguna</h5>
     <div class="card-body">
-        <a href="{{ route('dashboard.users.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
+        @if (in_array('dashboard_users_create', $userPermissions))
+            <a href="{{ route('dashboard.users.create') }}" class="btn btn-primary mb-4">Tambah Data</a>
+        @endif
         <table class="table table-bordered text-center data-table">
             <thead>
                 <tr>
@@ -21,18 +23,22 @@
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td class="text-center">{{ $user->name }}</td>
                         <td class="text-center">{{ $user->email }}</td>
-                        <td class="text-center">{{ ucfirst($user->role) }}</td>
+                        <td class="text-center">{{ $user->role_id ? $user->role->title : '-' }}</td>
                         <td class="text-center text-nowrap">
-                            <a href="{{ route('dashboard.users.index') }}/{{ $user->uuid }}/edit" class="btn btn-warning rounded-pill">
-                                <i class="bx bx-edit-alt"></i>
-                            </a>
-                            <form action="{{ route('dashboard.users.index') }}/{{ $user->uuid }}" method="post" class="d-inline">
-                                @csrf
-                                @method('delete')
-                                <button type="submit" class="btn btn-danger btn-delete rounded-pill">
-                                    <i class="bx bx-trash"></i>
-                                </button>
-                            </form>
+                            @if (in_array('dashboard_users_edit', $userPermissions))
+                                <a href="{{ route('dashboard.users.index') }}/{{ $user->uuid }}/edit" class="btn btn-warning rounded-pill">
+                                    <i class="bx bx-edit-alt"></i>
+                                </a>
+                            @endif
+                            @if (in_array('dashboard_users_delete', $userPermissions))
+                                <form action="{{ route('dashboard.users.index') }}/{{ $user->uuid }}" method="post" class="d-inline">
+                                    @csrf
+                                    @method('delete')
+                                    <button type="submit" class="btn btn-danger btn-delete rounded-pill">
+                                        <i class="bx bx-trash"></i>
+                                    </button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

@@ -12,23 +12,29 @@
                 @elseif ($stage->workPermitLetter->status == 'verified')
                     <span class="fw-bold text-warning">Menunggu Persetujuan</span>
                 @elseif ($stage->workPermitLetter->status == 'approved')
-                    <span class="fw-bold text-success">Disetujui</span>
+                    @if (strtotime($stage->workPermitLetter->ended_at) < strtotime('now'))
+                        <span class="fw-bold text-danger">Expired</span>
+                    @else
+                        <span class="fw-bold text-success">Disetujui</span>
+                    @endif
+                @elseif ($stage->workPermitLetter->status == 'finished')
+                    <span class="fw-bold text-success">Selesai</span>
                 @else
                     <span class="fw-bold text-danger">Ditolak</span>
                 @endif
             </p>
             <div class="row g-3 mb-4">
-                <div class="col-12">
+                <div class="col-md-7">
                     <label class="form-label">Vendor</label>
-                    <input type="text" class="form-control" value="{{ $stage->workPermitLetter->vendor->legal_name }} ({{ $stage->workPermitLetter->vendor->name }})" readonly>
+                    <input type="text" class="form-control" value="{{ $stage->workPermitLetter->vendor->legal_name }} ({{ $stage->workPermitLetter->vendor->user->name }})" readonly>
+                </div>
+                <div class="col-md-5">
+                    <label class="form-label">No. Surat</label>
+                    <input type="text" class="form-control" value="{{ $stage->workPermitLetter->letter_number ?? '-' }}" readonly>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label">Lokasi Pekerjaan</label>
-                    @if ($stage->workPermitLetter->workLocation->description)
-                        <input type="text" class="form-control" value="{{ $stage->workPermitLetter->workLocation->location }} ({{ $stage->workPermitLetter->workLocation->description }})" readonly>
-                    @else
-                        <input type="text" class="form-control" value="{{ $stage->workPermitLetter->workLocation->location }}" readonly>
-                    @endif
+                    <input type="text" class="form-control" value="{{ $stage->workPermitLetter->work_location }}" readonly>
                 </div>
                 <div class="col-md-4 col-6">
                     <label class="form-label">Tipe Pekerjaan</label>
@@ -69,13 +75,16 @@
                     </div>
                 @endif
             </div>
-            @if ($stage->workPermitLetter->status == 'approved')
+            @if ($stage->workPermitLetter->status == 'approved' || $stage->workPermitLetter->status == 'finished')
                 <a href="{{ route('dashboard.work-permit-letters.index') }}/{{ $stage->workPermitLetter->uuid }}/export-pdf" target="_blank" class="btn btn-primary">Download PDF</a>
                 <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#qrCodeModal">Show QR Code</button>
             @else
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#applicationLetterModal">Surat Permohonan</button>
                 @if ($stage->workPermitLetter->job_safety_analysis_document)
                     <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#jsaDocumentModal">Dokumen JSA</button>
+                @endif
+                @if ($stage->workPermitLetter->airport_pass)
+                    <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#airportPassModal">Pass Bandara</button>
                 @endif
             @endif
         </div>
@@ -84,7 +93,7 @@
     <div class="card">
         <h5 class="card-header">Persetujuan</h5>
         <div class="card-body">
-            @if ($stage->workPermitLetter->status == 'approved')
+            @if ($stage->workPermitLetter->status == 'approved' || $stage->workPermitLetter->status == 'finished')
                 <div class="mb-3">
                     <label class="form-label">Status</label>
                     <input type="text" class="form-control" value="Disetujui" readonly>
@@ -168,6 +177,27 @@
                         <div class="modal-body">
                             <div class="text-center">
                                 <embed src="{{ asset("storage") . '/' . $stage->workPermitLetter->job_safety_analysis_document }}" type="application/pdf" width="100%" height="500px">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        @if ($stage->workPermitLetter->airport_pass)
+            <!-- Airport Pass Modal -->
+            <div class="modal fade" id="airportPassModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="airportPassModalLabel">Pass Bandara</h1>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center">
+                                <embed src="{{ asset("storage") . '/' . $stage->workPermitLetter->airport_pass }}" type="application/pdf" width="100%" height="500px">
                             </div>
                         </div>
                         <div class="modal-footer">

@@ -6,12 +6,14 @@
         <div class="card-body">
             <div class="mb-4">
                 <a href="{{ route('dashboard.work-locations.index') }}" class="btn btn-secondary">Kembali</a>
-                <form action="{{ route('dashboard.work-locations.recoverAll') }}" method="post" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn btn-warning btn-restore">
-                        Restore Semua
-                    </button>
-                </form>
+                @if (in_array('dashboard_work-locations_delete', $userPermissions))
+                    <form action="{{ route('dashboard.work-locations.recoverAll') }}" method="post" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-warning btn-restore">
+                            Restore Semua
+                        </button>
+                    </form>
+                @endif
             </div>
             <table class="table table-bordered text-center data-table">
                 <thead>
@@ -29,20 +31,22 @@
                             <td class="text-center">{{ $location->location }}</td>
                             <td class="text-center">{{ $location->description }}</td>
                             <td class="text-center text-nowrap">
-                                <form action="{{ route('dashboard.work-locations.recover', $location->id) }}" method="post" class="d-inline">
-                                    @csrf
-                                    @method('put')
-                                    <button type="submit" class="btn btn-warning rounded-pill btn-restore">
-                                        <i class="bx bx-reset"></i>
-                                    </button>
-                                </form>
-                                <form action="{{ route('dashboard.work-locations.forceDelete', $location->id) }}" method="post" class="d-inline">
-                                    @csrf
-                                    @method('delete')
-                                    <button type="submit" class="btn btn-danger rounded-pill btn-force-delete">
-                                        <i class="bx bx-trash"></i>
-                                    </button>
-                                </form>
+                                @if (in_array('dashboard_work-locations_delete', $userPermissions))
+                                    <form action="{{ route('dashboard.work-locations.recover', $location->id) }}" method="post" class="d-inline">
+                                        @csrf
+                                        @method('put')
+                                        <button type="submit" class="btn btn-warning rounded-pill btn-restore">
+                                            <i class="bx bx-reset"></i>
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('dashboard.work-locations.forceDelete', $location->id) }}" method="post" class="d-inline">
+                                        @csrf
+                                        @method('delete')
+                                        <button type="submit" class="btn btn-danger rounded-pill btn-force-delete">
+                                            <i class="bx bx-trash"></i>
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
