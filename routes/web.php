@@ -57,12 +57,10 @@ Route::middleware(['auth', 'type'])->group(function () {
             Route::get('work-types/trashed', [WorkTypeController::class, 'trashed'])->name('dashboard.work-types.trashed');
             Route::post('work-types/recover-all', [WorkTypeController::class, 'recoverAll'])->name('dashboard.work-types.recoverAll');
             Route::put('work-types/{id}/recover', [WorkTypeController::class, 'recover'])->name('dashboard.work-types.recover');
-            Route::delete('work-types/{id}/force', [WorkTypeController::class, 'forceDelete'])->name('dashboard.work-types.forceDelete');
         
             Route::get('work-locations/trashed', [WorkLocationController::class, 'trashed'])->name('dashboard.work-locations.trashed');
             Route::post('work-locations/recover-all', [WorkLocationController::class, 'recoverAll'])->name('dashboard.work-locations.recoverAll');
             Route::put('work-locations/{id}/recover', [WorkLocationController::class, 'recover'])->name('dashboard.work-locations.recover');
-            Route::delete('work-locations/{id}/force', [WorkLocationController::class, 'forceDelete'])->name('dashboard.work-locations.forceDelete');
     
             Route::prefix('user-management')->group(function () {
                 Route::resource('permissions', PermissionController::class)->except(['create', 'show', 'edit'])->names('dashboard.permissions');

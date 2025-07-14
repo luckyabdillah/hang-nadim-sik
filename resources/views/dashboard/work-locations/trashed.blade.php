@@ -39,13 +39,6 @@
                                             <i class="bx bx-reset"></i>
                                         </button>
                                     </form>
-                                    <form action="{{ route('dashboard.work-locations.forceDelete', $location->id) }}" method="post" class="d-inline">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit" class="btn btn-danger rounded-pill btn-force-delete">
-                                            <i class="bx bx-trash"></i>
-                                        </button>
-                                    </form>
                                 @endif
                             </td>
                         </tr>
