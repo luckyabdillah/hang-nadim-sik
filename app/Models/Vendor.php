@@ -11,15 +11,19 @@ class Vendor extends Model
     use SoftDeletes;
     
     protected $fillable = [
+        'user_id',
         'legal_name',
-        'name',
-        'email',
         'address',
     ];
 
     public function getRouteKeyName()
     {
         return 'uuid';
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
     
     protected static function boot()
