@@ -1,0 +1,119 @@
+{
+  "openapi": "3.1.1",
+  "info": { "title": "Hang Nadim SIK RESTful API - Approvals", "version": "1.0", "description": "OpenAPI doc for approvals endpoints", "contact": { "email": "luckyabdillah00@gmail.com" } },
+  "servers": [ { "url": "https://sik.luckyabdillah.com/api/v1" }, { "url": "http://127.0.0.1:8000/api/v1" } ],
+  "paths": {
+    "/approvals": {
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["Approval"], "summary": "Get all approvals", "responses": { "200": { "description": "OK" } } },
+      "post": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["Approval"],
+        "summary": "Create approval stage",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["name","order"], "properties": { "name": { "type": "string" }, "order": { "type": "integer" }, "conditions": { "type": "string" } } } } } },
+        "responses": { "200": { "description": "OK" }, "422": { "description": "Validation failed" } }
+      }
+    },
+    "/approvals/{id}": {
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["Approval"], "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } },
+      "put": { "security": [{ "BearerAuth": [] }], "tags": ["Approval"], "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["name","order"] } } } }, "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" }, "422": { "description": "Validation failed" } },
+      "delete": { "security": [{ "BearerAuth": [] }], "tags": ["Approval"], "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } }
+  },
+  "components": { "securitySchemes": { "BearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" } } }
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Hang Nadim SIK RESTful API - Approvals",
+    "version": "1.0",
+    "description": "OpenAPI doc for approvals endpoints",
+    "contact": { "email": "luckyabdillah00@gmail.com" }
+  },
+  "servers": [
+    { "url": "https://sik.luckyabdillah.com/api/v1" },
+    { "url": "http://127.0.0.1:8000/api/v1" }
+  ],
+  {
+    "openapi": "3.1.1",
+    "info": {
+      "title": "Hang Nadim SIK RESTful API - Approvals",
+      "version": "1.0",
+      "description": "OpenAPI doc for approvals endpoints",
+      "contact": { "email": "luckyabdillah00@gmail.com" }
+    },
+    "servers": [
+      { "url": "https://sik.luckyabdillah.com/api/v1" },
+      { "url": "http://127.0.0.1:8000/api/v1" }
+    ],
+    "paths": {
+      "/approvals": {
+        "get": {
+          "security": [{ "BearerAuth": [] }],
+          "tags": ["Approval"],
+          "summary": "Get all approvals",
+          "responses": { "200": { "description": "OK" } }
+        },
+        "post": {
+          "security": [{ "BearerAuth": [] }],
+          "tags": ["Approval"],
+          "summary": "Create approval",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["work_permit_letter_id", "approver_id", "status"],
+                  "properties": {
+                    "work_permit_letter_id": { "type": "integer" },
+                    "approver_id": { "type": "integer" },
+                    "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+                    "notes": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": { "200": { "description": "OK" }, "422": { "description": "Validation failed" } }
+        }
+      },
+      "/approvals/{id}": {
+        "get": {
+          "security": [{ "BearerAuth": [] }],
+          "tags": ["Approval"],
+          "parameters": [ { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } } ],
+          "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } }
+        },
+        "put": {
+          "security": [{ "BearerAuth": [] }],
+          "tags": ["Approval"],
+          "parameters": [ { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } } ],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": ["status"],
+                  "properties": {
+                    "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+                    "notes": { "type": "string" }
+                  }
+                }
+              }
+            }
+          },
+          "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" }, "422": { "description": "Validation failed" } }
+        },
+        "delete": {
+          "security": [{ "BearerAuth": [] }],
+          "tags": ["Approval"],
+          "parameters": [ { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } } ],
+          "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } }
+        }
+      }
+    },
+    "components": {
+      "securitySchemes": {
+        "BearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+      }
+    }
+  }

@@ -1,0 +1,99 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Hang Nadim SIK RESTful API - Letter Fundamentals",
+    "version": "1.0",
+    "description": "OpenAPI doc for letter-fundamentals endpoints",
+    "contact": { "email": "luckyabdillah00@gmail.com" }
+  },
+  "servers": [
+    { "url": "https://sik.luckyabdillah.com/api/v1" },
+    { "url": "http://127.0.0.1:8000/api/v1" }
+  ],
+  "paths": {
+    "/letter-fundamentals": {
+      "get": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["LetterFundamental"],
+        "summary": "Get all letter fundamentals",
+        "responses": {
+          "200": { "description": "OK" }
+        }
+      },
+      "post": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["LetterFundamental"],
+        "summary": "Create letter fundamental",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "content"],
+                "properties": {
+                  "name": { "type": "string", "maxLength": 255 },
+                  "content": { "type": "string" },
+                  "notes": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "422": { "description": "Validation failed" }
+        }
+      }
+    },
+    "/letter-fundamentals/{id}": {
+      "get": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["LetterFundamental"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "404": { "description": "Not found" }
+        }
+      },
+      "put": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["LetterFundamental"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "type": "object", "required": ["name", "content"] }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "OK" },
+          "404": { "description": "Not found" },
+          "422": { "description": "Validation failed" }
+        }
+      },
+      "delete": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["LetterFundamental"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "404": { "description": "Not found" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    }
+  }
+}

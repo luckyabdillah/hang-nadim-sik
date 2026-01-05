@@ -1,0 +1,160 @@
+{
+  "openapi": "3.1.1",
+  "info": { "title": "Hang Nadim SIK RESTful API - Vendors", "version": "1.0", "description": "OpenAPI doc for vendors endpoints", "contact": { "email": "luckyabdillah00@gmail.com" } },
+  "servers": [ { "url": "https://sik.luckyabdillah.com/api/v1" }, { "url": "http://127.0.0.1:8000/api/v1" } ],
+  "paths": {
+    "/vendors": {
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["Vendor"], "summary": "Get all vendors", "responses": { "200": { "description": "OK" } } },
+      "post": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["Vendor"],
+        "summary": "Create vendor",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["name","email"], "properties": { "name": { "type": "string" }, "email": { "type": "string" }, "phone": { "type": "string" }, "address": { "type": "string" } } } } } },
+        "responses": { "200": { "description": "OK" }, "422": { "description": "Validation failed" } }
+      }
+    },
+    "/vendors/{id}": {
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["Vendor"], "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } },
+      "put": { "security": [{ "BearerAuth": [] }], "tags": ["Vendor"], "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["name","email"] } } } }, "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" }, "422": { "description": "Validation failed" } },
+      "delete": { "security": [{ "BearerAuth": [] }], "tags": ["Vendor"], "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }], "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } }
+  },
+  "components": { "securitySchemes": { "BearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" } } }
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Hang Nadim SIK RESTful API - Vendors",
+    "version": "1.0",
+    "description": "OpenAPI doc for vendors endpoints",
+    "contact": { "email": "luckyabdillah00@gmail.com" }
+  },
+  "servers": [
+    { "url": "https://sik.luckyabdillah.com/api/v1" },
+    { "url": "http://127.0.0.1:8000/api/v1" }
+  ],
+  "paths": {
+    "/vendors": {
+      {
+        "openapi": "3.1.1",
+        "info": {
+          "title": "Hang Nadim SIK RESTful API - Vendors",
+          "version": "1.0",
+          "description": "OpenAPI doc for vendors endpoints",
+          "contact": { "email": "luckyabdillah00@gmail.com" }
+        },
+        "servers": [
+          { "url": "https://sik.luckyabdillah.com/api/v1" },
+          { "url": "http://127.0.0.1:8000/api/v1" }
+        ],
+        "paths": {
+          "/vendors": {
+            "get": {
+              "security": [{ "BearerAuth": [] }],
+              "tags": ["Vendor"],
+              "summary": "Get all vendors",
+              "responses": { "200": { "description": "OK" } }
+            },
+            "post": {
+              "security": [{ "BearerAuth": [] }],
+              "tags": ["Vendor"],
+              "summary": "Create vendor",
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "required": ["name", "email"],
+                      "properties": {
+                        "name": { "type": "string" },
+                        "email": { "type": "string" },
+                        "phone": { "type": "string" },
+                        "address": { "type": "string" }
+                      }
+                    }
+                  }
+                }
+              },
+              "responses": { "200": { "description": "OK" }, "422": { "description": "Validation failed" } }
+            }
+          },
+          "/vendors/{id}": {
+            "get": {
+              "security": [{ "BearerAuth": [] }],
+              "tags": ["Vendor"],
+              "parameters": [ { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } } ],
+              "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } }
+            },
+            "put": {
+              "security": [{ "BearerAuth": [] }],
+              "tags": ["Vendor"],
+              "parameters": [ { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } } ],
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "required": ["name", "email"]
+                    }
+                  }
+                }
+              },
+              "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" }, "422": { "description": "Validation failed" } }
+            },
+            "delete": {
+              "security": [{ "BearerAuth": [] }],
+              "tags": ["Vendor"],
+              "parameters": [ { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } } ],
+              "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } }
+            }
+          }
+        },
+        "components": {
+          "securitySchemes": {
+            "BearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+          }
+        }
+      }
+          }
+        },
+        "responses": { "200": { "description": "OK" }, "422": { "description": "Validation failed" } }
+      }
+    },
+    "/vendors/{id}": {
+      "get": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["Vendor"],
+        "parameters": [ { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } } ],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } }
+      },
+      "put": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["Vendor"],
+        "parameters": [ { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } } ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email"]
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" }, "422": { "description": "Validation failed" } }
+      },
+      "delete": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["Vendor"],
+        "parameters": [ { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } } ],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    }
+  }
+}
