@@ -1,0 +1,124 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Hang Nadim SIK RESTful API",
+    "version": "1.0",
+    "description": "Consolidated OpenAPI specification for Hang Nadim SIK API",
+    "contact": { "email": "luckyabdillah00@gmail.com" }
+  },
+  "servers": [
+    { "url": "https://sik.luckyabdillah.com/api/v1" },
+    { "url": "http://127.0.0.1:8000/api/v1" }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Register user",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name","email","password","password_confirmation"],
+                "properties": {
+                  "name": { "type": "string" },
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string" },
+                  "password_confirmation": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" }, "422": { "description": "Validation failed" } }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login and receive JWT",
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["email","password"] } } } },
+        "responses": { "200": { "description": "OK" }, "401": { "description": "Invalid credentials" } }
+      }
+    },
+    "/copies": {
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["Copy"], "summary": "Get all copies", "responses": { "200": { "description": "OK" } } },
+    "/copies/{id}": {
+      "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["Copy"], "summary": "Get copy by id", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } },
+      "post": { "security": [{ "BearerAuth": [] }], "tags": ["Copy"], "summary": "Create new copy", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["name","email"], "properties": { "name": { "type": "string" }, "email": { "type": "string" }, "send_email": { "type": "boolean" } } } } } },
+      "put": { "security": [{ "BearerAuth": [] }], "tags": ["Copy"], "summary": "Update copy", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["name","email","send_email"] } } } }, "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" }, "422": { "description": "Validation failed" } },
+      "delete": { "security": [{ "BearerAuth": [] }], "tags": ["Copy"], "summary": "Delete copy", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } }
+    },
+    "/work-types": {
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["WorkType"], "summary": "Get all work types", "responses": { "200": { "description": "OK" } } },
+    "/work-types/{id}": {
+      "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["WorkType"], "summary": "Get work type by id", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } },
+      "post": { "security": [{ "BearerAuth": [] }], "tags": ["WorkType"], "summary": "Create work type", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["type","unit_name"] } } } },
+      "put": { "security": [{ "BearerAuth": [] }], "tags": ["WorkType"], "summary": "Update work type", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["type","unit_name"] } } } },
+      "delete": { "security": [{ "BearerAuth": [] }], "tags": ["WorkType"], "summary": "Delete work type", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } }
+    },
+    "/work-locations": {
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["WorkLocation"], "summary": "Get all work locations", "responses": { "200": { "description": "OK" } } },
+    "/work-locations/{id}": {
+      "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["WorkLocation"], "summary": "Get work location by id", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } },
+      "post": { "security": [{ "BearerAuth": [] }], "tags": ["WorkLocation"], "summary": "Create work location", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["location","description"] } } } },
+      "put": { "security": [{ "BearerAuth": [] }], "tags": ["WorkLocation"], "summary": "Update work location", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["location","description"] } } } },
+      "delete": { "security": [{ "BearerAuth": [] }], "tags": ["WorkLocation"], "summary": "Delete work location", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } }
+    },
+    "/letter-fundamentals": {
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["LetterFundamental"], "summary": "Get all letter fundamentals", "responses": { "200": { "description": "OK" } } },
+    "/letter-fundamentals/{id}": {
+      "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["LetterFundamental"], "summary": "Get letter fundamental by id", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } },
+      "post": { "security": [{ "BearerAuth": [] }], "tags": ["LetterFundamental"], "summary": "Create letter fundamental", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["name","content"] } } } },
+      "put": { "security": [{ "BearerAuth": [] }], "tags": ["LetterFundamental"], "summary": "Update letter fundamental", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["name","content"] } } } },
+      "delete": { "security": [{ "BearerAuth": [] }], "tags": ["LetterFundamental"], "summary": "Delete letter fundamental", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } }
+    },
+    "/work-permit-letters": {
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["WorkPermitLetter"], "summary": "Get all work permit letters", "responses": { "200": { "description": "OK" } } },
+    "/work-permit-letters/{id}": {
+      "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["WorkPermitLetter"], "summary": "Get work permit letter by id", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } },
+      "post": { "security": [{ "BearerAuth": [] }], "tags": ["WorkPermitLetter"], "summary": "Create work permit letter", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["applicant_id","work_type_id","work_location_id","start_date","end_date"] } } } },
+      "put": { "security": [{ "BearerAuth": [] }], "tags": ["WorkPermitLetter"], "summary": "Update work permit letter", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["start_date","end_date"] } } } },
+      "delete": { "security": [{ "BearerAuth": [] }], "tags": ["WorkPermitLetter"], "summary": "Delete work permit letter", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } }
+    },
+    "/approvals": {
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["Approval"], "summary": "Get all approvals", "responses": { "200": { "description": "OK" } } },
+    "/approvals/{id}": {
+      "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["Approval"], "summary": "Get approval by id", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } },
+      "post": { "security": [{ "BearerAuth": [] }], "tags": ["Approval"], "summary": "Create approval stage", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["name","order"] } } } },
+      "put": { "security": [{ "BearerAuth": [] }], "tags": ["Approval"], "summary": "Update approval stage", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["name","order"] } } } },
+      "delete": { "security": [{ "BearerAuth": [] }], "tags": ["Approval"], "summary": "Delete approval stage", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } }
+    },
+    "/vendors": {
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["Vendor"], "summary": "Get all vendors", "responses": { "200": { "description": "OK" } } },
+    "/vendors/{id}": {
+      "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["Vendor"], "summary": "Get vendor by id", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } },
+      "post": { "security": [{ "BearerAuth": [] }], "tags": ["Vendor"], "summary": "Create vendor", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["name","email"] } } } },
+      "put": { "security": [{ "BearerAuth": [] }], "tags": ["Vendor"], "summary": "Update vendor", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["name","email"] } } } },
+      "delete": { "security": [{ "BearerAuth": [] }], "tags": ["Vendor"], "summary": "Delete vendor", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } }
+    },
+    "/approvers": {
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["Approver"], "summary": "Get all approvers", "responses": { "200": { "description": "OK" } } },
+    "/approvers/{id}": {
+      "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+      "get": { "security": [{ "BearerAuth": [] }], "tags": ["Approver"], "summary": "Get approver by id", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } },
+      "post": { "security": [{ "BearerAuth": [] }], "tags": ["Approver"], "summary": "Create approver", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["user_id","role","email"] } } } },
+      "put": { "security": [{ "BearerAuth": [] }], "tags": ["Approver"], "summary": "Update approver", "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["role","email"] } } } },
+      "delete": { "security": [{ "BearerAuth": [] }], "tags": ["Approver"], "summary": "Delete approver", "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } } }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Hang Nadim SIK RESTful API - Work Locations",
+    "version": "1.0",
+    "description": "OpenAPI doc for work-locations endpoints",
+    "contact": { "email": "luckyabdillah00@gmail.com" }
+  },
+  "servers": [
+    { "url": "https://sik.luckyabdillah.com/api/v1" },
+    { "url": "http://127.0.0.1:8000/api/v1" }
+  ],
+  "paths": {
+    "/work-locations": {
+      "get": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["WorkLocation"],
+        "summary": "Get all work locations",
+        "responses": {
+          "200": {
+            "description": "Success get all work locations",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": { "type": "number" },
+                    "message": { "type": "string" },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": "integer" },
+                          "location": { "type": "string" },
+                          "description": { "type": "string" },
+                          "created_at": { "type": "string" },
+                          "updated_at": { "type": "string" }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["WorkLocation"],
+        "summary": "Create new work location",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["location", "description"],
+                "properties": {
+                  "location": { "type": "string", "minLength": 1, "maxLength": 100 },
+                  "description": { "type": "string", "minLength": 1, "maxLength": 255 }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Success create work location" },
+          "422": { "description": "Validation failed" }
+        }
+      }
+    },
+    "/work-locations/{id}": {
+      "get": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["WorkLocation"],
+        "summary": "Get work location by id",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } }
+      },
+      "put": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["WorkLocation"],
+        "summary": "Update work location",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": { "type": "object", "required": ["location","description"] } } } },
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" }, "422": { "description": "Validation failed" } }
+      },
+      "delete": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["WorkLocation"],
+        "summary": "Delete work location",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": { "BearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" } }
+  }
+}

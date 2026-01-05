@@ -1,0 +1,89 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "Hang Nadim SIK RESTful API - Work Permit Letters",
+    "version": "1.0",
+    "description": "OpenAPI doc for work-permit-letters endpoints",
+    "contact": { "email": "luckyabdillah00@gmail.com" }
+  },
+  "servers": [
+    { "url": "https://sik.luckyabdillah.com/api/v1" },
+    { "url": "http://127.0.0.1:8000/api/v1" }
+  ],
+  "paths": {
+    "/work-permit-letters": {
+      "get": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["WorkPermitLetter"],
+        "summary": "Get all work permit letters",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["WorkPermitLetter"],
+        "summary": "Create work permit letter",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["applicant_id", "work_type_id", "work_location_id", "start_date", "end_date"],
+                "properties": {
+                  "applicant_id": { "type": "integer" },
+                  "work_type_id": { "type": "integer" },
+                  "work_location_id": { "type": "integer" },
+                  "start_date": { "type": "string", "format": "date" },
+                  "end_date": { "type": "string", "format": "date" },
+                  "description": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" }, "422": { "description": "Validation failed" } }
+      }
+    },
+    "/work-permit-letters/{id}": {
+      "get": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["WorkPermitLetter"],
+        "parameters": [ { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } } ],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } }
+      },
+      "put": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["WorkPermitLetter"],
+        "parameters": [ { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } } ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["start_date", "end_date"],
+                "properties": {
+                  "start_date": { "type": "string", "format": "date" },
+                  "end_date": { "type": "string", "format": "date" },
+                  "description": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" }, "422": { "description": "Validation failed" } }
+      },
+      "delete": {
+        "security": [{ "BearerAuth": [] }],
+        "tags": ["WorkPermitLetter"],
+        "parameters": [ { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } } ],
+        "responses": { "200": { "description": "OK" }, "404": { "description": "Not found" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": { "type": "http", "scheme": "bearer", "bearerFormat": "JWT" }
+    }
+  }
+}

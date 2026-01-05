@@ -1,0 +1,718 @@
+{
+    "openapi":"3.1.1",
+    "info": {
+        "title":"Hang Nadim SIK RESTful API",
+        "description": "This is an unofficial Hang Nadim SIK API server.  You can find out more about Hang Nadim SIK at [http://sik.luckyabdillah.com](http://sik.luckyabdillah.com).",
+        "version":"1.0",
+        "contact": {
+            "email": "luckyabdillah00@gmail.com"
+        },
+        "license": {
+            "name": "APACHE 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0"
+        }
+    },
+    "servers": [
+        {
+            "url":"https://sik.luckyabdillah.com/api/v1"
+        },
+        {
+            "url":"http://127.0.0.1:8000/api/v1"
+        }
+    ],
+    "paths": {
+        "/copies": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": ["Copy"],
+                "summary": "Get all copies",
+                "description": "Get all copies ordered by its name by default",
+                "responses": {
+                    "200": {
+                        "description": "Success get all copies",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "statusCode": {
+                                                "type": "number"
+                                            },
+                                            "message": {
+                                                "type": "string"
+                                            },
+                                            "data": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "id": {
+                                                            "type": "number"
+                                                        },
+                                                        "name": {
+                                                            "type": "string"
+                                                        },
+                                                        "email": {
+                                                            "type": "string"
+                                                        },
+                                                        "send_email": {
+                                                            "type": "boolean"
+                                                        },
+                                                        "created_at": {
+                                                            "type": "string"
+                                                        },
+                                                        "updated_at": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get all copies",
+                                        "value": [{
+                                            "statusCode": 200,
+                                            "message": "OK",
+                                            "data": [
+                                                {
+                                                    "id": 1,
+                                                    "name": "Manager",
+                                                    "email": "manager@gmail.com",
+                                                    "send_email": 1,
+                                                    "created_at": "2025-07-06T04:18:49.000000Z",
+                                                    "updated_at": "2025-07-06T04:18:49.000000Z"
+                                                },
+                                                {
+                                                    "id": 2,
+                                                    "name": "Maintenance",
+                                                    "email": "maintenance@gmail.com",
+                                                    "send_email": 0,
+                                                    "created_at": "2025-07-06T04:18:49.000000Z",
+                                                    "updated_at": "2025-07-06T04:18:49.000000Z"
+                                                },
+                                                {
+                                                    "id": 3,
+                                                    "name": "Operation",
+                                                    "email": "operation@gmail.com",
+                                                    "send_email": 1,
+                                                    "created_at": "2025-07-06T04:18:49.000000Z",
+                                                    "updated_at": "2025-07-06T04:18:49.000000Z"
+                                                }
+                                            ]
+                                        }]
+                                    },
+                                    "empty": {
+                                        "description": "Example empty copies",
+                                        "value": [{
+                                            "statusCode": 200,
+                                            "message": "OK",
+                                            "data": []
+                                        }]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": ["Copy"],
+                "summary": "Create new copy",
+                "description": "Create new copy to database",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "name", "email"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "minLength": 3,
+                                        "maxLength": 150
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "minLength": 5,
+                                        "maxLength": 255
+                                    },
+                                    "send_email": {
+                                        "type": "boolean",
+                                        "default": true
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "success": {
+                                    "description": "Example create new finance copy",
+                                    "value": {
+                                        "name": "Finance",
+                                        "email": "finance@gmail.com",
+                                        "send_email": 1
+                                    }
+                                },
+                                "failed": {
+                                    "description": "Example create failed finance copy",
+                                    "value": {
+                                        "name": "Finance",
+                                        "email": "finance@a.a",
+                                        "send_email": 3
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success create new copy",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "send_email": {
+                                                    "type": "boolean"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example create copy finance",
+                                        "value": [{
+                                            "statusCode": 200,
+                                            "message": "OK",
+                                            "data": {
+                                                "id": 1,
+                                                "name": "Finance",
+                                                "email": "finance@gmail.com",
+                                                "send_email": 1,
+                                                "created_at": "2025-07-06T04:18:49.000000Z",
+                                                "updated_at": "2025-07-06T04:18:49.000000Z"
+                                            }
+                                        }]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Failed create new copy",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "failed": {
+                                        "description": "Example create copy finance",
+                                        "value": {
+                                            "statusCode": 422,
+                                            "message": "Validation failed",
+                                            "errors": {
+                                                "email": [
+                                                    "The email field must be a valid email address."
+                                                ],
+                                                "send_email": [
+                                                    "The send email field must be true or false."
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/copies/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": ["Copy"],
+                "summary": "Get copy",
+                "description": "Get copy record by id",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Copy ID",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        "examples": {
+                            "existing": {
+                                "description": "Example existing id",
+                                "value": "1"
+                            },
+                            "non-existing": {
+                                "description": "Example non-existing id",
+                                "value": "9999"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success get copy record",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "statusCode": {
+                                                "type": "number"
+                                            },
+                                            "message": {
+                                                "type": "string"
+                                            },
+                                            "data": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "email": {
+                                                        "type": "string"
+                                                    },
+                                                    "send_email": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example success get copy",
+                                        "value": [{
+                                            "statusCode": 200,
+                                            "message": "OK",
+                                            "data": {
+                                                "id": 1,
+                                                "name": "Manager",
+                                                "email": "manager@gmail.com",
+                                                "send_email": 1,
+                                                "created_at": "2025-07-06T04:18:49.000000Z",
+                                                "updated_at": "2025-07-06T04:18:49.000000Z"
+                                            }
+                                        }]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed get copy record",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "statusCode": {
+                                                "type": "number"
+                                            },
+                                            "message": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "not found": {
+                                        "description": "Example get copy not found",
+                                        "value": [{
+                                            "statusCode": 404,
+                                            "message": "Resource not found"
+                                        }]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": ["Copy"],
+                "summary": "Update copy",
+                "description": "Update existing copy record to database",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Copy ID",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        "examples": {
+                            "existing": {
+                                "description": "Example existing id",
+                                "value": "1"
+                            },
+                            "non-existing": {
+                                "description": "Example non-existing id",
+                                "value": "9999"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "name", "email", "send_email"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "minLength": 3,
+                                        "maxLength": 150
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "minLength": 5,
+                                        "maxLength": 255
+                                    },
+                                    "send_email": {
+                                        "type": "boolean"
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "success": {
+                                    "description": "Example update finance copy",
+                                    "value": {
+                                        "name": "Finance",
+                                        "email": "finance@gmail.com",
+                                        "send_email": 1
+                                    }
+                                },
+                                "failed": {
+                                    "description": "Example update failed finance copy",
+                                    "value": {
+                                        "name": "Finance",
+                                        "email": "finance@a.a",
+                                        "send_email": 3
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success update copy",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "number"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "send_email": {
+                                                    "type": "boolean"
+                                                },
+                                                "created_at": {
+                                                    "type": "string"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example update copy record",
+                                        "value": [{
+                                            "statusCode": 200,
+                                            "message": "OK",
+                                            "data": {
+                                                "id": 1,
+                                                "name": "Finance",
+                                                "email": "finance@gmail.com",
+                                                "send_email": 1,
+                                                "created_at": "2025-07-06T04:18:49.000000Z",
+                                                "updated_at": "2025-07-06T04:18:49.000000Z"
+                                            }
+                                        }]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed get copy record",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "statusCode": {
+                                                "type": "number"
+                                            },
+                                            "message": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "not found": {
+                                        "description": "Example get copy not found",
+                                        "value": [{
+                                            "statusCode": 404,
+                                            "message": "Resource not found"
+                                        }]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Failed update copy",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "failed": {
+                                        "description": "Example update copy record",
+                                        "value": {
+                                            "statusCode": 422,
+                                            "message": "Validation failed",
+                                            "errors": {
+                                                "email": [
+                                                    "The email field must be a valid email address."
+                                                ],
+                                                "send_email": [
+                                                    "The send email field must be true or false."
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "tags": ["Copy"],
+                "summary": "Delete copy",
+                "description": "Delete existing copy record from database",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "Copy ID",
+                        "schema": {
+                            "type": "string",
+                            "minLength": 1
+                        },
+                        "examples": {
+                            "existing": {
+                                "description": "Example existing id",
+                                "value": "1"
+                            },
+                            "non-existing": {
+                                "description": "Example non-existing id",
+                                "value": "9999"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success delete copy",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "statusCode": {
+                                            "type": "number"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "Example update copy record",
+                                        "value": [{
+                                            "statusCode": 200,
+                                            "message": "OK"
+                                        }]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Failed get copy record",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "statusCode": {
+                                                "type": "number"
+                                            },
+                                            "message": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                "examples": {
+                                    "not found": {
+                                        "description": "Example get copy not found",
+                                        "value": [{
+                                            "statusCode": 404,
+                                            "message": "Resource not found"
+                                        }]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "Opaque",
+                "description": "Opaque Authorization header using the Bearer scheme. Example: \"Authorization: Bearer <your_token>\""
+            }
+        }
+    }
+  }
